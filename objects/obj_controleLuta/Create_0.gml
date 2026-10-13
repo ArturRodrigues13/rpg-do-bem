@@ -4,14 +4,23 @@ enum turno {
 	INIMIGOS
 }
 
-atacantes = turno.ALIADOS;
+enum escolha {
+	
+	ESCOLHENDO,
+	ATACAR,
+	ITEM
+}
 
-indice = 0;
+atacantes = turno.ALIADOS; 
+estado_atual = escolha.ESCOLHENDO;
+opcoes = ["ATACAR", "ITEM"];
 
+indice_escolha = 0;
+indice_aliados = 0;
 alvo = 0;
 
 infoInimiga = [];
 
-instance_create_layer(50, 300, "Instances", obj_player);
+setAliados(global.partyAliada);
 
 setInimigos(global.partyInimiga, global.info);

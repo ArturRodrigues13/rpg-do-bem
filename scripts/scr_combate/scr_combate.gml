@@ -24,7 +24,7 @@ function setInimigos(_arrayInimigos, _info) {
 		
 	for(var i = 0; i < array_length(_info); i++) {
 				
-		var inst = instance_create_layer(300 + dist_x, 150 + dist_y, "Instances", _info[i]);
+		var inst = instance_create_layer(300 + dist_x, 100 + dist_y, "Instances", _info[i]);
 	
 		dist_y += 75;
 		
@@ -37,3 +37,11 @@ function setInimigos(_arrayInimigos, _info) {
 		array_insert(_arrayInimigos,i, inst);
 	}
 }	
+
+function setAliados(_arrayAliados) {
+	
+	var inst = instance_create_layer(50, 300, "Instances", obj_player);
+	
+	array_insert(_arrayAliados, 0, inst);
+}	
+
