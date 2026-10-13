@@ -3,17 +3,26 @@ enum turno {
 	INIMIGOS
 }
 
-atacantes = turno.ALIADOS;
+enum escolha {
+	ESCOLHENDO,
+	ATACAR,
+	ITEM
+}
 
 setinhaX = 0;
 setinhaY = 0;
 setinhaTargetX = 0;
 setinhaTargetY = 0;
 
-indice = 0;
+atacantes = turno.ALIADOS;
+estado_atual = escolha.ESCOLHENDO;
+opcoes = ["ATACAR", "ITEM"];
 
-instance_create_layer(50, 300, "Instances", obj_player);
+indice_escolha = 0;
+indice_aliados = 0;
+
 setInimigos(global.partyInimiga, global.info);
+setAliados(global.partyAliada);
 
 alvo = 0;
 function BuscarAlvo(_dir) {

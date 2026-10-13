@@ -30,3 +30,7 @@ function VecDist(_v1, _v2) {
 function VecLen(_v1) {
 	return sqrt(_v1[0] * _v1[0] + _v1[1] * _v1[1]);
 }
+
+function VecNotEmpty(_v1) {
+	return _v1[0] != 0.0 || _v1[1] != 0.0;
+}

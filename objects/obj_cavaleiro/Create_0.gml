@@ -1,0 +1,1 @@
+atributos = new DefineAtributos(10, 1, .5, .3, 2);

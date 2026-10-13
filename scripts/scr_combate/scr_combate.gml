@@ -14,7 +14,7 @@ function Ataque(_player, _Arrayinimigos, _alvo) {
 		
 		instance_destroy(_Arrayinimigos[_alvo]);
 		array_delete(_Arrayinimigos,_alvo,1);
-	} 
+	}
 }
 
 function setInimigos(_arrayInimigos, _info) {
@@ -27,3 +27,11 @@ function setInimigos(_arrayInimigos, _info) {
 		array_insert(_arrayInimigos, i, inst);
 	}
 }	
+
+function setAliados(_arrayAliados) {
+	
+	var inst = instance_create_layer(50, 200, "Instances", obj_cavaleiro);
+	
+	array_insert(_arrayAliados, 0, inst);
+}	
+

@@ -11,6 +11,9 @@
   "defaultScriptType":1,
   "Folders":[
     {"$GMFolder":"","%Name":"Objetos","folderPath":"folders/Objetos.yy","name":"Objetos","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Aliados","folderPath":"folders/Objetos/Aliados.yy","name":"Aliados","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Controles","folderPath":"folders/Objetos/Controles.yy","name":"Controles","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Inimigos","folderPath":"folders/Objetos/Inimigos.yy","name":"Inimigos","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Salas","folderPath":"folders/Salas.yy","name":"Salas","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Scripts","folderPath":"folders/Scripts.yy","name":"Scripts","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Sons","folderPath":"folders/Sons.yy","name":"Sons","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -25,6 +28,8 @@
   },
   "name":"RPG_DO_BEM",
   "resources":[
+    {"id":{"name":"obj_camera","path":"objects/obj_camera/obj_camera.yy",},},
+    {"id":{"name":"obj_cavaleiro","path":"objects/obj_cavaleiro/obj_cavaleiro.yy",},},
     {"id":{"name":"obj_controleLuta","path":"objects/obj_controleLuta/obj_controleLuta.yy",},},
     {"id":{"name":"obj_inimigo","path":"objects/obj_inimigo/obj_inimigo.yy",},},
     {"id":{"name":"obj_player","path":"objects/obj_player/obj_player.yy",},},
@@ -33,6 +38,7 @@
     {"id":{"name":"scr_combate","path":"scripts/scr_combate/scr_combate.yy",},},
     {"id":{"name":"scr_globais","path":"scripts/scr_globais/scr_globais.yy",},},
     {"id":{"name":"scr_personagens","path":"scripts/scr_personagens/scr_personagens.yy",},},
+    {"id":{"name":"spr_cavaleiro","path":"sprites/spr_cavaleiro/spr_cavaleiro.yy",},},
     {"id":{"name":"spr_inimigo","path":"sprites/spr_inimigo/spr_inimigo.yy",},},
     {"id":{"name":"spr_player","path":"sprites/spr_player/spr_player.yy",},},
     {"id":{"name":"spr_setinha","path":"sprites/spr_setinha/spr_setinha.yy",},},
