@@ -14,8 +14,7 @@ y += dir_v * vel
 
 var inimigo = place_meeting(x, y, obj_inimigo);
 
-if(inimigo && keyboard_check_pressed(vk_enter)) {
-		
+if (inimigo && keyboard_check_pressed(vk_enter)) {
 	array_insert(global.partyAliada, 0, self);
 	global.info = inimigo.infoLuta;
 	room_goto(rm_testeLuta);

@@ -18,22 +18,12 @@ function Ataque(_player, _Arrayinimigos, _alvo) {
 }
 
 function setInimigos(_arrayInimigos, _info) {
-	
-	var dist_y = 0;
-	var dist_x = 0;
+	var origX = 400;
+	var origY = 200;
 		
-	for(var i = 0; i < array_length(_info); i++) {
-				
-		var inst = instance_create_layer(300 + dist_x, 150 + dist_y, "Instances", _info[i]);
-	
-		dist_y += 75;
-		
-		if(i == 2) {
-			
-			dist_y = 0;
-			dist_x += 150;
-		}
-				
-		array_insert(_arrayInimigos,i, inst);
+	for (var i = 0; i < array_length(_info); i++) {
+		var ii = _info[i];
+		var inst = instance_create_layer(origX + ii.pos[0], origY + ii.pos[1], "Instances", ii.obj);
+		array_insert(_arrayInimigos, i, inst);
 	}
 }	

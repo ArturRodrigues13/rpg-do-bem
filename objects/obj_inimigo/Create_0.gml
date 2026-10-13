@@ -1,3 +1,10 @@
 atributos = new DefineAtributos(5, 1, 0, .3, 2);
 
-infoLuta = [obj_inimigo, obj_inimigo, obj_inimigo, obj_inimigo, obj_inimigo, obj_inimigo];
+infoLuta = [
+	{obj : obj_inimigo, pos : [-60, -60]},
+	{obj : obj_inimigo, pos : [-60, 0]},
+	{obj : obj_inimigo, pos : [-60, +60]},
+	{obj : obj_inimigo, pos : [+60, -60]},
+	{obj : obj_inimigo, pos : [+60, 0]},
+	{obj : obj_inimigo, pos : [+60, +60]},
+];

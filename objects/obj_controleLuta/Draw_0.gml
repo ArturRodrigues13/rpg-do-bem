@@ -6,8 +6,8 @@ for(var i = 0; i < array_length(inimigos); i++) {
 }
 
 if(atacantes == turno.ALIADOS) {
-
-	draw_sprite(spr_setinha, 0, inimigos[alvo].x - 20, inimigos[alvo].y)
+	// setinha amo setinhas
+	draw_sprite(spr_setinha, 0, setinhaX, setinhaY);
 	draw_text(300, 50, "TURNO ALIADO");
 	
 } else {

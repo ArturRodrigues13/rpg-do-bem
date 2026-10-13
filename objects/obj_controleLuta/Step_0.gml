@@ -1,14 +1,16 @@
 if(atacantes == turno.ALIADOS) {
-	
 	var quantInimigos = array_length(global.partyInimiga);
 	var aliado_atacante = global.partyAliada[indice];
 	
-	if(keyboard_check_pressed(ord("A")) && alvo > 0) alvo--;
-	
-	if(keyboard_check_pressed(ord("D")) && alvo < quantInimigos - 1) alvo++;
+	var dir_novo_alvo = [
+		keyboard_check_pressed(vk_right) - keyboard_check_pressed(vk_left),
+		keyboard_check_pressed(vk_down) - keyboard_check_pressed(vk_up),
+	];
+	if (dir_novo_alvo[0] != 0 || dir_novo_alvo[1] != 0) {		
+		BuscarAlvo(dir_novo_alvo);
+	}
 	   
 	if(keyboard_check_pressed(vk_space)) {
-		
 		Ataque(aliado_atacante, global.partyInimiga, alvo);
 		quantInimigos = array_length(global.partyInimiga);
 		indice++;
@@ -22,6 +24,10 @@ if(atacantes == turno.ALIADOS) {
 	}
 	
 	alvo = min(alvo, quantInimigos);
+	
+	var inimigos = global.partyInimiga;
+	setinhaTargetX = inimigos[alvo].x - 20;
+	setinhaTargetY = inimigos[alvo].y;
 	 
 } else if(atacantes == turno.INIMIGOS) {
 	
@@ -29,5 +35,8 @@ if(atacantes == turno.ALIADOS) {
 		atacantes = turno.ALIADOS; 
 	}
 }
+
+setinhaY = lerp(setinhaY, setinhaTargetY, 0.475);
+setinhaX = lerp(setinhaX, setinhaTargetX, 0.475);
 
 if(array_length(global.partyInimiga) == 0) game_end();
