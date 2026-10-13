@@ -40,7 +40,7 @@ function setInimigos(_arrayInimigos, _info) {
 
 function setAliados(_arrayAliados) {
 	
-	var inst = instance_create_layer(50, 300, "Instances", obj_player);
+	var inst = instance_create_layer(50, 200, "Instances", obj_cavaleiro);
 	
 	array_insert(_arrayAliados, 0, inst);
 }	

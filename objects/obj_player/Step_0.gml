@@ -12,10 +12,9 @@ x += dir_h * vel;
 
 y += dir_v * vel
 
-var inimigo = place_meeting(x, y, obj_inimigo);
-
-if(inimigo && keyboard_check_pressed(vk_enter)) {
-
+if(place_meeting(x, y, obj_inimigo) && keyboard_check_pressed(vk_enter)) {
+	
+	var inimigo = instance_nearest(x, y, obj_inimigo);
 	global.info = inimigo.infoLuta;
 	room_goto(rm_testeLuta);
 }
