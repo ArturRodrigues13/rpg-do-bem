@@ -14,5 +14,3 @@ if(atacantes == turno.ALIADOS) {
 	
 	draw_text(300, 50, "TURNO INIMIGO");
 }
-
-
