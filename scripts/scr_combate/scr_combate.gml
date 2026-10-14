@@ -1,16 +1,16 @@
 function Ataque(_player, _Arrayinimigos, _alvo) {
 	
-	var at_ali = _player.atributos;
+	var at_ali = _player.defs;
 	var dano;
 	var mult = random(1) <= at_ali.chanceCrit ? at_ali.danoCrit : 1;
 	
-	dano = at_ali.ataque * mult - _Arrayinimigos[_alvo].atributos.defesa;
+	dano = at_ali.ataque * mult - _Arrayinimigos[_alvo].defs.defesa;
 
 	dano = max(0, dano);
 	
-	_Arrayinimigos[_alvo].atributos.vida -= dano;
+	_Arrayinimigos[_alvo].defs.vida -= dano;
 	
-	if(_Arrayinimigos[_alvo].atributos.vida <= 0) {
+	if(_Arrayinimigos[_alvo].defs.vida <= 0) {
 		
 		instance_destroy(_Arrayinimigos[_alvo]);
 		array_delete(_Arrayinimigos,_alvo,1);

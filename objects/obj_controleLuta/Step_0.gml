@@ -1,17 +1,26 @@
 if(atacantes == turno.ALIADOS) {
 	
-	if(estado_atual == escolha.ESCOLHENDO) {
+	if(estado_atual == estado.ESCOLHENDO) {
 		
-		if(keyboard_check_pressed(vk_down) && indice_escolha == 0) indice_escolha++;
+		if(keyboard_check_pressed(vk_down) && indice_escolha < 2) indice_escolha++;
 	
-		if(keyboard_check_pressed(vk_up) && indice_escolha == 1) indice_escolha--;
+		if(keyboard_check_pressed(vk_up) && indice_escolha > 0) indice_escolha--;
 		
 		if(keyboard_check_pressed(vk_enter)) {
 			
-			if(indice_escolha == 0) estado_atual = escolha.ATACAR else estado_atual = escolha.ITEM;
+			if(indice_escolha == 0) {
+				
+				estado_atual = estado.ATACAR
+			} else if(indice_escolha == 1) {
+				
+				estado_atual = estado.ITEM;
+			} else {
+				
+				game_end();
+			}
 		}
 	
-	} else if(estado_atual == escolha.ATACAR) {
+	} else if(estado_atual == estado.ATACAR) {
 
 		var inimigos = global.partyInimiga;
 		
@@ -21,7 +30,7 @@ if(atacantes == turno.ALIADOS) {
 		}
 		
 		if(keyboard_check_pressed(vk_escape)) {
-			estado_atual = escolha.ESCOLHENDO;
+			estado_atual = estado.ESCOLHENDO;
 		}
 		
 		var quantInimigos = array_length(global.partyInimiga);
@@ -47,11 +56,11 @@ if(atacantes == turno.ALIADOS) {
 	
 		alvo = clamp(alvo, 0, quantInimigos);
 		
-	} else if (estado_atual == escolha.ITEM) {
+	} else if (estado_atual == estado.ITEM) {
 		
 		if(keyboard_check_pressed(vk_escape)) {
 			
-			estado_atual = escolha.ESCOLHENDO;
+			estado_atual = estado.ESCOLHENDO;
 		}
 	}
 	
@@ -59,8 +68,8 @@ if(atacantes == turno.ALIADOS) {
 	
 	if(keyboard_check_pressed(vk_enter)) {
 		
-		estado_atual = escolha.ESCOLHENDO;
-		indice_escolha = 0;
+		estado_atual = estado.ESCOLHENDO;
+		indice_estado = 0;
 		atacantes = turno.ALIADOS; 
 	}
 }

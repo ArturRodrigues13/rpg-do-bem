@@ -4,7 +4,7 @@ var aliado = global.partyAliada;
 var _x = room_width;
 var _y = room_height;
 
-if(estado_atual == escolha.ESCOLHENDO) {
+if(estado_atual == estado.ESCOLHENDO) {
 	
 	draw_set_colour(c_green);
 	draw_rectangle(0, _y - 100, _x, _y, false);
@@ -20,16 +20,16 @@ if(estado_atual == escolha.ESCOLHENDO) {
 		}
 	}
 	
-} else if(estado_atual == escolha.ATACAR) {
+} else if(estado_atual == estado.ATACAR) {
 
 	for(var i = 0; i < array_length(aliado); i++) {
 	
-		draw_text(aliado[i].x - 30, aliado[i].y, "Vida: " + string(aliado[i].atributos.vida));
+		draw_text(aliado[i].x - 30, aliado[i].y, "Vida: " + string(aliado[i].defs.vida));
 	}
 
 	for(var i = 0; i < array_length(inimigos); i++) {
 	
-		draw_text(inimigos[i].x + 30, inimigos[i].y, "Vida: " + string(inimigos[i].atributos.vida));
+		draw_text(inimigos[i].x + 30, inimigos[i].y, "Vida: " + string(inimigos[i].defs.vida));
 	}
 
 	if(atacantes == turno.ALIADOS) {

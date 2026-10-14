@@ -3,10 +3,11 @@ enum turno {
 	INIMIGOS
 }
 
-enum escolha {
+enum estado {
 	ESCOLHENDO,
 	ATACAR,
-	ITEM
+	ITEM,
+	FUGIR
 }
 
 setinhaX = 0;
@@ -15,8 +16,8 @@ setinhaTargetX = 0;
 setinhaTargetY = 0;
 
 atacantes = turno.ALIADOS;
-estado_atual = escolha.ESCOLHENDO;
-opcoes = ["ATACAR", "ITEM"];
+estado_atual = estado.ESCOLHENDO;
+opcoes = ["ATACAR", "ITEM", "FUGIR"];
 
 indice_escolha = 0;
 indice_aliados = 0;

@@ -1,4 +1,4 @@
-atributos = new DefineAtributos(5, 1, 0, .3, 2);
+defs = new Definedefs(5, 1, 0, .3, 2, [], 1);
 
 infoLuta = [
 	{obj : obj_inimigo, pos : [-60, -60]},
