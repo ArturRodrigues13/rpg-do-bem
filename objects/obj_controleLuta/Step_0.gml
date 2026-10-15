@@ -2,11 +2,11 @@ if(atacantes == turno.ALIADOS) {
 	
 	if(estado_atual == estado.ESCOLHENDO) {
 		
-		if(keyboard_check_pressed(vk_down) && indice_escolha < 2) indice_escolha++;
+		if(keyboard_check_pressed(global.keys.down) && indice_escolha < array_length(opcoes)) indice_escolha++;
 	
-		if(keyboard_check_pressed(vk_up) && indice_escolha > 0) indice_escolha--;
+		if(keyboard_check_pressed(global.keys.up) && indice_escolha > 0) indice_escolha--;
 		
-		if(keyboard_check_pressed(vk_enter)) {
+		if(keyboard_check_pressed(global.keys.confirm)) {
 			
 			if(indice_escolha == 0) {
 				
@@ -29,7 +29,7 @@ if(atacantes == turno.ALIADOS) {
 			setinhaTargetY = inimigos[alvo].y;
 		}
 		
-		if(keyboard_check_pressed(vk_escape)) {
+		if(keyboard_check_pressed(global.keys.back)) {
 			estado_atual = estado.ESCOLHENDO;
 		}
 		
@@ -37,12 +37,14 @@ if(atacantes == turno.ALIADOS) {
 		var aliado_atacante = global.partyAliada[indice_aliados];
 		
 		var dir_novo_alvo = [
-			keyboard_check_pressed(vk_right) - keyboard_check_pressed(vk_left),
-			keyboard_check_pressed(vk_down) - keyboard_check_pressed(vk_up),
+			keyboard_check_pressed(global.keys.right) - keyboard_check_pressed(global.keys.left),
+			keyboard_check_pressed(global.keys.down) - keyboard_check_pressed(global.keys.up),
 		];
+		
+		
 		if (VecNotEmpty(dir_novo_alvo)) BuscarAlvo(dir_novo_alvo);
 		
-		if (keyboard_check_pressed(vk_enter)) {
+		if (keyboard_check_pressed(global.keys.confirm)) {
 			Ataque(aliado_atacante, global.partyInimiga, alvo);
 			quantInimigos = array_length(global.partyInimiga);
 			indice_aliados++;
@@ -50,15 +52,14 @@ if(atacantes == turno.ALIADOS) {
 	
 		if(indice_aliados == array_length(global.partyAliada)) {
 			indice_aliados = 0;
-			alvo = 0;
 			atacantes = turno.INIMIGOS;
 		}
 	
-		alvo = clamp(alvo, 0, quantInimigos);
+		alvo = min(alvo, quantInimigos);
 		
 	} else if (estado_atual == estado.ITEM) {
 		
-		if(keyboard_check_pressed(vk_escape)) {
+		if(keyboard_check_pressed(global.keys.back)) {
 			
 			estado_atual = estado.ESCOLHENDO;
 		}
@@ -66,10 +67,10 @@ if(atacantes == turno.ALIADOS) {
 	
 } else if(atacantes == turno.INIMIGOS) {
 	
-	if(keyboard_check_pressed(vk_enter)) {
+	if(keyboard_check_pressed(global.keys.confirm)) {
 		
 		estado_atual = estado.ESCOLHENDO;
-		indice_estado = 0;
+		indice_escolha = 0;
 		atacantes = turno.ALIADOS; 
 	}
 }

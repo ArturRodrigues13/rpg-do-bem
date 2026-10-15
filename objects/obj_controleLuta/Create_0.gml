@@ -17,16 +17,18 @@ setinhaTargetY = 0;
 
 atacantes = turno.ALIADOS;
 estado_atual = estado.ESCOLHENDO;
-opcoes = ["ATACAR", "ITEM", "FUGIR"];
-
 indice_escolha = 0;
 indice_aliados = 0;
+opcoes = ["ATACAR", "ITEM", "FUGIR"];
+
 
 setInimigos(global.partyInimiga, global.info);
 setAliados(global.partyAliada);
 
 alvo = 0;
+
 function BuscarAlvo(_dir) {
+
 	var inimigos = global.info;
 	if (array_length(inimigos) == 0) return;
 	alvo = clamp(alvo, 0, array_length(inimigos) - 1);

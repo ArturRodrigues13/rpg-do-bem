@@ -38,6 +38,7 @@
     {"id":{"name":"scr_combate","path":"scripts/scr_combate/scr_combate.yy",},},
     {"id":{"name":"scr_globais","path":"scripts/scr_globais/scr_globais.yy",},},
     {"id":{"name":"scr_personagens","path":"scripts/scr_personagens/scr_personagens.yy",},},
+    {"id":{"name":"scr_vec","path":"scripts/scr_vec/scr_vec.yy",},},
     {"id":{"name":"spr_cavaleiro","path":"sprites/spr_cavaleiro/spr_cavaleiro.yy",},},
     {"id":{"name":"spr_inimigo","path":"sprites/spr_inimigo/spr_inimigo.yy",},},
     {"id":{"name":"spr_player","path":"sprites/spr_player/spr_player.yy",},},
