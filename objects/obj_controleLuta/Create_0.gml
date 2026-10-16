@@ -14,9 +14,6 @@ last_enemy_idx = 0;
 indice_aliados = 0;
 indice_item = 0;
 
-// FIXME: isso não é pra tar aqui não kkkkkkkkkk
-addItem(global.itens.pocaodeVida);
-
 setInimigos(global.partyInimiga, global.info);
 setAliados(global.partyAliada);
 
@@ -171,9 +168,24 @@ function ChoiceMenu(_stack, _ctl) : Menu(_stack, _ctl) constructor {
 			array_pop(stack);
 			array_push(stack, new control.AttackTargetMenu(stack, control));
 		} else if (choice_idx == 1) {
-			control.estado_atual = estado.ITEM;
+			array_pop(stack);
+			array_push(stack, new control.ItemMenu(stack, control));
 		} else {	
 			game_end();
+		}
+	}
+}
+
+function ItemMenu(_stack, _ctl) : Menu(_stack, _ctl) constructor {
+	
+	choices = array_map(global.inventario, function (_x) {return _x.nome});
+	
+	onChoice = function() {
+		if(array_length(choices) > 0) {
+			
+			global.inventario[choice_idx].uso(global.partyInimiga[0]);
+			array_delete(global.inventario, choice_idx, 1);
+			array_delete(choices, choice_idx, 1);
 		}
 	}
 }

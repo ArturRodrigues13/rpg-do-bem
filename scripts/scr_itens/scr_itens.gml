@@ -15,7 +15,7 @@ global.itens = {
 		spr: spr_inimigo,
 		alvo: tipoAlvo.ALIADOUNICO,
 		uso: function(_alvo) {
-			_alvo.atributos.vida += 20
+			_alvo.defs.vida += 20
 		}
 	},
 	
@@ -25,7 +25,7 @@ global.itens = {
 		spr: spr_player,
 		alvo: tipoAlvo.INIMIGOUNICO,
 		uso: function(_alvo) {
-			_alvo.atributos.vida -= 200000
+			Dano(10, _alvo, global.partyInimiga, 0);
 		}
 	}
 }
@@ -34,3 +34,8 @@ function addItem(_item) {
 	
 	array_push(global.inventario,_item);
 }
+
+addItem(global.itens.pedra);
+addItem(global.itens.pedra);
+addItem(global.itens.pocaodeVida);
+addItem(global.itens.pedra);
