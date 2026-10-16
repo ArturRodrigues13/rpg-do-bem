@@ -16,9 +16,11 @@ setinhaTargetX = 0;
 setinhaTargetY = 0;
 
 atacantes = turno.ALIADOS;
+indice_aliados = 0;
 estado_atual = estado.ESCOLHENDO;
 indice_escolha = 0;
-indice_aliados = 0;
+indice_item = 0;
+
 opcoes = ["ATACAR", "ITEM", "FUGIR"];
 
 
@@ -26,6 +28,8 @@ setInimigos(global.partyInimiga, global.info);
 setAliados(global.partyAliada);
 
 alvo = 0;
+
+addItem(global.itens.pocaodeVida);
 
 function BuscarAlvo(_dir) {
 

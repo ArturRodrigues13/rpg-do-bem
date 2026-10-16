@@ -4,6 +4,8 @@ randomise();
 
 global.partyAliada = [];
 global.partyInimiga = [];
+global.itensConsumiveis = [];
+global.inventario = [];
 
 global.info = [];
 

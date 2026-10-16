@@ -41,4 +41,19 @@ if(estado_atual == estado.ESCOLHENDO) {
 	
 		draw_text(300, 50, "TURNO INIMIGO");
 	}
+} else if(estado_atual == estado.ITEM) {
+	
+	draw_set_colour(c_green);
+	draw_rectangle(0, _y - 100, _x, _y, false);
+	draw_set_colour(c_white);
+	
+	for(var i = 0; i < array_length(global.inventario); i++) {
+		
+		draw_text(40 + 20 * i, _y - 70, global.inventario[i].nome);
+		
+		if(indice_item == i) {
+			
+			draw_sprite(spr_setinha, 0, 30 + 20 * i, _y - 70);
+		}
+	}
 }
