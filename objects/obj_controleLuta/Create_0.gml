@@ -43,7 +43,7 @@ function Menu(_stack, _ctl) constructor {
 			draw_text(40, _y - 70 + 20 * i, choices[i]);
 		
 			if (choice_idx == i) {
-				draw_sprite(spr_setinha, 0, 30, _y - 70 + 20 * i);
+				draw_sprite(spr_setinha, 0, 30, _y - 60 + 20 * i);
 			}
 		}
 	}
@@ -80,9 +80,7 @@ function AttackTargetMenu(_stack, _ctl) : Menu(_stack, _ctl) constructor {
 	onStep = function() {
 		choice_idx = clamp(choice_idx, 0, array_length(choices));
 		arrowTargetPos = getEnemyPos();
-		// arrowPos = VecLerp(arrowPos, arrowTargetPos, 0.475);
-		arrowPos[0] = lerp(arrowPos[0], arrowTargetPos[0], 0.475);
-		arrowPos[1] = lerp(arrowPos[1], arrowTargetPos[1], 0.475);
+		arrowPos = VecLerp(arrowPos, arrowTargetPos, 0.475);
 		handleInput();
 	}
 	
