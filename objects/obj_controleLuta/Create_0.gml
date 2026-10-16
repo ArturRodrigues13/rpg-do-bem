@@ -12,6 +12,10 @@ estado_atual = estado.ESCOLHENDO;
 menu_stack = [];
 last_enemy_idx = 0;
 indice_aliados = 0;
+indice_item = 0;
+
+// FIXME: isso não é pra tar aqui não kkkkkkkkkk
+addItem(global.itens.pocaodeVida);
 
 setInimigos(global.partyInimiga, global.info);
 setAliados(global.partyAliada);
