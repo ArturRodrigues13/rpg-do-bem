@@ -21,3 +21,10 @@ function VecDist(_v1, _v2) {
 function VecLen(_v1) {
 	return sqrt(_v1[0] * _v1[0] + _v1[1] * _v1[1]);
 }
+
+function VecLerp(_v1, _v2, _amt) {
+	return [
+		lerp(_v1[0], _v2[0], _amt),
+		lerp(_v1[1], _v2[1], _amt),
+	]
+}
