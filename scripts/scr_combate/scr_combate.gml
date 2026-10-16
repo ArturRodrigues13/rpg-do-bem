@@ -1,3 +1,13 @@
+function Dano(_value, _alvo, _array, _index) {
+	
+	_alvo.defs.vida -= _value;
+	
+	if (_alvo.defs.vida <= 0) {
+		instance_destroy(_alvo);
+		array_delete(_array, _index, 1);
+	}
+}
+
 function Ataque(_player, _Arrayinimigos, _alvo) {
 	var e = _Arrayinimigos[_alvo];
 	
@@ -9,12 +19,7 @@ function Ataque(_player, _Arrayinimigos, _alvo) {
 
 	dano = max(0, dano);
 	
-	e.defs.vida -= dano;
-	
-	if (e.defs.vida <= 0) {
-		instance_destroy(e);
-		array_delete(_Arrayinimigos, _alvo, 1);
-	}
+	Dano(dano, e, _Arrayinimigos, _alvo);
 }
 
 function setInimigos(_arrayInimigos, _info) {
