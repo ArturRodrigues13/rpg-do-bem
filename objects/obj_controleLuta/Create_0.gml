@@ -33,7 +33,7 @@ function Menu(_stack, _ctl) constructor {
 		var _y = room_height;
 		
 		draw_set_colour(c_green);
-		draw_rectangle(0, _y - 100, _x, _y, false);
+		draw_rectangle(0, _y - 50, _x, _y, false);
 		draw_set_colour(c_white);
 	
 		for (var i = 0; i < array_length(choices); i++) {		

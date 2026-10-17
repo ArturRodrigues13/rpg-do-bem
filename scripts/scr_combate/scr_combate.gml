@@ -23,8 +23,8 @@ function Ataque(_player, _Arrayinimigos, _alvo) {
 }
 
 function setInimigos(_arrayInimigos, _info) {
-	var origX = 400;
-	var origY = 200;
+	var origX = 260;
+	var origY = 85;
 		
 	for (var i = 0; i < array_length(_info); i++) {
 		var ii = _info[i];
@@ -35,7 +35,7 @@ function setInimigos(_arrayInimigos, _info) {
 
 function setAliados(_arrayAliados) {
 	
-	var inst = instance_create_layer(50, 200, "Instances", obj_cavaleiro);
+	var inst = instance_create_layer(50, 50, "Instances", obj_cavaleiro);
 	
 	array_insert(_arrayAliados, 0, inst);
 }	
