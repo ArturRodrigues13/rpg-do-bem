@@ -1,10 +1,8 @@
 if (turno_atual == Turno.ALIADOS) {
-	
-	if (array_length(menu_stack) == 0) {
-		array_push(menu_stack, new ChoiceMenu(menu_stack, self));
+	if (mstack.isEmpty()) {
+		mstack.push(new ChoiceMenu(mstack, self));
 	}
-	array_last(menu_stack).onStep();
-	
+	mstack.peek().onStep();
 } else if (turno_atual == Turno.INIMIGOS) {
 	if (keyboard_check_pressed(global.keys.confirm)) {
 		estado_atual = estado.ESCOLHENDO;

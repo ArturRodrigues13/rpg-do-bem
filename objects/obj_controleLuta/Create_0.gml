@@ -8,8 +8,8 @@ enum estado {
 	FUGIR
 }
 
+mstack = new MenuStack();
 estado_atual = estado.ESCOLHENDO;
-menu_stack = [];
 last_enemy_idx = 0;
 indice_aliados = 0;
 indice_item = 0;
@@ -17,9 +17,40 @@ indice_item = 0;
 setInimigos(global.partyInimiga, global.info);
 setAliados(global.partyAliada);
 
-function Menu(_stack, _ctl) constructor {
+function MenuStack() constructor {
+	stack = [];
+	
+	/// @param {Menu} _menu O menu a ser adicionado
+	push = function(_menu) {
+		array_push(stack, _menu);
+	}
+	
+	pop = function() {
+		return array_pop(stack);
+	}
+	
+	peek = function() {
+		return array_last(stack);
+	}
+
+	isEmpty = function() {
+		return array_length(stack) == 0;
+	}
+
+	/// @desc Tira o menu atual da pilha e passa `_data` para o pai, se presente.
+	confirmAndPop = function(_data) {
+		pop();
+		if (!isEmpty()) {
+			peek().onConfirmSignal(_data);
+		}
+	}
+}
+
+/// @param {MenuStack} _stack
+/// @param {obj_controleLuta} _cl
+function Menu(_stack, _cl) constructor {
 	stack = _stack;
-	control = _ctl;
+	cl = _cl;
 	choices = [];
 	choice_idx = 0;
 	
@@ -46,22 +77,45 @@ function Menu(_stack, _ctl) constructor {
 	}
 	
 	handleInput = function() {
-		if (keyboard_check_pressed(global.keys.up)) choice_idx--;
-		if (keyboard_check_pressed(global.keys.down)) choice_idx++;
+		var gk = global.keys;
+
+		if (keyboard_check_pressed(gk.up)) choice_idx--;
+		if (keyboard_check_pressed(gk.down)) choice_idx++;
 		choice_idx = clamp(choice_idx, 0, array_length(choices) - 1);
 		
-		if (keyboard_check_pressed(global.keys.confirm)) onChoice();
-		if (keyboard_check_pressed(global.keys.back)) array_pop(stack); 
+		if (keyboard_check_pressed(gk.confirm)) onChoice();
+		if (keyboard_check_pressed(gk.back)) array_pop(stack);
 	}
 	
 	onChoice = function() {
 		show_error("not implemented", true);
 	}
+	
+	/// @param {Any} _data Informação
+	/// @desc Roda quando um sinal
+	onConfirmSignal = function(_data) {
+		// Nessa implementação padrão, não fazer nada; só tirar da pilha e sinalizar pro pai.
+		stack.confirmAndPop();
+	}
 }
 
-function AttackTargetMenu(_stack, _ctl) : Menu(_stack, _ctl) constructor {
+function ChoiceMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
+	choices = ["ATACAR", "ITEM", "FUGIR"];
+	
+	onChoice = function() {
+		if (choice_idx == 0) {
+			stack.push(new cl.AttackTargetMenu(stack, cl));
+		} else if (choice_idx == 1) {
+			stack.push(new cl.ItemMenu(stack, cl));
+		} else {	
+			game_end();
+		}
+	}
+}
+
+function AttackTargetMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 	choices = global.partyInimiga;
-	choice_idx = clamp(_ctl.last_enemy_idx, 0, array_length(choices));
+	choice_idx = clamp(_cl.last_enemy_idx, 0, array_length(choices));
 	
 	getEnemyPos = function() {
 		if (choice_idx < 0 || choice_idx >= array_length(choices))
@@ -144,46 +198,30 @@ function AttackTargetMenu(_stack, _ctl) : Menu(_stack, _ctl) constructor {
 	}
 
 	onChoice = function() {
-		var aliado_atacante = global.partyAliada[control.indice_aliados];
+		var aliado_atacante = global.partyAliada[cl.indice_aliados];
 		Ataque(aliado_atacante, global.partyInimiga, choice_idx);
 		choice_idx = clamp(choice_idx, 0, array_length(global.partyInimiga));
-		control.indice_aliados++;
+		cl.indice_aliados++;
 
-		if (control.indice_aliados == array_length(global.partyAliada)) {
-			control.indice_aliados = 0;
-			control.turno_atual = Turno.INIMIGOS;
+		if (cl.indice_aliados == array_length(global.partyAliada)) {
+			cl.indice_aliados = 0;
+			cl.turno_atual = Turno.INIMIGOS;
 		}
-		array_pop(stack);
+
+		stack.confirmAndPop(noone);
 	}
 }
 
-function ChoiceMenu(_stack, _ctl) : Menu(_stack, _ctl) constructor {
-	choices = ["ATACAR", "ITEM", "FUGIR"];
-	
-	onChoice = function() {
-		if (choice_idx == 0) {
-			// FIXME: ...??? não não era assim não
-			array_pop(stack);
-			array_push(stack, new control.AttackTargetMenu(stack, control));
-		} else if (choice_idx == 1) {
-			array_pop(stack);
-			array_push(stack, new control.ItemMenu(stack, control));
-		} else {	
-			game_end();
-		}
-	}
-}
+function ItemMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
+	choices = array_map(global.inventario, function (_x) { return _x.nome; });
 
-function ItemMenu(_stack, _ctl) : Menu(_stack, _ctl) constructor {
-	
-	choices = array_map(global.inventario, function (_x) {return _x.nome});
-	
 	onChoice = function() {
-		if(array_length(choices) > 0) {
-			
-			global.inventario[choice_idx].uso(global.partyInimiga[0]);
-			array_delete(global.inventario, choice_idx, 1);
-			array_delete(choices, choice_idx, 1);
-		}
+		if (array_length(choices) == 0) return;
+
+		global.inventario[choice_idx].uso(global.partyInimiga[0]);
+		array_delete(global.inventario, choice_idx, 1);
+		array_delete(choices, choice_idx, 1);
+
+		stack.confirmAndPop(noone);
 	}
 }

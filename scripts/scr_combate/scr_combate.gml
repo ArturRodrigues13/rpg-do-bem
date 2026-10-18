@@ -1,5 +1,4 @@
 function Dano(_value, _alvo, _array, _index) {
-	
 	_alvo.defs.vida -= _value;
 	
 	if (_alvo.defs.vida <= 0) {
@@ -16,9 +15,7 @@ function Ataque(_player, _Arrayinimigos, _alvo) {
 	var mult = random(1) <= at_ali.chanceCrit ? at_ali.danoCrit : 1;
 	
 	dano = at_ali.ataque * mult - e.defs.defesa;
-
 	dano = max(0, dano);
-	
 	Dano(dano, e, _Arrayinimigos, _alvo);
 }
 
@@ -34,9 +31,7 @@ function setInimigos(_arrayInimigos, _info) {
 }	
 
 function setAliados(_arrayAliados) {
-	
 	var inst = instance_create_layer(50, 50, "Instances", obj_cavaleiro);
-	
 	array_insert(_arrayAliados, 0, inst);
 }	
 
