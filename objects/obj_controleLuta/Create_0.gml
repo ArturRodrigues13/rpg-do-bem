@@ -91,7 +91,7 @@ function AttackTargetMenu(_stack, _ctl) : Menu(_stack, _ctl) constructor {
 		var inimigos = global.partyInimiga;
 		for (var i = 0; i < array_length(inimigos); i++) {
 			var e = inimigos[i];
-			draw_text(e.x + 30, e.y, $"Vida: {e.defs.vida}");
+			draw_text(e.x - 30, e.y, $"Vida: {e.defs.vida}");
 		}
 
 		draw_sprite(spr_setinha, 0, arrowPos[0], arrowPos[1]);

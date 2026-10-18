@@ -1,0 +1,1 @@
+if(defs.morto == true) visible = false;

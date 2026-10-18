@@ -3,8 +3,7 @@ function Dano(_value, _alvo, _array, _index) {
 	_alvo.defs.vida -= _value;
 	
 	if (_alvo.defs.vida <= 0) {
-		instance_destroy(_alvo);
-		array_delete(_array, _index, 1);
+		_alvo.defs.morto = true;
 	}
 }
 
@@ -38,5 +37,43 @@ function setAliados(_arrayAliados) {
 	var inst = instance_create_layer(50, 50, "Instances", obj_cavaleiro);
 	
 	array_insert(_arrayAliados, 0, inst);
-}	
+}
 
+function checkStatus(_arrayAliados, _arrayInimigos) {
+	
+	var _status = 0;
+	
+	for(var i = 0; i < array_length(_arrayAliados); i ++) {
+		
+		if(_arrayAliados[i].defs.morto == true) continue;
+		
+		_status = _arrayAliados[i].defs.status;
+		if(_status.veneno == true) {
+			
+			Dano(2, _arrayAliados[i], _arrayAliados, i);
+		} 
+		
+		if(_status.queimadura == true) {
+			
+			Dano(1, _arrayAliados[i], _arrayAliados, i);
+		}
+	}
+	
+	for(var i = 0; i < array_length(_arrayInimigos); i ++) {
+		
+		if(_arrayInimigos[i].defs.morto == true) continue;
+		
+		_status = _arrayInimigos[i].defs.status;
+		if(_status.veneno == true) {
+			
+			Dano(2, _arrayInimigos[i], _arrayInimigos, i);
+		} 
+		
+		if(_status.queimadura == true) {
+			
+			Dano(1, _arrayInimigos[i], _arrayInimigos, i);
+		}
+		
+		show_debug_message(_arrayInimigos[i].defs.vida);
+	}
+}

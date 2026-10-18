@@ -6,11 +6,21 @@ defs = {
 	defesamagica: 1,
 	chanceCrit: .3,
 	danoCrit: 2.5,
+	
+	status: {
+		veneno: false,
+		queimadura: false,
+		congelado: false,
+		forte: false
+	},
+	
 	acessorios: [],
 	equipamento: {
 		
 		arma: noone,
 		amuleto: noone,
 		vestimenta: noone,
-	}
+	},
+	
+	morto: false,
 };
