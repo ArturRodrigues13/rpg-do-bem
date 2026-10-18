@@ -7,6 +7,7 @@ if (turno_atual == Turno.ALIADOS) {
 	if (keyboard_check_pressed(global.keys.confirm)) {
 		estado_atual = estado.ESCOLHENDO;
 		turno_atual = Turno.ALIADOS; 
+		checkStatus(global.partyAliada, global.partyInimiga)
 	}
 }
 
