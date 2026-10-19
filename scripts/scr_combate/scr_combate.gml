@@ -69,6 +69,5 @@ function checkStatus(_arrayAliados, _arrayInimigos) {
 			Dano(1, _arrayInimigos[i], _arrayInimigos, i);
 		}
 		
-		show_debug_message(_arrayInimigos[i].defs.vida);
 	}
 }

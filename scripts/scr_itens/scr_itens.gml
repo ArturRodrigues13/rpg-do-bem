@@ -1,19 +1,11 @@
-enum tipoAlvo {
-	
-	ALIADOUNICO,
-	ALIADOS,
-	INIMIGOUNICO,
-	INIMIGOS
-}
-
 global.itens = {
 	
 	pocaodeVida: {
 		
 		nome: "vida",
 		descricao: "cura",
-		spr: spr_inimigo,
-		alvo: tipoAlvo.ALIADOUNICO,
+		spr: spr_pocaoVida,
+		alvo: tipoAlvo.INIMIGOUNICO,
 		uso: function(_alvo) {
 			_alvo.defs.vida += 20
 		}
@@ -22,7 +14,7 @@ global.itens = {
 	pedra: {
 		nome: "pedra",
 		descricao: "taca pedra",
-		spr: spr_player,
+		spr: spr_pedra,
 		alvo: tipoAlvo.INIMIGOUNICO,
 		uso: function(_alvo) {
 			Dano(10, _alvo, global.partyInimiga, 0);

@@ -4,10 +4,18 @@ randomise();
 
 global.partyAliada = [];
 global.partyInimiga = [];
-global.itensConsumiveis = [];
+global.itemAtual = noone;
 global.inventario = [];
 
 global.info = [];
+
+enum tipoAlvo {
+	
+	ALIADOUNICO,
+	ALIADOS,
+	INIMIGOUNICO,
+	INIMIGOS
+}
 
 global.keys = {
 	

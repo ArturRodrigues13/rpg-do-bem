@@ -53,6 +53,8 @@ function Menu(_stack, _cl) constructor {
 	cl = _cl;
 	choices = [];
 	choice_idx = 0;
+	item = false;
+	targetType = noone;
 	
 	onStep = function() {
 		handleInput();
@@ -81,10 +83,10 @@ function Menu(_stack, _cl) constructor {
 
 		if (keyboard_check_pressed(gk.up)) choice_idx--;
 		if (keyboard_check_pressed(gk.down)) choice_idx++;
-		choice_idx = clamp(choice_idx, 0, array_length(choices) - 1);
+		choice_idx = clamp(choice_idx, 0, array_length (choices) - 1);
 		
 		if (keyboard_check_pressed(gk.confirm)) onChoice();
-		if (keyboard_check_pressed(gk.back)) array_pop(stack);
+		if (keyboard_check_pressed(gk.back)) stack.pop();
 	}
 	
 	onChoice = function() {
@@ -104,7 +106,7 @@ function ChoiceMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 	
 	onChoice = function() {
 		if (choice_idx == 0) {
-			stack.push(new cl.AttackTargetMenu(stack, cl));
+			stack.push(new cl.AttackTargetMenu(stack, cl, false, tipoAlvo.INIMIGOUNICO));
 		} else if (choice_idx == 1) {
 			stack.push(new cl.ItemMenu(stack, cl));
 		} else {	
@@ -113,11 +115,22 @@ function ChoiceMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 	}
 }
 
-function AttackTargetMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
-	choices = global.partyInimiga;
+function AttackTargetMenu(_stack, _cl, _item, _targetType) : Menu(_stack, _cl) constructor {
+	
+	targeType = _targetType;
+	item = _item;
+	
+	if(targeType == tipoAlvo.ALIADOS || targeType == tipoAlvo.ALIADOUNICO) {
+		
+		choices = global.partyAliada;
+	} else {
+		
+		choices = global.partyInimiga;
+	}
+	
 	choice_idx = clamp(_cl.last_enemy_idx, 0, array_length(choices));
 	
-	getEnemyPos = function() {
+	getTargetPos = function() {
 		if (choice_idx < 0 || choice_idx >= array_length(choices))
 			return arrowTargetPos;
 		
@@ -125,12 +138,12 @@ function AttackTargetMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 		return [e.x - 20, e.y];
 	}
 	
-	arrowTargetPos = getEnemyPos();
+	arrowTargetPos = getTargetPos();
 	arrowPos = arrowTargetPos;
 	
 	onStep = function() {
 		choice_idx = clamp(choice_idx, 0, array_length(choices));
-		arrowTargetPos = getEnemyPos();
+		arrowTargetPos = getTargetPos();
 		arrowPos = VecLerp(arrowPos, arrowTargetPos, 0.475);
 		handleInput();
 	}
@@ -153,7 +166,7 @@ function AttackTargetMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 	
 	handleInput = function() {
 		if (keyboard_check_pressed(global.keys.back)) {
-			array_pop(stack);
+			stack.pop();
 		} else if (keyboard_check_pressed(global.keys.confirm)) {
 			onChoice();
 		} else {		
@@ -162,7 +175,7 @@ function AttackTargetMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 				keyboard_check_pressed(global.keys.down) - keyboard_check_pressed(global.keys.up),
 			];
 			if (dir != [0, 0]) tryChangeTarget(dir);
-		}
+		} 
 	}
 	
 	tryChangeTarget = function(_dir) {
@@ -198,11 +211,19 @@ function AttackTargetMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 	}
 
 	onChoice = function() {
-		var aliado_atacante = global.partyAliada[cl.indice_aliados];
-		Ataque(aliado_atacante, global.partyInimiga, choice_idx);
-		choice_idx = clamp(choice_idx, 0, array_length(global.partyInimiga));
+		if(item == false) {
+			
+			var aliado_atacante = global.partyAliada[cl.indice_aliados];
+			Ataque(aliado_atacante, global.partyInimiga, choice_idx);
+			choice_idx = clamp(choice_idx, 0, array_length(global.partyInimiga));
+		} else {
+			
+			global.itemAtual[0].uso(global.partyInimiga[choice_idx]);
+			array_delete(global.inventario, global.itemAtual[1], 1);
+		}
+		
 		cl.indice_aliados++;
-
+		
 		if (cl.indice_aliados == array_length(global.partyAliada)) {
 			cl.indice_aliados = 0;
 			cl.turno_atual = Turno.INIMIGOS;
@@ -214,14 +235,62 @@ function AttackTargetMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 
 function ItemMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 	choices = array_map(global.inventario, function (_x) { return _x.nome; });
+	
+	onDraw = function() {
+		var _x = room_width;
+		var _y = room_height;
+		
+		var _xsqr = 68;
+		var _ysqr = 28;
+		var _distx = 0;
+		var _disty = 0;
+		var _size = 45;
+		var _offsetx = 22.5;
+		var _offsety = 12.5;
+		
+		// 12.5 e 22.6 é o offset matemático, poderia fazer a conta aqui mas ia dar trabalho, chatão
+		
+		draw_set_colour(c_orange);
+		draw_rectangle(60, 20, _x - 60, _y - 20, false);
+		draw_set_colour(c_white);
+		
+		for(var i = 0; i < 12; i ++) {
+			
+			if(i == choice_idx) draw_set_colour(c_green);
+			draw_rectangle(_xsqr, _ysqr, _xsqr + _size, _ysqr + _size, true);
+			draw_set_colour(c_white);
+			
+			if(i < array_length(global.inventario)) {
+				
+				draw_sprite(global.inventario[i].spr, 0, _xsqr + _size / 2, _ysqr + _size / 2)
+			}
+			
+			_ysqr += _size + _offsety;
+
+			if(i mod 3 == 2) {
+				_ysqr = 28;
+				_xsqr += _size + _offsetx;
+			}
+		}
+	}
+	
+	handleInput = function() {
+		var gk = global.keys;
+
+		if (keyboard_check_pressed(gk.up) && choice_idx mod 3 != 0) choice_idx--;
+		if (keyboard_check_pressed(gk.down) && choice_idx mod 3 != 2) choice_idx++;
+		if (keyboard_check_pressed(gk.left) && choice_idx > 2) choice_idx -= 3; 
+		if (keyboard_check_pressed(gk.right) && choice_idx < 9) choice_idx += 3;	
+		choice_idx = clamp(choice_idx, 0, array_length(choices) - 1);
+		
+		if (keyboard_check_pressed(gk.confirm)) onChoice();
+		if (keyboard_check_pressed(gk.back)) stack.pop();
+	}
 
 	onChoice = function() {
 		if (array_length(choices) == 0) return;
 
-		global.inventario[choice_idx].uso(global.partyInimiga[0]);
-		array_delete(global.inventario, choice_idx, 1);
-		array_delete(choices, choice_idx, 1);
-
-		stack.confirmAndPop(noone);
+		global.itemAtual = [global.inventario[choice_idx], choice_idx];
+		stack.push(new cl.AttackTargetMenu(stack, cl, true, global.itemAtual[0].alvo));
 	}
 }
