@@ -5,7 +5,7 @@ randomise();
 global.partyAliada = [];
 global.partyInimiga = [];
 global.itemAtual = noone;
-global.inventario = [];
+global.inventario = array_create(12, noone);
 
 global.info = [];
 

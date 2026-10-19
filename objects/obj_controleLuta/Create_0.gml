@@ -219,12 +219,15 @@ function AttackTargetMenu(_stack, _cl, _item, _targetType) : Menu(_stack, _cl) c
 		} else {
 			
 			global.itemAtual[0].uso(global.partyInimiga[choice_idx]);
-			array_delete(global.inventario, global.itemAtual[1], 1);
+			
+			array_insert(global.inventario, global.itemAtual[1], noone);
+			array_delete(global.inventario, global.itemAtual[1] + 1, 1);
 		}
 		
 		cl.indice_aliados++;
 		
 		if (cl.indice_aliados == array_length(global.partyAliada)) {
+			
 			cl.indice_aliados = 0;
 			cl.turno_atual = Turno.INIMIGOS;
 		}
@@ -234,7 +237,7 @@ function AttackTargetMenu(_stack, _cl, _item, _targetType) : Menu(_stack, _cl) c
 }
 
 function ItemMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
-	choices = array_map(global.inventario, function (_x) { return _x.nome; });
+	choices = global.inventario;
 	
 	onDraw = function() {
 		var _x = room_width;
@@ -260,9 +263,9 @@ function ItemMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 			draw_rectangle(_xsqr, _ysqr, _xsqr + _size, _ysqr + _size, true);
 			draw_set_colour(c_white);
 			
-			if(i < array_length(global.inventario)) {
+			if(choices[i] != noone) {
 				
-				draw_sprite(global.inventario[i].spr, 0, _xsqr + _size / 2, _ysqr + _size / 2)
+				draw_sprite(choices[i].spr, 0, _xsqr + _size / 2, _ysqr + _size / 2)
 			}
 			
 			_ysqr += _size + _offsety;
@@ -281,16 +284,16 @@ function ItemMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 		if (keyboard_check_pressed(gk.down) && choice_idx mod 3 != 2) choice_idx++;
 		if (keyboard_check_pressed(gk.left) && choice_idx > 2) choice_idx -= 3; 
 		if (keyboard_check_pressed(gk.right) && choice_idx < 9) choice_idx += 3;	
-		choice_idx = clamp(choice_idx, 0, array_length(choices) - 1);
+		choice_idx = clamp(choice_idx, 0, 11);
 		
-		if (keyboard_check_pressed(gk.confirm)) onChoice();
+		if (keyboard_check_pressed(gk.confirm) && choices[choice_idx] != noone) onChoice();
 		if (keyboard_check_pressed(gk.back)) stack.pop();
 	}
 
 	onChoice = function() {
 		if (array_length(choices) == 0) return;
 
-		global.itemAtual = [global.inventario[choice_idx], choice_idx];
+		global.itemAtual = [choices[choice_idx], choice_idx];
 		stack.push(new cl.AttackTargetMenu(stack, cl, true, global.itemAtual[0].alvo));
 	}
 }

@@ -22,12 +22,13 @@ global.itens = {
 	}
 }
 
-function addItem(_item) {
+function addItem(_item, _index) {
 	
-	array_push(global.inventario,_item);
+	array_insert(global.inventario, _index,_item);
+	array_delete(global.inventario, _index + 1,1);
 }
 
-addItem(global.itens.pedra);
-addItem(global.itens.pedra);
-addItem(global.itens.pocaodeVida);
-addItem(global.itens.pedra);
+addItem(global.itens.pedra,0);
+addItem(global.itens.pedra,1);
+addItem(global.itens.pocaodeVida,2);
+addItem(global.itens.pedra,3);
