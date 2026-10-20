@@ -13,7 +13,7 @@ global.itens = {
 	
 	pedra: {
 		nome: "Pedra",
-		descricao: "taca pedra NO INIMIGO E EXECUTA\n ELE DE FORMA BRUTAL",
+		descricao: "taca pedra NO INIMIGO E EXECUTA\nELE DE FORMA BRUTAL",
 		spr: spr_pedra,
 		alvo: tipoAlvo.INIMIGOUNICO,
 		uso: function(_alvo) {
@@ -49,5 +49,4 @@ function checkLastEmptySpace() {
 	
 	global.lastEmptySpace = -1;
 	return;
-	
 }

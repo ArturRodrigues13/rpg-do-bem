@@ -3,6 +3,8 @@ function Dano(_value, _alvo, _array, _index) {
 	
 	if (_alvo.defs.vida <= 0) {
 		_alvo.defs.morto = true;
+		_alvo.sprite_index = _alvo.deathSprite;
+		_alvo.image_index = 0;
 	}
 }
 
