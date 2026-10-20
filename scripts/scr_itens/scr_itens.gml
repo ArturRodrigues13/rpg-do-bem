@@ -2,8 +2,8 @@ global.itens = {
 	
 	pocaodeVida: {
 		
-		nome: "vida",
-		descricao: "cura",
+		nome: "Vida",
+		descricao: "cura (o inimigo, whatever lil bloba)",
 		spr: spr_pocaoVida,
 		alvo: tipoAlvo.INIMIGOUNICO,
 		uso: function(_alvo) {
@@ -12,8 +12,8 @@ global.itens = {
 	},
 	
 	pedra: {
-		nome: "pedra",
-		descricao: "taca pedra",
+		nome: "Pedra",
+		descricao: "taca pedra NO INIMIGO E EXECUTA\n ELE DE FORMA BRUTAL",
 		spr: spr_pedra,
 		alvo: tipoAlvo.INIMIGOUNICO,
 		uso: function(_alvo) {

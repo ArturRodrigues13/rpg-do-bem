@@ -243,18 +243,23 @@ function ItemMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 		var _x = room_width;
 		var _y = room_height;
 		
-		var _xsqr = 68;
-		var _ysqr = 28;
+		var _xsqr = 83;
+		var _ysqr = 9;
 		var _distx = 0;
 		var _disty = 0;
-		var _size = 45;
-		var _offsetx = 22.5;
-		var _offsety = 12.5;
+		var _size = 40;
+		var _offsetx = 19.5;
+		var _offsety = 4;
 		
 		// 12.5 e 22.6 é o offset matemático, poderia fazer a conta aqui mas ia dar trabalho, chatão
 		
+		draw_set_alpha(.7);
+		draw_set_colour(c_black);
+		draw_rectangle(0,0, _x, _y, false);
+		draw_set_alpha(1);
+		
 		draw_set_colour(c_orange);
-		draw_rectangle(60, 20, _x - 60, _y - 20, false);
+		draw_rectangle(80, 5, _x - 80, _y - 75, false);
 		draw_set_colour(c_white);
 		
 		for(var i = 0; i < 12; i ++) {
@@ -262,6 +267,16 @@ function ItemMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 			if(i == choice_idx) draw_set_colour(c_green);
 			draw_rectangle(_xsqr, _ysqr, _xsqr + _size, _ysqr + _size, true);
 			draw_set_colour(c_white);
+			
+			if(choices[choice_idx] != noone) {
+				
+				draw_set_colour(c_green);
+				draw_rectangle(10, _y - 64, _x - 10, _y - 5, false);
+				draw_set_colour(c_white); 
+				
+				draw_text(15, _y - 60, choices[choice_idx].nome);
+				draw_text(15, _y - 45, choices[choice_idx].descricao);
+			}
 			
 			if(choices[i] != noone) {
 				
@@ -271,7 +286,7 @@ function ItemMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 			_ysqr += _size + _offsety;
 
 			if(i mod 3 == 2) {
-				_ysqr = 28;
+				_ysqr = 9;
 				_xsqr += _size + _offsetx;
 			}
 		}
