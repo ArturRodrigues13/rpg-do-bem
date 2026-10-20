@@ -6,6 +6,7 @@ global.partyAliada = [];
 global.partyInimiga = [];
 global.itemAtual = noone;
 global.inventario = array_create(12, noone);
+global.lastEmptySpace = 0;
 
 global.info = [];
 

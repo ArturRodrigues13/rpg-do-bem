@@ -110,7 +110,9 @@ function ChoiceMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 		} else if (choice_idx == 1) {
 			stack.push(new cl.ItemMenu(stack, cl));
 		} else {	
-			game_end();
+			global.partyAliada = [];
+			global.partyInimiga = [];
+			room_goto(rm_teste);
 		}
 	}
 }
@@ -222,6 +224,8 @@ function AttackTargetMenu(_stack, _cl, _item, _targetType) : Menu(_stack, _cl) c
 			
 			array_insert(global.inventario, global.itemAtual[1], noone);
 			array_delete(global.inventario, global.itemAtual[1] + 1, 1);
+			
+			checkLastEmptySpace();
 		}
 		
 		cl.indice_aliados++;

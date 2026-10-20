@@ -22,13 +22,32 @@ global.itens = {
 	}
 }
 
-function addItem(_item, _index) {
+function addItem(_item) {
 	
-	array_insert(global.inventario, _index,_item);
-	array_delete(global.inventario, _index + 1,1);
+	checkLastEmptySpace();
+	
+	if(global.lastEmptySpace == -1) {
+		show_message("inventário cheio viadinho");
+		return;
+	}
+	
+	array_insert(global.inventario, global.lastEmptySpace,_item);
+	array_delete(global.inventario, global.lastEmptySpace + 1,1);
+	
+	show_debug_message("pegou :)");
 }
 
-addItem(global.itens.pedra,0);
-addItem(global.itens.pedra,1);
-addItem(global.itens.pocaodeVida,2);
-addItem(global.itens.pedra,3);
+function checkLastEmptySpace() {
+
+	for(var i = 0; i < array_length(global.inventario); i++) {
+		
+		if(global.inventario[i] == noone) {
+			global.lastEmptySpace = i;
+			return;
+		}
+	}
+	
+	global.lastEmptySpace = -1;
+	return;
+	
+}

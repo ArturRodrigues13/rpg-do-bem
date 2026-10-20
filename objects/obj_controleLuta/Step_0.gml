@@ -10,5 +10,3 @@ if (turno_atual == Turno.ALIADOS) {
 		checkStatus(global.partyAliada, global.partyInimiga)
 	}
 }
-
-if (array_length(global.partyInimiga) == 0) game_end();
