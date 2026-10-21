@@ -124,9 +124,7 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 	choices = (args.targetType == TargetScope.AllyAll || args.targetType == TargetScope.AllySingle)
 		? global.partyAliada
 		: global.partyInimiga;
-
-	show_debug_message(choices);
-
+	
 	// TODO: fazer funcionar com aliados tbm né...
 	
 	choiceIdx = clamp(_cl.lastAttackIdx, 0, array_length(choices));

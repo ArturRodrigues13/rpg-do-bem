@@ -37,39 +37,31 @@ function setAliados(_arrayAliados) {
 }
 
 function checkStatus(_arrayAliados, _arrayInimigos) {
-	
 	var _status = 0;
 	
-	for(var i = 0; i < array_length(_arrayAliados); i ++) {
-		
-		if(_arrayAliados[i].defs.morto == true) continue;
+	for (var i = 0; i < array_length(_arrayAliados); i ++) {
+		if (_arrayAliados[i].defs.morto == true) continue;
 		
 		_status = _arrayAliados[i].defs.status;
-		if(_status.veneno == true) {
-			
+		if (_status.veneno == true) {
 			Dano(2, _arrayAliados[i], _arrayAliados, i);
 		} 
 		
-		if(_status.queimadura == true) {
-			
+		if (_status.queimadura == true) {
 			Dano(1, _arrayAliados[i], _arrayAliados, i);
 		}
 	}
 	
-	for(var i = 0; i < array_length(_arrayInimigos); i ++) {
-		
-		if(_arrayInimigos[i].defs.morto == true) continue;
+	for (var i = 0; i < array_length(_arrayInimigos); i ++) {
+		if (_arrayInimigos[i].defs.morto == true) continue;
 		
 		_status = _arrayInimigos[i].defs.status;
-		if(_status.veneno == true) {
-			
+		if (_status.veneno == true) {
 			Dano(2, _arrayInimigos[i], _arrayInimigos, i);
 		} 
 		
-		if(_status.queimadura == true) {
-			
+		if (_status.queimadura == true) {
 			Dano(1, _arrayInimigos[i], _arrayInimigos, i);
 		}
-		
 	}
 }

@@ -6,6 +6,6 @@ if (turno_atual == Turno.ALIADOS) {
 } else if (turno_atual == Turno.INIMIGOS) {
 	if (keyboard_check_pressed(global.keys.confirm)) {
 		turno_atual = Turno.ALIADOS; 
-		checkStatus(global.partyAliada, global.partyInimiga)
+		checkStatus(global.partyAliada, global.partyInimiga);
 	}
 }
