@@ -7,13 +7,6 @@ global.inventario = array_create(12, noone);
 global.lastEmptySpace = 0;
 global.enemiesInfo = [];
 
-enum TargetScope {
-	AllySingle,
-	AllyAll,
-	EnemySingle,
-	EnemyAll,
-}
-
 global.keys = {
 	down: vk_down,
 	up: vk_up,
@@ -22,3 +15,22 @@ global.keys = {
 	confirm: vk_enter,
 	back: vk_escape
 }
+
+enum TargetScope {
+	AllySingle,
+	AllyAll,
+	EnemySingle,
+	EnemyAll,
+}
+
+enum TargetAction {
+	ATTACK,
+	ITEM,
+}
+
+enum Turno { 
+	ALIADOS, 
+	INIMIGOS,  
+}
+
+

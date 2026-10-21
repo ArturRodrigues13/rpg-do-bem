@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_globais",
+  "%Name":"scr_globais_enums",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_globais",
+  "name":"scr_globais_enums",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",

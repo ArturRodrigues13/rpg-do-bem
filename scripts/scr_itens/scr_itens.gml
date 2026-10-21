@@ -25,13 +25,11 @@ function addItem(_item) {
 	checkLastEmptySpace();
 	
 	if(global.lastEmptySpace == -1) {
-		show_message("inventário cheio viadinho");
+		show_debug_message("inventário cheio viadinho");
 		return;
 	}
 	
-	array_insert(global.inventario, global.lastEmptySpace,_item);
-	array_delete(global.inventario, global.lastEmptySpace + 1,1);
-	
+	global.inventario[global.lastEmptySpace] = _item;
 	show_debug_message("pegou :)");
 }
 

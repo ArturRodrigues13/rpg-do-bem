@@ -40,7 +40,7 @@
     {"id":{"name":"rm_teste","path":"rooms/rm_teste/rm_teste.yy",},},
     {"id":{"name":"rm_testeLuta","path":"rooms/rm_testeLuta/rm_testeLuta.yy",},},
     {"id":{"name":"scr_combate","path":"scripts/scr_combate/scr_combate.yy",},},
-    {"id":{"name":"scr_globais","path":"scripts/scr_globais/scr_globais.yy",},},
+    {"id":{"name":"scr_globais_enums","path":"scripts/scr_globais_enums/scr_globais_enums.yy",},},
     {"id":{"name":"scr_itens","path":"scripts/scr_itens/scr_itens.yy",},},
     {"id":{"name":"scr_personagens","path":"scripts/scr_personagens/scr_personagens.yy",},},
     {"id":{"name":"scr_vec","path":"scripts/scr_vec/scr_vec.yy",},},

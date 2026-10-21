@@ -1,4 +1,3 @@
-enum Turno { ALIADOS, INIMIGOS }
 turno_atual = Turno.ALIADOS;
 
 mstack = new MenuStack();
@@ -108,11 +107,6 @@ function ChoiceMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 			room_goto(rm_teste);
 		}
 	}
-}
-
-enum TargetAction {
-	ATTACK,
-	ITEM,
 }
 
 function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
@@ -311,6 +305,7 @@ function ItemMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 
 		stack.push(new cl.TargetMenu(stack, cl, {
 			action: TargetAction.ITEM,
+			targetType: choices[choiceIdx].alvo,
 			itemInfo: choices[choiceIdx],
 			itemIdx: choiceIdx,
 		}));
