@@ -1,24 +1,20 @@
 randomise();
 
 // Combate
-
 global.partyAliada = [];
 global.partyInimiga = [];
 global.inventario = array_create(12, noone);
 global.lastEmptySpace = 0;
+global.enemiesInfo = [];
 
-global.info = [];
-
-enum tipoAlvo {
-	
-	ALIADOUNICO,
-	ALIADOS,
-	INIMIGOUNICO,
-	INIMIGOS
+enum TargetScope {
+	AllySingle,
+	AllyAll,
+	EnemySingle,
+	EnemyAll,
 }
 
 global.keys = {
-	
 	down: vk_down,
 	up: vk_up,
 	left: vk_left,

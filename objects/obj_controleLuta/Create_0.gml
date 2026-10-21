@@ -6,7 +6,7 @@ lastAttackIdx = 0;
 allyIdx = 0;
 indice_item = 0;
 
-setInimigos(global.partyInimiga, global.info);
+setInimigos(global.partyInimiga, global.enemiesInfo);
 setAliados(global.partyAliada);
 
 function MenuStack() constructor {
@@ -98,7 +98,7 @@ function ChoiceMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 		if (choiceIdx == 0) {
 			stack.push(new cl.TargetMenu(stack, cl, {
 				action: TargetAction.ATTACK,
-				targetType: tipoAlvo.INIMIGOUNICO,
+				targetType: TargetScope.EnemySingle,
 			}));
 		} else if (choiceIdx == 1) {
 			stack.push(new cl.ItemMenu(stack, cl));
@@ -121,7 +121,7 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 	//   { action: TargetAction.ITEM, itemInfo: <info do item>, itemIdx: int }
 	args = _args;
 	
-	choices = (args.targetType == tipoAlvo.ALIADOS || args.targetType == tipoAlvo.ALIADOUNICO)
+	choices = (args.targetType == TargetScope.AllyAll || args.targetType == TargetScope.AllySingle)
 		? global.partyAliada
 		: global.partyInimiga;
 
@@ -181,7 +181,7 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 	
 	// TODO: tirar essa miséria
 	tryChangeTarget = function(_dir) {
-		var inimigos = global.info;
+		var inimigos = global.enemiesInfo;
 		if (array_length(inimigos) == 0) return;
 		choiceIdx = clamp(choiceIdx, 0, array_length(inimigos) - 1);
 		var posAtual = inimigos[choiceIdx].pos;

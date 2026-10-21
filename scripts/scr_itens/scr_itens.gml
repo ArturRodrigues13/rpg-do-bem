@@ -1,11 +1,9 @@
 global.itens = {
-	
 	pocaodeVida: {
-		
 		nome: "Vida",
 		descricao: "cura (o inimigo, whatever lil bloba)",
 		spr: spr_pocaoVida,
-		alvo: tipoAlvo.INIMIGOUNICO,
+		alvo: TargetScope.EnemySingle,
 		uso: function(_alvo) {
 			_alvo.defs.vida += 20
 		}
@@ -15,7 +13,7 @@ global.itens = {
 		nome: "Pedra",
 		descricao: "taca pedra NO INIMIGO E EXECUTA\nELE DE FORMA BRUTAL",
 		spr: spr_pedra,
-		alvo: tipoAlvo.INIMIGOUNICO,
+		alvo: TargetScope.EnemySingle,
 		uso: function(_alvo) {
 			Dano(10, _alvo, global.partyInimiga, 0);
 		}
