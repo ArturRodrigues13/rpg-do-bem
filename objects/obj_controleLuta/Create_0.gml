@@ -216,7 +216,6 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 				var itemAtual = args.itemInfo;
 				itemAtual.uso(global.partyInimiga[choiceIdx]);
 				global.inventario[args.itemIdx] = noone;
-				checkLastEmptySpace();
 				break;
 			default:
 				show_debug_message("fuck");
@@ -261,14 +260,12 @@ function ItemMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 		
 		for (var i = 0; i < 12; i ++) {
 			
-			var ID = choices[i];
-			
 			if (i == choiceIdx) draw_set_colour(c_green);
 			draw_rectangle(_xsqr, _ysqr, _xsqr + _size, _ysqr + _size, true);
 			draw_set_colour(c_white);
 			
 			if (choices[i] != noone) {
-				draw_sprite(global.itensData[$ ID].spr, 0, _xsqr + _size / 2, _ysqr + _size / 2);
+				draw_sprite(choices[i].spr, 0, _xsqr + _size / 2, _ysqr + _size / 2);
 			}
 			
 			_ysqr += _size + _offsety;
@@ -280,15 +277,13 @@ function ItemMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 		}
 		
 		if (choices[choiceIdx] != noone) {
-				
-			var ID = choices[choiceIdx];
 			
 			draw_set_colour(c_green);
 			draw_rectangle(10, _y - 64, _x - 10, _y - 5, false);
 			draw_set_colour(c_white);
 			
-			draw_text(15, _y - 60, global.itensData[$ ID].nome);
-			draw_text(15, _y - 45, global.itensData[$ ID].descricao);
+			draw_text(15, _y - 60, choices[choiceIdx].nome);
+			draw_text(15, _y - 45, choices[choiceIdx].descricao);
 		}
 	}
 	
@@ -306,14 +301,11 @@ function ItemMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 	}
 
 	onChoice = function() {
-		if (array_length(choices) == 0) return;
-			
-		var ID = choices[choiceIdx];
-
+		
 		stack.push(new cl.TargetMenu(stack, cl, {
 			action: TargetAction.ITEM,
-			targetType: global.itensData[$ ID].alvo,
-			itemInfo: global.itensData[$ ID],
+			targetType: choices[choiceIdx].alvo,
+			itemInfo: choices[choiceIdx],
 			itemIdx: choiceIdx,
 		}));
 	}

@@ -4,15 +4,26 @@ function save(_file){
 	// save 1 e etc.
 	var saveF = "saveFile" + string(_file) + ".sav";
 	
-	var invSave = json_stringify(global.inventario);
-	show_debug_message(invSave);
-	show_debug_message(global.inventario);
+	ini_open(saveF);
 	
-	var textFile = file_text_open_write(saveF);
-	if (textFile != -1) {
-		file_text_write_string(textFile, invSave);
-		file_text_close(textFile);
-	}
+	saveInventory();
+	
+	ini_close();
+	
+}
+
+function saveInventory() {
+	
+	var IDs = array_map(global.inventario, function(_x) {
+		if(_x != noone) return _x.ID;
+			
+			return noone
+		}
+	);
+	
+	var invSave = json_stringify(IDs);
+	
+	ini_write_string("Inventário", "Consumíveis", invSave);
 }
 
 function load(_file) {
@@ -21,26 +32,34 @@ function load(_file) {
 	
 	if (file_exists(saveF)) {
 		
-		var textFile = file_text_open_read(saveF);
-		var invLoad = "";
+		ini_open(saveF);
 		
-		if (textFile != -1) { 
-			invLoad = file_text_read_string(textFile); 
-			file_text_close(textFile);
-		}
+		loadInventory();
 		
-		show_debug_message(invLoad);
-		global.inventario = json_parse(invLoad);
-		show_debug_message(global.inventario);
-		
-		for (var i = 0; i < array_length(global.inventario); i++) {
-			if (global.inventario[i] == -4) {
-				global.inventario[i] = noone;
-			}
-		}
+		ini_close();
 		
 	} else {
 		
 		show_debug_message("Erro do mal sei lá");
+	}
+}
+
+function loadInventory() {
+	
+	var invLoad = ini_read_string("Inventário", "Consumíveis", []);
+	
+	invLoad = json_parse(invLoad);
+	
+	for(var i = 0; i < array_length(invLoad); i++) {
+		
+		if(invLoad[i] != -4) {
+			
+			var item = searchItem(invLoad[i]);
+			
+			global.inventario[i] = item;
+		} else {
+			
+			global.inventario[i] = noone;
+		}
 	}
 }

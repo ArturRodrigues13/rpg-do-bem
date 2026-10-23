@@ -1,5 +1,6 @@
 global.itensData = {
 	pocaodeVida: {
+		ID: 1,
 		nome: "Vida",
 		descricao: "cura (o inimigo, whatever lil bloba)",
 		spr: spr_pocaoVida,
@@ -10,6 +11,7 @@ global.itensData = {
 	},
 	
 	pedra: {
+		ID: 2,
 		nome: "Pedra",
 		descricao: "taca pedra NO INIMIGO E EXECUTA\nELE DE FORMA BRUTAL",
 		spr: spr_pedra,
@@ -18,6 +20,20 @@ global.itensData = {
 			Dano(10, _alvo, global.partyInimiga, 0);
 		}
 	}
+}
+
+function searchItem(_ID) {
+	
+	var keys = variable_struct_get_names(global.itensData);
+	
+	for(var i = 0; i < array_length(keys); i++) {
+		var item = variable_struct_get(global.itensData, keys[i]);
+		
+		if(item.ID == _ID) return item;
+		
+	}
+	
+	return noone;
 }
 
 function addItem(_itemID) {
@@ -29,7 +45,7 @@ function addItem(_itemID) {
 		return;
 	}
 	
-	global.inventario[global.lastEmptySpace] = _itemID;
+	global.inventario[global.lastEmptySpace] = global.itensData[$ _itemID];
 	show_debug_message("pegou :)");
 }
 
