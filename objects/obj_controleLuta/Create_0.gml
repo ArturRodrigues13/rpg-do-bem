@@ -261,21 +261,14 @@ function ItemMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 		
 		for (var i = 0; i < 12; i ++) {
 			
+			var ID = choices[i];
+			
 			if (i == choiceIdx) draw_set_colour(c_green);
 			draw_rectangle(_xsqr, _ysqr, _xsqr + _size, _ysqr + _size, true);
 			draw_set_colour(c_white);
 			
-			if (choices[choiceIdx] != noone) {
-				draw_set_colour(c_green);
-				draw_rectangle(10, _y - 64, _x - 10, _y - 5, false);
-				draw_set_colour(c_white);
-				
-				draw_text(15, _y - 60, choices[choiceIdx].nome);
-				draw_text(15, _y - 45, choices[choiceIdx].descricao);
-			}
-			
 			if (choices[i] != noone) {
-				draw_sprite(choices[i].spr, 0, _xsqr + _size / 2, _ysqr + _size / 2)
+				draw_sprite(global.itensData[$ ID].spr, 0, _xsqr + _size / 2, _ysqr + _size / 2);
 			}
 			
 			_ysqr += _size + _offsety;
@@ -284,6 +277,18 @@ function ItemMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 				_ysqr = 9;
 				_xsqr += _size + _offsetx;
 			}
+		}
+		
+		if (choices[choiceIdx] != noone) {
+				
+			var ID = choices[choiceIdx];
+			
+			draw_set_colour(c_green);
+			draw_rectangle(10, _y - 64, _x - 10, _y - 5, false);
+			draw_set_colour(c_white);
+			
+			draw_text(15, _y - 60, global.itensData[$ ID].nome);
+			draw_text(15, _y - 45, global.itensData[$ ID].descricao);
 		}
 	}
 	
@@ -302,11 +307,13 @@ function ItemMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 
 	onChoice = function() {
 		if (array_length(choices) == 0) return;
+			
+		var ID = choices[choiceIdx];
 
 		stack.push(new cl.TargetMenu(stack, cl, {
 			action: TargetAction.ITEM,
-			targetType: choices[choiceIdx].alvo,
-			itemInfo: choices[choiceIdx],
+			targetType: global.itensData[$ ID].alvo,
+			itemInfo: global.itensData[$ ID],
 			itemIdx: choiceIdx,
 		}));
 	}

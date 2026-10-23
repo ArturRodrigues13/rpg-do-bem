@@ -17,3 +17,17 @@ if (place_meeting(x, y, obj_inimigo) && keyboard_check_pressed(vk_enter)) {
 	global.enemiesInfo = inimigo.infoLuta;
 	room_goto(rm_testeLuta);
 }
+
+// TESTE TESTE TIRAR DEPOIS
+
+if(keyboard_check_pressed(vk_f4)) {
+	
+	save(1);
+}
+
+if(keyboard_check_pressed(vk_f5)) {
+	
+	load(1);
+}
+
+// SEI LÁ CARA, TESTE!!!

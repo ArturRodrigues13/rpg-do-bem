@@ -6,6 +6,7 @@ defs = {
 	defesamagica: 1,
 	chanceCrit: .3,
 	danoCrit: 2.5,
+	velocidade: 1,
 	
 	status: {
 		veneno: false,

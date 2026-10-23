@@ -1,4 +1,4 @@
-global.itens = {
+global.itensData = {
 	pocaodeVida: {
 		nome: "Vida",
 		descricao: "cura (o inimigo, whatever lil bloba)",
@@ -20,7 +20,7 @@ global.itens = {
 	}
 }
 
-function addItem(_item) {
+function addItem(_itemID) {
 	
 	checkLastEmptySpace();
 	
@@ -29,7 +29,7 @@ function addItem(_item) {
 		return;
 	}
 	
-	global.inventario[global.lastEmptySpace] = _item;
+	global.inventario[global.lastEmptySpace] = _itemID;
 	show_debug_message("pegou :)");
 }
 
