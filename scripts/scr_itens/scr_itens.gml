@@ -6,7 +6,7 @@ global.itensData = {
 		spr: spr_pocaoVida,
 		alvo: TargetScope.EnemySingle,
 		uso: function(_alvo) {
-			_alvo.defs.vida += 20
+			_alvo.defs.vida += 20;
 		}
 	},
 	
@@ -23,24 +23,20 @@ global.itensData = {
 }
 
 function searchItem(_ID) {
-	
 	var keys = variable_struct_get_names(global.itensData);
 	
-	for(var i = 0; i < array_length(keys); i++) {
+	for (var i = 0; i < array_length(keys); i++) {
 		var item = variable_struct_get(global.itensData, keys[i]);
-		
-		if(item.ID == _ID) return item;
-		
+		if (item.ID == _ID) return item;
 	}
 	
 	return noone;
 }
 
 function addItem(_itemID) {
-	
 	checkLastEmptySpace();
 	
-	if(global.lastEmptySpace == -1) {
+	if (global.lastEmptySpace == -1) {
 		show_debug_message("inventário cheio viadinho");
 		return;
 	}
@@ -50,10 +46,8 @@ function addItem(_itemID) {
 }
 
 function checkLastEmptySpace() {
-
-	for(var i = 0; i < array_length(global.inventario); i++) {
-		
-		if(global.inventario[i] == noone) {
+	for (var i = 0; i < array_length(global.inventario); i++) {
+		if (global.inventario[i] == noone) {
 			global.lastEmptySpace = i;
 			return;
 		}

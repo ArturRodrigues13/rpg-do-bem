@@ -14,4 +14,8 @@ function Definedefs(_vida, _ataque, _defesa, _chanceCrit, _danoCrit, _acessorios
 	};
 	
 	morto = false;
+	
+	isDown = function() {
+		return vida <= 0;
+	}
 }

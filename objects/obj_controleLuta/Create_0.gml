@@ -114,7 +114,8 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 	//   { action: TargetAction.ATTACK }
 	//   { action: TargetAction.ITEM, itemInfo: <info do item>, itemIdx: int }
 	args = _args;
-	
+
+	ncols = 2;
 	choices = (args.targetType == TargetScope.AllyAll || args.targetType == TargetScope.AllySingle)
 		? global.partyAliada
 		: global.partyInimiga;
@@ -163,53 +164,41 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 		} else if (keyboard_check_pressed(global.keys.confirm)) {
 			onChoice();
 		} else {		
-			var dir = [
+			var _dir = [
 				keyboard_check_pressed(global.keys.right) - keyboard_check_pressed(global.keys.left),
 				keyboard_check_pressed(global.keys.down) - keyboard_check_pressed(global.keys.up),
 			];
-			if (dir != [0, 0]) tryChangeTarget(dir);
+			if (_dir != [0, 0]) changeTarget(_dir);
 		}
 	}
 	
-	// TODO: tirar essa miséria
-	tryChangeTarget = function(_dir) {
-		var inimigos = global.enemiesInfo;
-		if (array_length(inimigos) == 0) return;
-		choiceIdx = clamp(choiceIdx, 0, array_length(inimigos) - 1);
-		var posAtual = inimigos[choiceIdx].pos;
-		var cand = [];
-	
-		for (var i = 0; i < array_length(inimigos); i++) {
-			if (i == choiceIdx) continue;
-		
-			var ii = inimigos[i];
-			var dp = VecDotNormalized(VecSub(ii.pos, posAtual), _dir);
-			if (dp >= 0.25) array_push(cand, { dot: dp, idx: i, pos: ii.pos });
-		}
-		array_sort(cand, function(_a, _b) { return sign(_a.dot - _b.dot); });
-	
-		if (array_length(cand) == 0) return;
-	
-		var maiorDot = array_last(cand).dot;
-		var menorDist = VecDist(posAtual, array_last(cand).pos);
-		var maisProx = array_length(cand) - 1;
-		for (var i = array_length(cand) - 2; i > 0 && cand[i].dot == maiorDot; i--) {
-			var dist = VecDist(posAtual, cand[i].pos);
-			if (dist < menorDist) {
-				menorDist = dist;
-				maisProx = i;
-			}
-		}
-	
-		choiceIdx = cand[maisProx].idx;
+	/// @desc Tenta alterar a escolha com base em um vetor de direção.
+	changeTarget = function(_dir) {
+		var _infos = global.enemiesInfo;
+		if (array_length(_infos) == 0) return;
+
+		var _nrows = ceil(array_length(_infos) / ncols);
+
+		var _x = choiceIdx mod ncols;
+		_x = clamp(_x + _dir[0], 0, ncols - 1);
+
+		var _y = choiceIdx div ncols;
+		_y = clamp(_y + _dir[1], 0, _nrows - 1);
+
+		choiceIdx = clamp(_y * ncols + _x, 0, array_length(_infos) - 1);
 	}
 
 	onChoice = function() {
 		switch (args.action) {
 			case TargetAction.ATTACK:
+				var _target = global.partyInimiga[choiceIdx];
+				if (_target.defs.isDown()) {
+					// TODO: tocar sfx de "escolha invalida" :))
+					return;
+				}
 				cl.lastAttackIdx = choiceIdx;
-				var aliado_atacante = global.partyAliada[cl.allyIdx];
-				Ataque(aliado_atacante, global.partyInimiga, choiceIdx);
+				var _attackingAlly = global.partyAliada[cl.allyIdx];
+				Ataque(_attackingAlly, global.partyInimiga, choiceIdx);
 				choiceIdx = clamp(choiceIdx, 0, array_length(global.partyInimiga));
 				break;
 			case TargetAction.ITEM:
@@ -259,7 +248,6 @@ function ItemMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 		draw_set_colour(c_white);
 		
 		for (var i = 0; i < 12; i ++) {
-			
 			if (i == choiceIdx) draw_set_colour(c_green);
 			draw_rectangle(_xsqr, _ysqr, _xsqr + _size, _ysqr + _size, true);
 			draw_set_colour(c_white);
