@@ -7,6 +7,7 @@ defs = {
 	chanceCrit: .3,
 	danoCrit: 2.5,
 	velocidade: 1,
+	tipoAtaque: TypeDamage.PHYSICAL,
 	
 	status: {
 		veneno: false,

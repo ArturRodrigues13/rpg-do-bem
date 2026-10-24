@@ -201,18 +201,36 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 				}
 				cl.lastAttackIdx = choiceIdx;
 				var _attackingAlly = global.partyAliada[cl.allyIdx];
-				Ataque(_attackingAlly, global.partyInimiga, choiceIdx);
+				Ataque(_attackingAlly, global.partyInimiga[choiceIdx], _attackingAlly.defs.tipoAtaque);
 				choiceIdx = clamp(choiceIdx, 0, array_length(global.partyInimiga));
 				break;
 			case TargetAction.ITEM:
 				var currentItem = args.itemInfo;
 				
+				
+				
 				if(args.targetType == TargetScope.EnemySingle) {
-					currentItem.uso(global.partyInimiga[choiceIdx]);
+					_target = global.partyInimiga[choiceIdx];
+					if (_target.defs.isDown()) {
+						
+						// TODO: tocar sfx de "escolha invalida" :))
+						return;
+					}
+					
+					currentItem.uso(_target);
+					
 				} else if(args.targetType == TargetScope.EnemyAll) {
 					currentItem.uso(global.partyInimiga);
 				} else if(args.targetType == TargetScope.AllySingle) {
-					currentItem.uso(global.partyAliada[choiceIdx]);
+					_target = global.partyAliada[choiceIdx];
+					
+					if (_target.defs.isDown()) {
+						// TODO: tocar sfx de "escolha invalida" :))
+						return;
+					}
+					
+					currentItem.uso(_target);
+					
 				} else {
 					currentItem.uso(global.partyAliada);
 				}

@@ -1,19 +1,13 @@
 function Dano(_value, _alvo, _typeD) {
 	
 	if(_typeD == TypeDamage.PHYSICAL) {
-		
-		var defense = max(0, _alvo.defs.defesa);
-	
-		_value = max (0, _value - defense);
-		
+
+		_value = max (0, _value - _alvo.defs.defesa);
 		_alvo.defs.vida -= _value;
 		
 	} else if (_typeD == TypeDamage.MAGIC) {
 		
-		var defense = max(0, _alvo.defs.defesamagica);
-	
-		_value = max (0, _value - defense);
-		
+		_value = max (0, _value - _alvo.defs.defesamagica);
 		_alvo.defs.vida -= _value;
 		
 	} else {
@@ -32,16 +26,14 @@ function DanoAll(_value, _alvos, _typeD) {
 	}
 }
 
-function Ataque(_player, _Arrayinimigos, _alvo) {
-	var e = _Arrayinimigos[_alvo];
+function Ataque(_player, _alvo, _typeD) {
 	
 	var at_ali = _player.defs;
-	var dano;
-	var mult = random(1) <= at_ali.chanceCrit ? at_ali.danoCrit : 1;
 	
-	dano = at_ali.ataque * mult - e.defs.defesa;
-	dano = max(0, dano);
-	Dano(dano, e, TypeDamage.PHYSICAL);
+	var mult = random(1) <= at_ali.chanceCrit ? at_ali.danoCrit : 1;
+	var dano = _typeD == TypeDamage.PHYSICAL ? at_ali.ataque * mult : at_ali.ataquemagico * mult;
+
+	Dano(dano, _alvo, _typeD);
 }
 
 function setInimigos(_arrayInimigos, _info) {
@@ -56,8 +48,9 @@ function setInimigos(_arrayInimigos, _info) {
 }	
 
 function setAliados(_arrayAliados) {
-	var inst = instance_create_layer(50, 50, "Instances", obj_cavaleiro);
-	array_insert(_arrayAliados, 0, inst);
+	var _inst = instance_create_layer(50, 50, "Instances", obj_cavaleiro);
+	var _inst2 = instance_create_layer(50, 120, "Instances", obj_mago);
+	array_push(_arrayAliados, _inst, _inst2);
 }
 
 function checkStatus(_arrayAliados, _arrayInimigos) {
