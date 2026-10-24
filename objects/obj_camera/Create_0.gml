@@ -1,2 +1,3 @@
-camera_largura = camera_get_view_width(view_camera[0]);
-camera_altura = camera_get_view_height(view_camera[0]);
+cam = view_camera[0];
+camW = camera_get_view_width(cam);
+camH = camera_get_view_height(cam);

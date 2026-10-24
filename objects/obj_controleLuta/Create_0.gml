@@ -3,7 +3,6 @@ turno_atual = Turno.ALIADOS;
 mstack = new MenuStack();
 lastAttackIdx = 0;
 allyIdx = 0;
-indice_item = 0;
 
 setInimigos(global.partyInimiga, global.enemiesInfo);
 setAliados(global.partyAliada);
@@ -70,12 +69,12 @@ function Menu(_stack, _cl) constructor {
 	handleInput = function() {
 		var _gk = global.keys;
 
-		if (keyboard_check_pressed(_gk.up)) choiceIdx--;
-		if (keyboard_check_pressed(_gk.down)) choiceIdx++;
-		choiceIdx = clamp(choiceIdx, 0, array_length (choices) - 1);
+		if (_gk.up.isPressed()) choiceIdx--;
+		if (_gk.down.isPressed()) choiceIdx++;
+		choiceIdx = clamp(choiceIdx, 0, array_length(choices) - 1);
 		
-		if (keyboard_check_pressed(_gk.confirm)) onChoice();
-		if (keyboard_check_pressed(_gk.back)) stack.pop();
+		if (_gk.confirm.isPressed()) onChoice();
+		if (_gk.back.isPressed()) stack.pop();
 	}
 	
 	onChoice = function() {
@@ -159,14 +158,16 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 	}
 	
 	handleInput = function() {
-		if (keyboard_check_pressed(global.keys.back)) {
+		var _gk = global.keys;
+
+		if (_gk.back.isPressed()) {
 			stack.pop();
-		} else if (keyboard_check_pressed(global.keys.confirm)) {
+		} else if (_gk.confirm.isPressed()) {
 			onChoice();
 		} else {		
 			var _dir = [
-				keyboard_check_pressed(global.keys.right) - keyboard_check_pressed(global.keys.left),
-				keyboard_check_pressed(global.keys.down) - keyboard_check_pressed(global.keys.up),
+				_gk.right.isPressed() - _gk.left.isPressed(),
+				_gk.down.isPressed() - _gk.up.isPressed(),
 			];
 			if (_dir != [0, 0]) changeTarget(_dir);
 		}
@@ -265,7 +266,6 @@ function ItemMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 		}
 		
 		if (choices[choiceIdx] != noone) {
-			
 			draw_set_colour(c_green);
 			draw_rectangle(10, _y - 64, _x - 10, _y - 5, false);
 			draw_set_colour(c_white);
@@ -278,18 +278,17 @@ function ItemMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 	handleInput = function() {
 		var _gk = global.keys;
 
-		if (keyboard_check_pressed(_gk.up) && choiceIdx mod 3 != 0) choiceIdx--;
-		if (keyboard_check_pressed(_gk.down) && choiceIdx mod 3 != 2) choiceIdx++;
-		if (keyboard_check_pressed(_gk.left) && choiceIdx > 2) choiceIdx -= 3;
-		if (keyboard_check_pressed(_gk.right) && choiceIdx < 9) choiceIdx += 3;	
+		if (_gk.up.isPressed() && choiceIdx mod 3 != 0) choiceIdx--;
+		if (_gk.down.isPressed() && choiceIdx mod 3 != 2) choiceIdx++;
+		if (_gk.left.isPressed() && choiceIdx > 2) choiceIdx -= 3;
+		if (_gk.right.isPressed() && choiceIdx < 9) choiceIdx += 3;	
 		choiceIdx = clamp(choiceIdx, 0, 11);
 		
-		if (keyboard_check_pressed(_gk.confirm) && choices[choiceIdx] != noone) onChoice();
-		if (keyboard_check_pressed(_gk.back)) stack.pop();
+		if (_gk.confirm.isPressed() && choices[choiceIdx] != noone) onChoice();
+		if (_gk.back.isPressed()) stack.pop();
 	}
 
 	onChoice = function() {
-		
 		stack.push(new cl.TargetMenu(stack, cl, {
 			action: TargetAction.ITEM,
 			targetType: choices[choiceIdx].alvo,

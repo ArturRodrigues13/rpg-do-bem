@@ -1,18 +1,16 @@
-var dir_h, dir_v, left, right, up, down;
+var _gk = global.keys;
 
-right = keyboard_check(vk_right);
-left = keyboard_check(vk_left);
-up = keyboard_check(vk_up);
-down = keyboard_check(vk_down);
+var _dir = [
+	_gk.right.isHeld() - _gk.left.isHeld(),
+	_gk.down.isHeld() - _gk.up.isHeld(),
+];
+_dir = VecNormScale(_dir, vel);
 
-dir_h = (right - left);
-dir_v = (down - up);
+x += _dir[0];
+y += _dir[1];
 
-x += dir_h * vel;
-
-y += dir_v * vel
-
-if (place_meeting(x, y, obj_inimigo) && keyboard_check_pressed(vk_enter)) {
+show_debug_message(_gk.confirm.isPressed());
+if (_gk.confirm.isPressed() && place_meeting(x, y, obj_inimigo)) {
 	var inimigo = instance_nearest(x, y, obj_inimigo);
 	global.enemiesInfo = inimigo.infoLuta;
 	room_goto(rm_testeLuta);
@@ -20,14 +18,12 @@ if (place_meeting(x, y, obj_inimigo) && keyboard_check_pressed(vk_enter)) {
 
 // TESTE TESTE TIRAR DEPOIS
 
-if(keyboard_check_pressed(vk_f4)) {
-	
+if (keyboard_check_pressed(vk_f4)) {
 	save(1);
 }
 
-if(keyboard_check_pressed(vk_f5)) {
-	
+if (keyboard_check_pressed(vk_f5)) {
 	load(1);
 }
 
-// SEI LÁ CARA, TESTE!!!
+// SEI LA CARA, TESTE!!!

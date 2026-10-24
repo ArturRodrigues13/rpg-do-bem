@@ -1,3 +1,8 @@
+function VecNormScale(_v, _factor) {
+	var _len = sqrt(sqr(_v[0]) + sqr(_v[1]));
+	return (_len == 0) ? [0, 0] : [_v[0] * _factor / _len, _v[1] * _factor / _len];
+}
+
 function VecDotNormalized(_v1, _v2) {
 	return dot_product_normalised(_v1[0], _v1[1], _v2[0], _v2[1]);
 }
