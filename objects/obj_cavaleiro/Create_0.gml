@@ -23,5 +23,7 @@ defs = {
 		vestimenta: noone,
 	},
 	
-	morto: false,
+	isDown: function() {
+		return vida <= 0;
+	}
 };

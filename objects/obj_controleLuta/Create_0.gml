@@ -175,7 +175,9 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 	
 	/// @desc Tenta alterar a escolha com base em um vetor de direção.
 	changeTarget = function(_dir) {
-		var _infos = global.enemiesInfo;
+		var _infos = (args.targetType == TargetScope.AllyAll || args.targetType == TargetScope.AllySingle)
+		? global.partyAliada
+		: global.partyInimiga;
 		if (array_length(_infos) == 0) return;
 
 		var _nrows = ceil(array_length(_infos) / ncols);
@@ -203,8 +205,18 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 				choiceIdx = clamp(choiceIdx, 0, array_length(global.partyInimiga));
 				break;
 			case TargetAction.ITEM:
-				var itemAtual = args.itemInfo;
-				itemAtual.uso(global.partyInimiga[choiceIdx]);
+				var currentItem = args.itemInfo;
+				
+				if(args.targetType == TargetScope.EnemySingle) {
+					currentItem.uso(global.partyInimiga[choiceIdx]);
+				} else if(args.targetType == TargetScope.EnemyAll) {
+					currentItem.uso(global.partyInimiga);
+				} else if(args.targetType == TargetScope.AllySingle) {
+					currentItem.uso(global.partyAliada[choiceIdx]);
+				} else {
+					currentItem.uso(global.partyAliada);
+				}
+				
 				global.inventario[args.itemIdx] = noone;
 				break;
 			default:

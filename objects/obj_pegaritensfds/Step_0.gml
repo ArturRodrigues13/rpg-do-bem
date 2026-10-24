@@ -11,6 +11,10 @@ switch (item) {
 		sprite_index = spr_pedra;
 		break;
 	
+	case "boladeFogo":
+		
+		sprite_index = spr_bolaFogo;
+		break;
 	
 	default:
 		

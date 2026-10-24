@@ -1,10 +1,34 @@
-function Dano(_value, _alvo, _array, _index) {
-	_alvo.defs.vida -= _value;
+function Dano(_value, _alvo, _typeD) {
 	
-	if (_alvo.defs.vida <= 0) {
-		_alvo.defs.morto = true;
-		_alvo.sprite_index = _alvo.deathSprite;
-		_alvo.image_index = 0;
+	if(_typeD == TypeDamage.PHYSICAL) {
+		
+		var defense = max(0, _alvo.defs.defesa);
+	
+		_value = max (0, _value - defense);
+		
+		_alvo.defs.vida -= _value;
+		
+	} else if (_typeD == TypeDamage.MAGIC) {
+		
+		var defense = max(0, _alvo.defs.defesamagica);
+	
+		_value = max (0, _value - defense);
+		
+		_alvo.defs.vida -= _value;
+		
+	} else {
+		
+		_alvo.defs.vida -= _value;
+	}
+	
+	checkDeath(_alvo);
+}
+
+function DanoAll(_value, _alvos, _typeD) {
+	
+	for (var i = 0; i < array_length(_alvos); i++) {
+		
+		if(_alvos[i].defs.isDown() == false) Dano(_value, _alvos[i], _typeD);
 	}
 }
 
@@ -17,7 +41,7 @@ function Ataque(_player, _Arrayinimigos, _alvo) {
 	
 	dano = at_ali.ataque * mult - e.defs.defesa;
 	dano = max(0, dano);
-	Dano(dano, e, _Arrayinimigos, _alvo);
+	Dano(dano, e, TypeDamage.PHYSICAL);
 }
 
 function setInimigos(_arrayInimigos, _info) {
@@ -40,28 +64,36 @@ function checkStatus(_arrayAliados, _arrayInimigos) {
 	var _status = 0;
 	
 	for (var i = 0; i < array_length(_arrayAliados); i ++) {
-		if (_arrayAliados[i].defs.morto == true) continue;
+		if (_arrayAliados[i].defs.isDown()) continue;
 		
 		_status = _arrayAliados[i].defs.status;
 		if (_status.veneno == true) {
-			Dano(2, _arrayAliados[i], _arrayAliados, i);
+			Dano(2, _arrayAliados[i], TypeDamage.TRUE);
 		} 
 		
 		if (_status.queimadura == true) {
-			Dano(1, _arrayAliados[i], _arrayAliados, i);
+			Dano(1, _arrayAliados[i], TypeDamage.TRUE);
 		}
 	}
 	
 	for (var i = 0; i < array_length(_arrayInimigos); i ++) {
-		if (_arrayInimigos[i].defs.morto == true) continue;
+		if (_arrayInimigos[i].defs.isDown() == true) continue;
 		
 		_status = _arrayInimigos[i].defs.status;
 		if (_status.veneno == true) {
-			Dano(2, _arrayInimigos[i], _arrayInimigos, i);
+			Dano(2, _arrayInimigos[i], TypeDamage.TRUE);
 		} 
 		
 		if (_status.queimadura == true) {
-			Dano(1, _arrayInimigos[i], _arrayInimigos, i);
+			Dano(1, _arrayInimigos[i], TypeDamage.TRUE);
 		}
+	}
+}
+
+function checkDeath(_inst) {
+	
+	if (_inst.defs.vida <= 0) {
+		_inst.sprite_index = _inst.deathSprite;
+		_inst.image_index = 0;
 	}
 }

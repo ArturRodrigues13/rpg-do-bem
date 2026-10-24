@@ -13,8 +13,6 @@ function Definedefs(_vida, _ataque, _defesa, _chanceCrit, _danoCrit, _acessorios
 		forte: false
 	};
 	
-	morto = false;
-	
 	isDown = function() {
 		return vida <= 0;
 	}
