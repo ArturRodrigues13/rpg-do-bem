@@ -1,4 +1,4 @@
-turno_atual = Turno.ALIADOS;
+turnoAtual = Turno.ALIADOS;
 
 mstack = new MenuStack();
 lastAttackIdx = 0;
@@ -114,14 +114,18 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 	//   { action: TargetAction.ITEM, itemInfo: <info do item>, itemIdx: int }
 	args = _args;
 	
-	var _isAlly = (args.targetType == TargetScope.AllyAll || args.targetType == TargetScope.AllySingle);
+	isSingleTarget = (args.targetType == TargetScope.EnemySingle || args.targetType == TargetScope.AllySingle);
+	isAllyTarget = (args.targetType == TargetScope.AllyAll || args.targetType == TargetScope.AllySingle);
 
-	ncols = _isAlly ? 1 : 2;
-	choices = _isAlly ? global.partyAliada : global.partyInimiga;
-	
+	ncols = isAllyTarget ? 1 : 2;
+	choices = isAllyTarget ? global.partyAliada : global.partyInimiga;
 	choiceIdx = clamp(_cl.lastAttackIdx, 0, array_length(choices));
 	
+	// @desc Calcula a posição de destino para um target.
 	getTargetPos = function() {
+		// essa função nem faz sentido para multi-target
+		if (!isSingleTarget) return arrowTargetPos;
+		
 		if (choiceIdx < 0 || choiceIdx >= array_length(choices))
 			return arrowTargetPos;
 		
@@ -129,6 +133,7 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 		return [e.x - 20, e.y];
 	}
 	
+	arrowTargetPos = [0, 0]; // para evitar problemas caso for lido enquanto chama `getTargetPos`
 	arrowTargetPos = getTargetPos();
 	arrowPos = arrowTargetPos;
 	
@@ -151,8 +156,27 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 			var e = inimigos[i];
 			draw_text(e.x - 30, e.y, $"Vida: {e.defs.vida}");
 		}
-
-		draw_sprite(spr_setinha, 0, arrowPos[0], arrowPos[1]);
+		
+		switch (args.targetType) {
+			case TargetScope.AllySingle:
+			case TargetScope.EnemySingle:
+				draw_sprite(spr_setinha, 0, arrowPos[0], arrowPos[1]);
+				break;
+				
+			case TargetScope.AllyAll:
+				for (var i = 0; i < array_length(aliados); i++) {
+					var _o = aliados[i];
+					draw_sprite(spr_setinha, 0, _o.x - 20, _o.y);
+				}
+				break;
+				
+			case TargetScope.EnemyAll:
+				for (var i = 0; i < array_length(inimigos); i++) {
+					var _o = inimigos[i];
+					draw_sprite(spr_setinha, 0, _o.x - 20, _o.y);
+				}
+				break;
+		}
 	}
 	
 	handleInput = function() {
@@ -206,25 +230,19 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 				if (args.targetType == TargetScope.EnemySingle) {
 					_target = global.partyInimiga[choiceIdx];
 					if (_target.defs.isDown()) {
-						
 						// TODO: tocar sfx de "escolha invalida" :))
 						return;
 					}
-					
 					_currentItem.uso(_target);
-					
 				} else if(args.targetType == TargetScope.EnemyAll) {
 					_currentItem.uso(global.partyInimiga);
 				} else if(args.targetType == TargetScope.AllySingle) {
 					_target = global.partyAliada[choiceIdx];
-					
 					if (_target.defs.isDown()) {
 						// TODO: tocar sfx de "escolha invalida" :))
 						return;
 					}
-					
 					_currentItem.uso(_target);
-					
 				} else {
 					currentItem.uso(global.partyAliada);
 				}
@@ -239,7 +257,7 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 
 		if (cl.allyIdx == array_length(global.partyAliada)) {
 			cl.allyIdx = 0;
-			cl.turno_atual = Turno.INIMIGOS;
+			cl.turnoAtual = Turno.INIMIGOS;
 		}
 
 		stack.confirmAndPop(noone);
