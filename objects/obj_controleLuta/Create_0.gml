@@ -113,13 +113,11 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 	//   { action: TargetAction.ATTACK }
 	//   { action: TargetAction.ITEM, itemInfo: <info do item>, itemIdx: int }
 	args = _args;
-
-	ncols = 2;
-	choices = (args.targetType == TargetScope.AllyAll || args.targetType == TargetScope.AllySingle)
-		? global.partyAliada
-		: global.partyInimiga;
 	
-	// TODO: fazer funcionar com aliados tbm né...
+	var _isAlly = (args.targetType == TargetScope.AllyAll || args.targetType == TargetScope.AllySingle);
+
+	ncols = _isAlly ? 1 : 2;
+	choices = _isAlly ? global.partyAliada : global.partyInimiga;
 	
 	choiceIdx = clamp(_cl.lastAttackIdx, 0, array_length(choices));
 	
@@ -175,9 +173,7 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 	
 	/// @desc Tenta alterar a escolha com base em um vetor de direção.
 	changeTarget = function(_dir) {
-		var _infos = (args.targetType == TargetScope.AllyAll || args.targetType == TargetScope.AllySingle)
-		? global.partyAliada
-		: global.partyInimiga;
+		var _infos = choices;
 		if (array_length(_infos) == 0) return;
 
 		var _nrows = ceil(array_length(_infos) / ncols);
