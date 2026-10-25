@@ -205,11 +205,9 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 				choiceIdx = clamp(choiceIdx, 0, array_length(global.partyInimiga));
 				break;
 			case TargetAction.ITEM:
-				var currentItem = args.itemInfo;
+				var _currentItem = args.itemInfo;
 				
-				
-				
-				if(args.targetType == TargetScope.EnemySingle) {
+				if (args.targetType == TargetScope.EnemySingle) {
 					_target = global.partyInimiga[choiceIdx];
 					if (_target.defs.isDown()) {
 						
@@ -217,10 +215,10 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 						return;
 					}
 					
-					currentItem.uso(_target);
+					_currentItem.uso(_target);
 					
 				} else if(args.targetType == TargetScope.EnemyAll) {
-					currentItem.uso(global.partyInimiga);
+					_currentItem.uso(global.partyInimiga);
 				} else if(args.targetType == TargetScope.AllySingle) {
 					_target = global.partyAliada[choiceIdx];
 					
@@ -229,7 +227,7 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 						return;
 					}
 					
-					currentItem.uso(_target);
+					_currentItem.uso(_target);
 					
 				} else {
 					currentItem.uso(global.partyAliada);

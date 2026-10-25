@@ -1,17 +1,11 @@
 function Dano(_value, _alvo, _typeD) {
-	
 	if(_typeD == TypeDamage.PHYSICAL) {
-
-		_value = max (0, _value - _alvo.defs.defesa);
+		_value = max(0, _value - _alvo.defs.defesa);
 		_alvo.defs.vida -= _value;
-		
 	} else if (_typeD == TypeDamage.MAGIC) {
-		
-		_value = max (0, _value - _alvo.defs.defesamagica);
+		_value = max(0, _value - _alvo.defs.defesamagica);
 		_alvo.defs.vida -= _value;
-		
 	} else {
-		
 		_alvo.defs.vida -= _value;
 	}
 	
@@ -19,21 +13,16 @@ function Dano(_value, _alvo, _typeD) {
 }
 
 function DanoAll(_value, _alvos, _typeD) {
-	
 	for (var i = 0; i < array_length(_alvos); i++) {
-		
-		if(_alvos[i].defs.isDown() == false) Dano(_value, _alvos[i], _typeD);
+		if (!_alvos[i].defs.isDown()) Dano(_value, _alvos[i], _typeD);
 	}
 }
 
 function Ataque(_player, _alvo, _typeD) {
-	
-	var at_ali = _player.defs;
-	
-	var mult = random(1) <= at_ali.chanceCrit ? at_ali.danoCrit : 1;
-	var dano = _typeD == TypeDamage.PHYSICAL ? at_ali.ataque * mult : at_ali.ataquemagico * mult;
-
-	Dano(dano, _alvo, _typeD);
+	var _atAli = _player.defs;
+	var _mult = (random(1) <= _atAli.chanceCrit) ? _atAli.danoCrit : 1;
+	var _dano = (_typeD == TypeDamage.PHYSICAL) ? _atAli.ataque * _mult : _atAli.ataquemagico * _mult;
+	Dano(_dano, _alvo, _typeD);
 }
 
 function setInimigos(_arrayInimigos, _info) {
