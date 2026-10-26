@@ -2,7 +2,7 @@ global.itensData = {
 	pocaodeVida: {
 		ID: 1,
 		nome: "Vida",
-		descricao: "cura (o inimigo, whatever lil bloba)",
+		descricao: "cura (o amigo, forever big cloba)",
 		spr: spr_pocaoVida,
 		alvo: TargetScope.AllySingle,
 		uso: function(_alvo) {

@@ -9,7 +9,6 @@ _dir = VecNormScale(_dir, vel);
 x += _dir[0];
 y += _dir[1];
 
-show_debug_message(_gk.confirm.isPressed());
 if (_gk.confirm.isPressed() && place_meeting(x, y, obj_inimigo)) {
 	var inimigo = instance_nearest(x, y, obj_inimigo);
 	global.enemiesInfo = inimigo.infoLuta;

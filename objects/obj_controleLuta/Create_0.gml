@@ -104,7 +104,8 @@ function ChoiceMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 			}));
 		} else if (choiceIdx == 1) {
 			stack.push(new cl.ItemMenu(stack, cl));
-		} else {	
+		} else {
+			// TODO: fazer um mecanismo p/ voltar para a sala anterior à batalha
 			global.partyAliada = [];
 			global.partyInimiga = [];
 			room_goto(rm_teste);
@@ -270,10 +271,12 @@ function TargetMenu(_stack, _cl, _args) : Menu(_stack, _cl) constructor {
 
 function ItemMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 	choices = global.inventario;
+	ncols = 4;
+	nlins = ceil(array_length(choices) / ncols);
 	
 	onDraw = function() {
-		var _x = room_width;
-		var _y = room_height;
+		var _rw = room_width;
+		var _rh = room_height;
 		
 		var _xsqr = 83;
 		var _ysqr = 9;
@@ -281,54 +284,57 @@ function ItemMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 		var _disty = 0;
 		var _size = 40;
 		
-		// offset matemático, poderia fazer a conta aqui mas ia dar trabalho, chatão
-		var _offsetx = 19.5;
-		var _offsety = 4;
+		var _marginX = 19.5;
+		var _marginY = 4;
 		
 		draw_set_alpha(.7);
 		draw_set_colour(c_black);
-		draw_rectangle(0,0, _x, _y, false);
+		draw_rectangle(0, 0, _rw, _rh, false);
 		draw_set_alpha(1);
 		
 		draw_set_colour(c_orange);
-		draw_rectangle(80, 5, _x - 80, _y - 75, false);
+		draw_rectangle(80, 5, _rw - 80, _rh - 75, false);
 		draw_set_colour(c_white);
 		
-		for (var i = 0; i < 12; i ++) {
-			if (i == choiceIdx) draw_set_colour(c_green);
-			draw_rectangle(_xsqr, _ysqr, _xsqr + _size, _ysqr + _size, true);
-			draw_set_colour(c_white);
+		var _originX = 83;
+		var _originY = 9;
+		var _offX = _marginX + _size;
+		var _offY = _marginY + _size;
+		
+		for (var _i = 0; _i < 12; _i++) {
+			var _ix = _i mod ncols;
+			var _iy = _i div ncols;
 			
-			if (choices[i] != noone) {
-				draw_sprite(choices[i].spr, 0, _xsqr + _size / 2, _ysqr + _size / 2);
-			}
+			var _leftX = _originX + _ix * _offX;
+			var _topY = _originY + _iy * _offY;
 			
-			_ysqr += _size + _offsety;
-
-			if (i mod 3 == 2) {
-				_ysqr = 9;
-				_xsqr += _size + _offsetx;
+			draw_set_colour((_i == choiceIdx) ? c_green : c_white);
+			draw_rectangle(_leftX, _topY, _leftX + _size, _topY + _size, true);
+			
+			if (choices[_i] != noone) {
+				draw_sprite(choices[_i].spr, 0, _leftX + _size / 2, _topY + _size / 2);
 			}
 		}
 		
 		if (choices[choiceIdx] != noone) {
 			draw_set_colour(c_green);
-			draw_rectangle(10, _y - 64, _x - 10, _y - 5, false);
+			draw_rectangle(10, _rh - 64, _rw - 10, _rh - 5, false);
 			draw_set_colour(c_white);
 			
-			draw_text(15, _y - 60, choices[choiceIdx].nome);
-			draw_text(15, _y - 45, choices[choiceIdx].descricao);
+			draw_text(15, _rh - 60, choices[choiceIdx].nome);
+			draw_text(15, _rh - 45, choices[choiceIdx].descricao);
 		}
 	}
 	
 	handleInput = function() {
 		var _gk = global.keys;
-
-		if (_gk.up.isPressed() && choiceIdx mod 3 != 0) choiceIdx--;
-		if (_gk.down.isPressed() && choiceIdx mod 3 != 2) choiceIdx++;
-		if (_gk.left.isPressed() && choiceIdx > 2) choiceIdx -= 3;
-		if (_gk.right.isPressed() && choiceIdx < 9) choiceIdx += 3;	
-		choiceIdx = clamp(choiceIdx, 0, 11);
+		var _dimX = 4;
+		var _dimY = 3;
+		var _dirX = _gk.right.isPressed() - _gk.left.isPressed();
+		var _dirY = _gk.down.isPressed() - _gk.up.isPressed();
+		var _x = clamp((choiceIdx mod _dimX) + _dirX, 0, _dimX - 1);
+		var _y = clamp((choiceIdx div _dimX) + _dirY, 0, _dimY - 1);
+		choiceIdx = _y * _dimX + _x;
 		
 		if (_gk.confirm.isPressed() && choices[choiceIdx] != noone) onChoice();
 		if (_gk.back.isPressed()) stack.pop();
