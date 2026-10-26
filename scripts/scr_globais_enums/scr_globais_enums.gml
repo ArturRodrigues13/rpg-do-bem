@@ -7,7 +7,6 @@ global.inventario = array_create(12, noone);
 global.lastEmptySpace = 0;
 global.enemiesInfo = [];
 
-
 function KeyHandler(_keys) constructor {
 	keys = _keys;
 

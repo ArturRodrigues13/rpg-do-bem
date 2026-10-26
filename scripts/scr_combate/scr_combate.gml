@@ -1,13 +1,10 @@
 function Dano(_value, _alvo, _typeD) {
-	if(_typeD == TypeDamage.PHYSICAL) {
+	if (_typeD == TypeDamage.PHYSICAL) {
 		_value = max(0, _value - _alvo.defs.defesa);
-		_alvo.defs.vida -= _value;
 	} else if (_typeD == TypeDamage.MAGIC) {
 		_value = max(0, _value - _alvo.defs.defesamagica);
-		_alvo.defs.vida -= _value;
-	} else {
-		_alvo.defs.vida -= _value;
 	}
+	_alvo.defs.vida -= _value;
 	
 	checkDeath(_alvo);
 }
@@ -25,21 +22,58 @@ function Ataque(_player, _alvo, _typeD) {
 	Dano(_dano, _alvo, _typeD);
 }
 
-function setInimigos(_arrayInimigos, _info) {
-	var origX = 260;
-	var origY = 85;
-		
-	for (var i = 0; i < array_length(_info); i++) {
-		var ii = _info[i];
-		var inst = instance_create_layer(origX + ii.pos[0], origY + ii.pos[1], "Instances", ii.obj);
-		array_insert(_arrayInimigos, i, inst);
-	}
-}	
+global.allyData = {
+	knight0: {
+		obj: obj_cavaleiro,
+	},
+	mage0: {
+		obj: obj_mago,
+	},
+};
 
-function setAliados(_arrayAliados) {
-	var _inst = instance_create_layer(50, 50, "Instances", obj_cavaleiro);
-	var _inst2 = instance_create_layer(50, 120, "Instances", obj_mago);
-	array_push(_arrayAliados, _inst, _inst2);
+function Battle(_args) constructor {
+	args = _args;
+
+	// TODO: (talvez) parar de usar várias variáveis globais (e.g. `global.partyInimiga`) aqui e centralizar tudo em `global.battle`.
+	// TODO: dá pra refatorar initEnemies e initAllies, eles tem código comum (e acho que seria bom por aqui já definir as dimensões do array)
+
+	// @desc Instancia os aliados na batalha e os coloca em um array.
+	initAllies = function() {
+		var _ret = [];
+		var _arr = args.allyNames;
+		var _x = 50;
+		var _y = 50;
+
+		for (var _i = 0; _i < array_length(_arr); _i++) {
+			var _a = global.allyData[$ _arr[_i]];
+			var _inst = instance_create_layer(_x, _y, "Instances", _a.obj);
+			_y += 70;
+			array_push(_ret, _inst);
+		}
+
+		return _ret;
+	}
+	allies = initAllies();
+	global.partyAliada = allies;
+
+	initEnemies = function() {
+		var _ret = [];
+		var _ei = global.enemiesInfo; // FIXME: omds não acessar isso direto
+		var _x = 200;
+		var _y = 25;
+
+		for (var _i = 0; _i < array_length(_ei); _i++) {
+			var _obj = _ei[_i].obj;
+			var _row = _i div 2;
+			var _col = _i mod 2;
+			var _inst = instance_create_layer(_x + _col * 120, _y + _row * 60, "Instances", _obj);
+			array_push(_ret, _inst);
+		}
+
+		return _ret;
+	}
+	enemies = initEnemies();
+	global.partyInimiga = enemies;
 }
 
 function checkStatus(_arrayAliados, _arrayInimigos) {
@@ -49,31 +83,30 @@ function checkStatus(_arrayAliados, _arrayInimigos) {
 		if (_arrayAliados[i].defs.isDown()) continue;
 		
 		_status = _arrayAliados[i].defs.status;
-		if (_status.veneno == true) {
+		if (_status.veneno) {
 			Dano(2, _arrayAliados[i], TypeDamage.TRUE);
-		} 
+		}
 		
-		if (_status.queimadura == true) {
+		if (_status.queimadura) {
 			Dano(1, _arrayAliados[i], TypeDamage.TRUE);
 		}
 	}
 	
 	for (var i = 0; i < array_length(_arrayInimigos); i ++) {
-		if (_arrayInimigos[i].defs.isDown() == true) continue;
+		if (_arrayInimigos[i].defs.isDown()) continue;
 		
 		_status = _arrayInimigos[i].defs.status;
-		if (_status.veneno == true) {
+		if (_status.veneno) {
 			Dano(2, _arrayInimigos[i], TypeDamage.TRUE);
-		} 
+		}
 		
-		if (_status.queimadura == true) {
+		if (_status.queimadura) {
 			Dano(1, _arrayInimigos[i], TypeDamage.TRUE);
 		}
 	}
 }
 
 function checkDeath(_inst) {
-	
 	if (_inst.defs.vida <= 0) {
 		_inst.sprite_index = _inst.deathSprite;
 		_inst.image_index = 0;

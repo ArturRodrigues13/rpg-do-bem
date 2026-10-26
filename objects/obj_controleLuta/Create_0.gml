@@ -4,8 +4,10 @@ mstack = new MenuStack();
 lastAttackIdx = 0;
 allyIdx = 0;
 
-setInimigos(global.partyInimiga, global.enemiesInfo);
-setAliados(global.partyAliada);
+global.battle = new Battle({
+	allyNames: ["knight0", "mage0"], // TODO: salvar em algum lugar quais são os aliados atuais
+});
+battle = global.battle; // TODO: dá pra botar na mesma linha do anterior?
 
 function MenuStack() constructor {
 	stack = [];
@@ -43,6 +45,7 @@ function Menu(_stack, _cl) constructor {
 	cl = _cl;
 	choices = [];
 	choiceIdx = 0;
+	allowBack = true;
 	
 	onStep = function() {
 		handleInput();
@@ -74,7 +77,7 @@ function Menu(_stack, _cl) constructor {
 		choiceIdx = clamp(choiceIdx, 0, array_length(choices) - 1);
 		
 		if (_gk.confirm.isPressed()) onChoice();
-		if (_gk.back.isPressed()) stack.pop();
+		if (_gk.back.isPressed() && allowBack) stack.pop();
 	}
 	
 	onChoice = function() {
@@ -91,6 +94,7 @@ function Menu(_stack, _cl) constructor {
 
 function ChoiceMenu(_stack, _cl) : Menu(_stack, _cl) constructor {
 	choices = ["ATACAR", "ITEM", "FUGIR"];
+	allowBack = false;
 	
 	onChoice = function() {
 		if (choiceIdx == 0) {
