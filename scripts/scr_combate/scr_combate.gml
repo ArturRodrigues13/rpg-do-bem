@@ -33,6 +33,8 @@ global.allyData = {
 
 function Battle(_args) constructor {
 	args = _args;
+	turnoAtual = Turno.ALIADOS;
+	allyIdx = 0;
 
 	// TODO: (talvez) parar de usar várias variáveis globais (e.g. `global.partyInimiga`) aqui e centralizar tudo em `global.battle`.
 	// TODO: dá pra refatorar initEnemies e initAllies, eles tem código comum (e acho que seria bom por aqui já definir as dimensões do array)

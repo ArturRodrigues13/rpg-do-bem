@@ -2,4 +2,8 @@ if (!mstack.isEmpty()) {
 	mstack.peek().onDraw();
 }
 
-draw_text(room_width / 2, 50, (turnoAtual == Turno.ALIADOS) ? "TURNO ALIADO" : "TURNO INIMIGO");
+var _msg = "???";
+if (global.battle != noone) {
+	_msg = (global.battle.turnoAtual == Turno.ALIADOS) ? "TURNO ALIADO" : "TURNO INIMIGO";
+}
+draw_text(room_width / 2, 50, _msg);
