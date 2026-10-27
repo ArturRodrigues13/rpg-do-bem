@@ -7,7 +7,7 @@ defs = {
 	chanceCrit: .1,
 	danoCrit: 2,
 	velocidade: 2,
-	tipoAtaque: TypeDamage.MAGIC,
+	tipoAtaque: DamageType.MAGIC,
 	
 	status: {
 		veneno: false,
@@ -19,9 +19,9 @@ defs = {
 	acessorios: [],
 	equipamento: {
 		
-		arma: noone,
-		amuleto: noone,
-		vestimenta: noone,
+		arma: undefined,
+		amuleto: undefined,
+		vestimenta: undefined,
 	},
 	
 	isDown: function() {

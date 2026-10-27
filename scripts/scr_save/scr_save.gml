@@ -4,26 +4,19 @@ function save(_file){
 	// save 1 e etc.
 	var saveF = "saveFile" + string(_file) + ".sav";
 	
-	ini_open(saveF);
+	var _fd = file_text_open_write(saveF);
 	
-	saveInventory();
+	saveAll(_fd);
 	
-	ini_close();
+	file_text_close(_fd);
 	
 }
 
-function saveInventory() {
+function saveAll(_fd) {
 	
-	var IDs = array_map(global.inventario, function(_x) {
-		if(_x != noone) return _x.ID;
-			
-			return noone
-		}
-	);
+	var _save = json_stringify({inv: global.inventario, binga:"eugosto"});
 	
-	var invSave = json_stringify(IDs);
-	
-	ini_write_string("Inventário", "Consumíveis", invSave);
+	file_text_write_string(_fd, _save);
 }
 
 function load(_file) {
@@ -32,11 +25,11 @@ function load(_file) {
 	
 	if (file_exists(saveF)) {
 		
-		ini_open(saveF);
+		var _fd = file_text_open_read(saveF);
 		
-		loadInventory();
+		loadAll(_fd);
 		
-		ini_close();
+		file_text_close(_fd);
 		
 	} else {
 		
@@ -44,22 +37,13 @@ function load(_file) {
 	}
 }
 
-function loadInventory() {
+function loadAll(_fd) {
 	
-	var invLoad = ini_read_string("Inventário", "Consumíveis", []);
+	var _load = file_text_read_string(_fd);
 	
-	invLoad = json_parse(invLoad);
+	_load = json_parse(_load);
 	
-	for(var i = 0; i < array_length(invLoad); i++) {
-		
-		if(invLoad[i] != -4) {
-			
-			var item = searchItem(invLoad[i]);
-			
-			global.inventario[i] = item;
-		} else {
-			
-			global.inventario[i] = noone;
-		}
-	}
+	global.inventario = _load.inv;
+	
+	show_debug_message(_load.binga);
 }

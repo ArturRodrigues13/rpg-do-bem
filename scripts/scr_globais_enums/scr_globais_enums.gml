@@ -3,8 +3,8 @@ randomise();
 // Combate
 global.partyAliada = [];
 global.partyInimiga = [];
-global.inventario = array_create(12, noone);
-global.lastEmptySpace = 0;
+global.inventario = array_create(12, undefined);
+global.invFirstEmptySpace = 0;
 global.enemiesInfo = [];
 
 function KeyHandler(_keys) constructor {
@@ -40,8 +40,8 @@ enum Turno {
 	INIMIGOS,  
 }
 
-enum TypeDamage {
+enum DamageType {
 	PHYSICAL,
 	MAGIC,
-	TRUE
+	TRUTH
 }

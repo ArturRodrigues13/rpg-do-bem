@@ -7,7 +7,7 @@ defs = {
 	chanceCrit: .3,
 	danoCrit: 2.5,
 	velocidade: 1,
-	tipoAtaque: TypeDamage.PHYSICAL,
+	tipoAtaque: DamageType.PHYSICAL,
 	
 	status: {
 		veneno: false,
@@ -19,9 +19,9 @@ defs = {
 	acessorios: [],
 	equipamento: {
 		
-		arma: noone,
-		amuleto: noone,
-		vestimenta: noone,
+		arma: undefined,
+		amuleto: undefined,
+		vestimenta: undefined,
 	},
 	
 	isDown: function() {

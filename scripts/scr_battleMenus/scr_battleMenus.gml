@@ -245,7 +245,7 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 					_currentItem.uso(global.partyAliada);
 				}
 				
-				global.inventario[args.itemIdx] = noone;
+				global.inventario[args.itemIdx] = undefined;
 				break;
 			default:
 				show_error($"UNKNOWN TARGET ACTION {args.action}", false);
@@ -258,7 +258,7 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 			battle.turnoAtual = Turno.INIMIGOS;
 		}
 
-		stack.confirmAndPop(noone);
+		stack.confirmAndPop(undefined);
 	}
 }
 
@@ -295,6 +295,7 @@ function ItemMenu(_stack) : Menu(_stack) constructor {
 		var _offY = _marginY + _size;
 		
 		for (var _i = 0; _i < 12; _i++) {
+			
 			var _ix = _i mod ncols;
 			var _iy = _i div ncols;
 			
@@ -304,18 +305,20 @@ function ItemMenu(_stack) : Menu(_stack) constructor {
 			draw_set_colour((_i == choiceIdx) ? c_green : c_white);
 			draw_rectangle(_leftX, _topY, _leftX + _size, _topY + _size, true);
 			
-			if (choices[_i] != noone) {
-				draw_sprite(choices[_i].spr, 0, _leftX + _size / 2, _topY + _size / 2);
+			if (choices[_i] != undefined) {
+				var _itemInfo = global.itensData[$ choices[_i]];
+				draw_sprite(_itemInfo.spr, 0, _leftX + _size / 2, _topY + _size / 2);
 			}
 		}
 		
-		if (choices[choiceIdx] != noone) {
+		if (choices[choiceIdx] != undefined) {
+			var _itemInfo = global.itensData[$ choices[choiceIdx]];
 			draw_set_colour(c_green);
 			draw_rectangle(10, _rh - 64, _rw - 10, _rh - 5, false);
 			draw_set_colour(c_white);
 			
-			draw_text(15, _rh - 60, choices[choiceIdx].nome);
-			draw_text(15, _rh - 45, choices[choiceIdx].descricao);
+			draw_text(15, _rh - 60, _itemInfo.nome);
+			draw_text(15, _rh - 45, _itemInfo.descricao);
 		}
 	}
 	
@@ -329,15 +332,16 @@ function ItemMenu(_stack) : Menu(_stack) constructor {
 		var _y = clamp((choiceIdx div _dimX) + _dirY, 0, _dimY - 1);
 		choiceIdx = _y * _dimX + _x;
 		
-		if (_gk.confirm.isPressed() && choices[choiceIdx] != noone) onChoice();
+		if (_gk.confirm.isPressed() && choices[choiceIdx] != undefined) onChoice();
 		if (_gk.back.isPressed()) stack.pop();
 	}
 
 	onChoice = function() {
+		var _itemInfo = global.itensData[$ choices[choiceIdx]];
 		stack.push(new TargetMenu(stack, {
 			action: TargetAction.ITEM,
-			targetType: choices[choiceIdx].alvo,
-			itemInfo: choices[choiceIdx],
+			targetType: _itemInfo.alvo,
+			itemInfo: _itemInfo,
 			itemIdx: choiceIdx,
 		}));
 	}

@@ -1,7 +1,7 @@
 function Dano(_value, _alvo, _typeD) {
-	if (_typeD == TypeDamage.PHYSICAL) {
+	if (_typeD == DamageType.PHYSICAL) {
 		_value = max(0, _value - _alvo.defs.defesa);
-	} else if (_typeD == TypeDamage.MAGIC) {
+	} else if (_typeD == DamageType.MAGIC) {
 		_value = max(0, _value - _alvo.defs.defesamagica);
 	}
 	_alvo.defs.vida -= _value;
@@ -18,7 +18,7 @@ function DanoAll(_value, _alvos, _typeD) {
 function Ataque(_player, _alvo, _typeD) {
 	var _atAli = _player.defs;
 	var _mult = (random(1) <= _atAli.chanceCrit) ? _atAli.danoCrit : 1;
-	var _dano = (_typeD == TypeDamage.PHYSICAL) ? _atAli.ataque * _mult : _atAli.ataquemagico * _mult;
+	var _dano = (_typeD == DamageType.PHYSICAL) ? _atAli.ataque * _mult : _atAli.ataquemagico * _mult;
 	Dano(_dano, _alvo, _typeD);
 }
 
@@ -86,11 +86,11 @@ function checkStatus(_arrayAliados, _arrayInimigos) {
 		
 		_status = _arrayAliados[i].defs.status;
 		if (_status.veneno) {
-			Dano(2, _arrayAliados[i], TypeDamage.TRUE);
+			Dano(2, _arrayAliados[i], DamageType.TRUTH);
 		}
 		
 		if (_status.queimadura) {
-			Dano(1, _arrayAliados[i], TypeDamage.TRUE);
+			Dano(1, _arrayAliados[i], DamageType.TRUTH);
 		}
 	}
 	
@@ -99,11 +99,11 @@ function checkStatus(_arrayAliados, _arrayInimigos) {
 		
 		_status = _arrayInimigos[i].defs.status;
 		if (_status.veneno) {
-			Dano(2, _arrayInimigos[i], TypeDamage.TRUE);
+			Dano(2, _arrayInimigos[i], DamageType.TRUTH);
 		}
 		
 		if (_status.queimadura) {
-			Dano(1, _arrayInimigos[i], TypeDamage.TRUE);
+			Dano(1, _arrayInimigos[i], DamageType.TRUTH);
 		}
 	}
 }

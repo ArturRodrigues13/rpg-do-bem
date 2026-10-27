@@ -1,4 +1,4 @@
-defs = new Definedefs(5, 1, 2, 0, 1, 1, TypeDamage.MAGIC, .3, 2, []);
+defs = new Definedefs(5, 1, 2, 0, 1, 1, DamageType.MAGIC, .3, 2, []);
 
 infoLuta = [];
 for (var _i = 0; _i < 6; _i++) {
