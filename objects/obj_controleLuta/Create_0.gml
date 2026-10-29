@@ -5,4 +5,4 @@ global.battle = new Battle({
 });
 battle = global.battle;
 
-battle.timeStep = 0.05;
+battle.timeStep = 0.02;

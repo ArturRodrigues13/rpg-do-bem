@@ -39,24 +39,20 @@ function Battle(_args) constructor {
 	timeStep = 0.1;
 	actionCounter = 0.0;
 	
-	actionQueue = [];
+	actionQueue = new Queue();
 
 	// TODO: (talvez) parar de usar várias variáveis globais (e.g. `global.partyInimiga`) aqui e centralizar tudo em `global.battle`.
 	// TODO: dá pra refatorar initEnemies e initAllies, eles tem código comum (e acho que seria bom por aqui já definir as dimensões do array)
 	
-	hasPendingAction = function() { return array_length(actionQueue) > 0; }
-	getPendingAction = function() { return actionQueue[0]; }
-	dequeuePendingAction = function() { array_delete(actionQueue, 0, 1); }
-	
 	stepBattleTime = function() {
-		if (hasPendingAction()) {
+		if (!actionQueue.isEmpty()) {
 			// tem coisas acontecendo, não avançar o tempo
 			return;
 		}
 		
 		actionCounter += timeStep;
 		if (actionCounter >= 1) {
-			array_push(actionQueue, ["moment"]);
+			actionQueue.put(["moment"]);
 			actionCounter -= 1;
 		}
 		
@@ -67,7 +63,7 @@ function Battle(_args) constructor {
 			ed.actionCounter += timeStep;
 			if (ed.actionCounter >= thr) {
 				ed.actionCounter -= thr;
-				array_push(actionQueue, ["enemy", i, enemies[i]]);
+				actionQueue.put(["enemy", i]);
 			}
 		}
 		
@@ -78,7 +74,7 @@ function Battle(_args) constructor {
 			ad.actionCounter += timeStep;
 			if (ad.actionCounter >= thr) {
 				ad.actionCounter -= thr;
-				array_push(actionQueue, ["ally", i, allies[i]]);
+				actionQueue.put(["ally", i]);
 			}
 		}
 	}

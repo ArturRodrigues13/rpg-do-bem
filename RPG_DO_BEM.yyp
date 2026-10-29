@@ -49,6 +49,7 @@
     {"id":{"name":"scr_globais_enums","path":"scripts/scr_globais_enums/scr_globais_enums.yy",},},
     {"id":{"name":"scr_itens","path":"scripts/scr_itens/scr_itens.yy",},},
     {"id":{"name":"scr_personagens","path":"scripts/scr_personagens/scr_personagens.yy",},},
+    {"id":{"name":"scr_queue","path":"scripts/scr_queue/scr_queue.yy",},},
     {"id":{"name":"scr_save","path":"scripts/scr_save/scr_save.yy",},},
     {"id":{"name":"scr_vec","path":"scripts/scr_vec/scr_vec.yy",},},
     {"id":{"name":"spr_bolaFogo","path":"sprites/spr_bolaFogo/spr_bolaFogo.yy",},},

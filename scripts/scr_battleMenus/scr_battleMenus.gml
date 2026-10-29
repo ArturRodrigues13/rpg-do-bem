@@ -252,7 +252,7 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 		}
 		
 		// desenfileirar a ação do player atual
-		battle.dequeuePendingAction();
+		battle.actionQueue.dequeue();
 		
 		stack.confirmAndPop(undefined);
 	}

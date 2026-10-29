@@ -1,16 +1,17 @@
 battle.stepBattleTime();
 
-if (battle.hasPendingAction()) {
-	var a = battle.getPendingAction();
+var baq = battle.actionQueue;
+if (!baq.isEmpty()) {
+	var a = baq.peek();
 	
 	switch (a[0]) {
 		case "moment":
 			checkStatus(battle.allies, battle.enemies);
-			battle.dequeuePendingAction();
+			baq.dequeue();
 			break;
 		case "enemy":
 			show_debug_message("INIMIGO ATACA NOVAMENTE");
-			battle.dequeuePendingAction();
+			baq.dequeue();
 			break;
 		case "ally":
 			battle.allyIdx = a[1];

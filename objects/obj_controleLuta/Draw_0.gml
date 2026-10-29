@@ -1,7 +1,8 @@
 draw_text(0, 0, $"Action counter: {battle.actionCounter}");
 
-if (battle.hasPendingAction()) {
-	var a = battle.getPendingAction();
+var baq = battle.actionQueue;
+if (!baq.isEmpty()) {
+	var a = baq.peek();
 	
 	switch (a[0]) {
 		case "moment":

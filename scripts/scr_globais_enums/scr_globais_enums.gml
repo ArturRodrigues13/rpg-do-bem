@@ -35,11 +35,6 @@ enum TargetAction {
 	ITEM,
 }
 
-enum Turno { 
-	ALIADOS, 
-	INIMIGOS,  
-}
-
 enum DamageType {
 	PHYSICAL,
 	MAGIC,
