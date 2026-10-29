@@ -6,6 +6,7 @@ function Defs(_args) constructor {
 	defesamagica = _args.defesamagica;
 	chanceCrit = _args.chanceCrit;
 	danoCrit = _args.danoCrit;
+	tipoAtaque = _args.tipoAtaque;
 	speed = _args.speed;
 	acessorios = _args.acessorios;
 	

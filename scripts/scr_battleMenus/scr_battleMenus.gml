@@ -250,14 +250,10 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 			default:
 				show_error($"UNKNOWN TARGET ACTION {args.action}", false);
 		}
-
-		// TODO: essa lógica aqui não devia tar aqui. dá para mover p/ o script de combate
-		battle.allyIdx++;
-		if (battle.allyIdx == array_length(global.partyAliada)) {
-			battle.allyIdx = 0;
-			battle.turnoAtual = Turno.INIMIGOS;
-		}
-
+		
+		// desenfileirar a ação do player atual
+		battle.dequeuePendingAction();
+		
 		stack.confirmAndPop(undefined);
 	}
 }
