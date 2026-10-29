@@ -302,7 +302,7 @@ function ItemMenu(_stack) : Menu(_stack) constructor {
 			var _leftX = _originX + _ix * _offX;
 			var _topY = _originY + _iy * _offY;
 			
-			draw_set_colour((_i == choiceIdx) ? c_green : c_white);
+			draw_set_colour((i == choiceIdx) ? c_green : c_white);
 			draw_rectangle(_leftX, _topY, _leftX + _size, _topY + _size, true);
 			
 			if (choices[_i] != undefined) {

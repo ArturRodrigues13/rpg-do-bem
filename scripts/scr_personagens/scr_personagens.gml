@@ -1,13 +1,15 @@
-function Definedefs(_vida, _ataque, _ataquemagico, _defesa, _defesamagica, _velocidade, _tipoAtaque, _chanceCrit, _danoCrit, _acessorios) constructor {
-	vida = _vida;
-	ataque = _ataque;
-	ataquemagico = _ataquemagico;
-	defesa = _defesa;
-	defesamagica = _defesamagica;
-	chanceCrit = _chanceCrit;
-	danoCrit = _danoCrit;
-	velocidade = _velocidade;
-	acessorios = _acessorios;
+function Defs(_args) constructor {
+	vida = _args.vida;
+	ataque = _args.ataque;
+	ataquemagico = _args.ataquemagico;
+	defesa = _args.defesa;
+	defesamagica = _args.defesamagica;
+	chanceCrit = _args.chanceCrit;
+	danoCrit = _args.danoCrit;
+	speed = _args.speed;
+	acessorios = _args.acessorios;
+	
+	actionCounter = 0;
 	
 	status = {
 		veneno: false,
@@ -18,5 +20,11 @@ function Definedefs(_vida, _ataque, _ataquemagico, _defesa, _defesamagica, _velo
 	
 	isDown = function() {
 		return vida <= 0;
+	}
+	
+	getActionThreshold = function() {
+		var ret = 1 / speed;
+		ret = round(ret * 10) / 10; // arredondando p/ uma casa decimal
+		return ret;
 	}
 }

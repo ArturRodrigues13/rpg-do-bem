@@ -35,9 +35,44 @@ function Battle(_args) constructor {
 	args = _args;
 	turnoAtual = Turno.ALIADOS;
 	allyIdx = 0;
+	
+	timeStep = 0.1;
+	actionCounter = 0.0;
+	
+	shitQueue = [];
 
 	// TODO: (talvez) parar de usar várias variáveis globais (e.g. `global.partyInimiga`) aqui e centralizar tudo em `global.battle`.
 	// TODO: dá pra refatorar initEnemies e initAllies, eles tem código comum (e acho que seria bom por aqui já definir as dimensões do array)
+	
+	stepBattleTime = function() {
+		actionCounter += timeStep;
+		if (actionCounter >= 1) {
+			show_debug_message("ACTION BATTLE");
+			actionCounter -= 1;
+		}
+		
+		for (var i = 0; i < array_length(enemies); i++) {
+			var ed = enemies[i].defs;
+			var thr = ed.getActionThreshold();
+			
+			ed.actionCounter += timeStep;
+			if (ed.actionCounter >= thr) {
+				ed.actionCounter -= thr;
+				show_debug_message($"ACTION {enemies[i]}");
+			}
+		}
+		
+		for (var i = 0; i < array_length(allies); i++) {
+			var ad = allies[i].defs;
+			var thr = ad.getActionThreshold();
+			
+			ad.actionCounter += timeStep;
+			if (ad.actionCounter >= thr) {
+				ad.actionCounter -= thr;
+				show_debug_message($"ACTION {allies[i]}");
+			}
+		}
+	}
 
 	// @desc Instancia os aliados na batalha e os coloca em um array.
 	initAllies = function() {
@@ -46,8 +81,8 @@ function Battle(_args) constructor {
 		var _x = 50;
 		var _y = 50;
 
-		for (var _i = 0; _i < array_length(_arr); _i++) {
-			var _a = global.allyData[$ _arr[_i]];
+		for (var i = 0; i < array_length(_arr); i++) {
+			var _a = global.allyData[$ _arr[i]];
 			var _inst = instance_create_layer(_x, _y, "Instances", _a.obj);
 			_y += 70;
 			array_push(_ret, _inst);
@@ -64,10 +99,10 @@ function Battle(_args) constructor {
 		var _x = 200;
 		var _y = 25;
 
-		for (var _i = 0; _i < array_length(_ei); _i++) {
-			var _obj = _ei[_i].obj;
-			var _row = _i div 2;
-			var _col = _i mod 2;
+		for (var i = 0; i < array_length(_ei); i++) {
+			var _obj = _ei[i].obj;
+			var _row = i div 2;
+			var _col = i mod 2;
 			var _inst = instance_create_layer(_x + _col * 120, _y + _row * 60, "Instances", _obj);
 			array_push(_ret, _inst);
 		}
