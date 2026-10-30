@@ -1,13 +1,15 @@
 defs = new Defs({
+	nome: "caolho",
 	vida: 5,
 	ataque: 1,
 	ataquemagico: 6,
 	defesa: 0,
 	defesamagica: 1,
-	chanceCrit: 1,
-	tipoAtaque: DamageType.MAGIC,
-	danoCrit: 0.3,
+	chanceCrit: .3,
+	danoCrit: 2,
 	speed: .5,
+	tipoAtaque: DamageType.MAGIC,
+	
 	acessorios: [],
 });
 

@@ -1,4 +1,5 @@
 defs = new Defs({
+	nome: "mago",
 	vida: 5,
 	ataque: 1,
 	ataquemagico: 10,

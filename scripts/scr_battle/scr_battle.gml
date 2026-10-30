@@ -27,7 +27,7 @@ function Ataque(_attacker, _target, _typeD) {
 	} else {
 		dano = (atDefs.ataque + atDefs.ataquemagico) * mult;
 	}
-
+	
 	Dano(dano, _target, _typeD);
 }
 
