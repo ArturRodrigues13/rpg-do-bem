@@ -11,6 +11,8 @@ if (!baq.isEmpty()) {
 			break;
 		case "enemy":
 			show_debug_message("INIMIGO ATACA NOVAMENTE");
+			dumbAttack(battle.allies, battle.enemies[a[1]]);
+			show_message("buft");
 			baq.dequeue();
 			break;
 		case "ally":

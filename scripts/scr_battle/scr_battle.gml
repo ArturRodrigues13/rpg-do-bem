@@ -15,11 +15,20 @@ function DanoAll(_value, _alvos, _typeD) {
 	}
 }
 
-function Ataque(_player, _alvo, _typeD) {
-	var _atAli = _player.defs;
-	var _mult = (random(1) <= _atAli.chanceCrit) ? _atAli.danoCrit : 1;
-	var _dano = (_typeD == DamageType.PHYSICAL) ? _atAli.ataque * _mult : _atAli.ataquemagico * _mult;
-	Dano(_dano, _alvo, _typeD);
+function Ataque(_attacker, _target, _typeD) {
+	var atDefs = _attacker.defs;
+	var mult = (random(1) <= atDefs.chanceCrit) ? atDefs.danoCrit : 1;
+	var dano = 0;
+
+	if(_typeD == DamageType.PHYSICAL) {
+		dano = atDefs.ataque * mult;
+	} else if (_typeD == DamageType.MAGIC) {
+		dano = atDefs.ataquemagico * mult;
+	} else {
+		dano = (atDefs.ataque + atDefs.ataquemagico) * mult;
+	}
+
+	Dano(dano, _target, _typeD);
 }
 
 global.allyData = {
@@ -97,6 +106,8 @@ function Battle(_args) constructor {
 		
 		for (var i = 0; i < array_length(enemies); i++) {
 			var ed = enemies[i].defs;
+			
+			if(ed.isDown()) continue;
 			var thr = ed.getActionThreshold();
 			
 			ed.actionCounter += timeStep;
@@ -199,4 +210,11 @@ function checkDeath(_inst) {
 		_inst.sprite_index = _inst.deathSprite;
 		_inst.image_index = 0;
 	}
+}
+
+function dumbAttack(_allys, _enemy) {
+	
+	var choice = irandom(array_length(_allys) - 1)
+	
+	Ataque(_enemy, _allys[choice], _enemy.defs.tipoAtaque);
 }

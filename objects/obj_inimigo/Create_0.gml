@@ -1,7 +1,7 @@
 defs = new Defs({
 	vida: 5,
 	ataque: 1,
-	ataquemagico: 2,
+	ataquemagico: 6,
 	defesa: 0,
 	defesamagica: 1,
 	chanceCrit: 1,
