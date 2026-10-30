@@ -7,11 +7,12 @@ defs = new Defs({
 	chanceCrit: 1,
 	tipoAtaque: DamageType.MAGIC,
 	danoCrit: 0.3,
-	speed: 2,
+	speed: .5,
 	acessorios: [],
 });
 
 infoLuta = [];
+
 for (var i = 0; i < 6; i++) {
 	// slop do mal só pra jogar o mesmo inimigo multiplas vezes aq
 	array_push(infoLuta, { obj: obj_inimigo });

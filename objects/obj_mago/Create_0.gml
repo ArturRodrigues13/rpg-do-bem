@@ -6,7 +6,7 @@ defs = new Defs({
 	defesamagica: 5,
 	chanceCrit: .1,
 	danoCrit: 2,
-	speed: 2,
+	speed: 1.5,
 	tipoAtaque: DamageType.MAGIC,
 	
 	acessorios: [],

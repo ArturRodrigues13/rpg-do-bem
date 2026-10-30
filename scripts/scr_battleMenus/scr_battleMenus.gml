@@ -143,16 +143,17 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 	}
 	
 	onDraw = function() {
+		
 		var aliados = global.partyAliada;
 		for (var i = 0; i < array_length(aliados); i++) {
 			var al = aliados[i];
-			draw_text(al.x - 30, al.y, $"Vida: {al.defs.vida}");
+			draw_text(al.x - 30, al.y, $"Vida:{al.defs.vida}");
 		}
 
 		var inimigos = global.partyInimiga;
 		for (var i = 0; i < array_length(inimigos); i++) {
 			var e = inimigos[i];
-			draw_text(e.x - 30, e.y, $"Vida: {e.defs.vida}");
+			draw_text(e.x - 30, e.y, $"Vida:{e.defs.vida}");
 		}
 		
 		switch (args.targetType) {
@@ -195,10 +196,10 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 	
 	/// @desc Tenta alterar a escolha com base em um vetor de direção.
 	changeTarget = function(_dir) {
-		var _infos = choices;
-		if (array_length(_infos) == 0) return;
+		var infos = choices;
+		if (array_length(infos) == 0) return;
 
-		var _nrows = ceil(array_length(_infos) / ncols);
+		var _nrows = ceil(array_length(infos) / ncols);
 
 		var _x = choiceIdx mod ncols;
 		_x = clamp(_x + _dir[0], 0, ncols - 1);
@@ -206,7 +207,7 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 		var _y = choiceIdx div ncols;
 		_y = clamp(_y + _dir[1], 0, _nrows - 1);
 
-		choiceIdx = clamp(_y * ncols + _x, 0, array_length(_infos) - 1);
+		choiceIdx = clamp(_y * ncols + _x, 0, array_length(infos) - 1);
 	}
 
 	onChoice = function() {
@@ -290,31 +291,31 @@ function ItemMenu(_stack) : Menu(_stack) constructor {
 		var _offX = _marginX + _size;
 		var _offY = _marginY + _size;
 		
-		for (var _i = 0; _i < 12; _i++) {
+		for (var i = 0; i < 12; i++) {
 			
-			var _ix = _i mod ncols;
-			var _iy = _i div ncols;
+			var ix = i mod ncols;
+			var iy = i div ncols;
 			
-			var _leftX = _originX + _ix * _offX;
-			var _topY = _originY + _iy * _offY;
+			var _leftX = _originX + ix * _offX;
+			var _topY = _originY + iy * _offY;
 			
 			draw_set_colour((i == choiceIdx) ? c_green : c_white);
 			draw_rectangle(_leftX, _topY, _leftX + _size, _topY + _size, true);
 			
-			if (choices[_i] != undefined) {
-				var _itemInfo = global.itensData[$ choices[_i]];
-				draw_sprite(_itemInfo.spr, 0, _leftX + _size / 2, _topY + _size / 2);
+			if (choices[i] != undefined) {
+				var itemInfo = global.itensData[$ choices[i]];
+				draw_sprite(itemInfo.spr, 0, _leftX + _size / 2, _topY + _size / 2);
 			}
 		}
 		
 		if (choices[choiceIdx] != undefined) {
-			var _itemInfo = global.itensData[$ choices[choiceIdx]];
+			var itemInfo = global.itensData[$ choices[choiceIdx]];
 			draw_set_colour(c_green);
 			draw_rectangle(10, _rh - 64, _rw - 10, _rh - 5, false);
 			draw_set_colour(c_white);
 			
-			draw_text(15, _rh - 60, _itemInfo.nome);
-			draw_text(15, _rh - 45, _itemInfo.descricao);
+			draw_text(15, _rh - 60, itemInfo.nome);
+			draw_text(15, _rh - 45, itemInfo.descricao);
 		}
 	}
 	
@@ -333,11 +334,11 @@ function ItemMenu(_stack) : Menu(_stack) constructor {
 	}
 
 	onChoice = function() {
-		var _itemInfo = global.itensData[$ choices[choiceIdx]];
+		var itemInfo = global.itensData[$ choices[choiceIdx]];
 		stack.push(new TargetMenu(stack, {
 			action: TargetAction.ITEM,
-			targetType: _itemInfo.alvo,
-			itemInfo: _itemInfo,
+			targetType: itemInfo.alvo,
+			itemInfo: itemInfo,
 			itemIdx: choiceIdx,
 		}));
 	}

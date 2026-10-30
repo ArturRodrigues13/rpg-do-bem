@@ -1,7 +1,7 @@
 mstack = new MenuStack();
 
 global.battle = new Battle({
-	allyNames: ["knight0", "mage0"], // TODO: salvar em algum lugar quais são os aliados atuais
+	allyNames: ["knight0", "mage0", "sup"], // TODO: salvar em algum lugar quais são os aliados atuais
 });
 battle = global.battle;
 

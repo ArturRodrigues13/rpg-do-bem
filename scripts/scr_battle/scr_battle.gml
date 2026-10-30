@@ -29,6 +29,10 @@ global.allyData = {
 	mage0: {
 		obj: obj_mago,
 	},
+	
+	sup: {
+		obj: obj_sup,
+	},
 };
 
 function Battle(_args) constructor {
@@ -43,6 +47,41 @@ function Battle(_args) constructor {
 
 	// TODO: (talvez) parar de usar várias variáveis globais (e.g. `global.partyInimiga`) aqui e centralizar tudo em `global.battle`.
 	// TODO: dá pra refatorar initEnemies e initAllies, eles tem código comum (e acho que seria bom por aqui já definir as dimensões do array)
+	
+	drawStepBattleProgressBar = function () {
+		
+		// BARRA DO PROGRESSO GERAL:
+		
+		var bar_width = 100;
+		var bar_height = 15;
+		var bar_x = 10;
+		var bar_y = 10;
+		
+		var progress = actionCounter / 1;
+		var current_bar_width = bar_width * progress;
+		
+		draw_set_color(c_gray);
+		draw_rectangle(bar_x, bar_y, bar_x + bar_width, bar_y + bar_height, false);
+		
+		draw_set_color(c_red);
+		draw_rectangle(bar_x, bar_y, bar_x + current_bar_width, bar_y + bar_height, false);
+		
+		// BARRA DOS ALIADOS
+		
+		for (var i = 0; i < array_length(allies); i++) {
+			
+			var ally = allies[i];
+			drawCharacterStepBar(ally.defs,ally.x,ally.y);
+		}
+		
+		// BARRA DOS INIMIGOS
+		
+		for (var i = 0; i < array_length(enemies); i++) {
+			
+			var enemy = enemies[i];
+			drawCharacterStepBar(enemy.defs,enemy.x,enemy.y);
+		}
+	}
 	
 	stepBattleTime = function() {
 		if (!actionQueue.isEmpty()) {
@@ -83,13 +122,20 @@ function Battle(_args) constructor {
 	initAllies = function() {
 		var _ret = [];
 		var _arr = args.allyNames;
-		var _x = 50;
+		var _x = 40;
 		var _y = 50;
 
 		for (var i = 0; i < array_length(_arr); i++) {
 			var _a = global.allyData[$ _arr[i]];
 			var _inst = instance_create_layer(_x, _y, "Instances", _a.obj);
 			_y += 70;
+			
+			if(i == 1) {
+				
+				_x += 80;
+				_y = 50;
+			} 
+			
 			array_push(_ret, _inst);
 		}
 
