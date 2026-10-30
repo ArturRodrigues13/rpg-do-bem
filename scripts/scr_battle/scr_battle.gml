@@ -80,6 +80,7 @@ function Battle(_args) constructor {
 		for (var i = 0; i < array_length(allies); i++) {
 			
 			var ally = allies[i];
+			if(ally.isDown()) continue;
 			drawCharacterStepBar(ally.defs,ally.x,ally.y);
 		}
 		
@@ -88,6 +89,7 @@ function Battle(_args) constructor {
 		for (var i = 0; i < array_length(enemies); i++) {
 			
 			var enemy = enemies[i];
+			if(enemy.isDown()) continue;
 			drawCharacterStepBar(enemy.defs,enemy.x,enemy.y);
 		}
 	}
@@ -119,6 +121,8 @@ function Battle(_args) constructor {
 		
 		for (var i = 0; i < array_length(allies); i++) {
 			var ad = allies[i].defs;
+			
+			if(ad.isDown()) continue;
 			var thr = ad.getActionThreshold();
 			
 			ad.actionCounter += timeStep;
@@ -207,7 +211,7 @@ function checkStatus(_arrayAliados, _arrayInimigos) {
 
 function checkDeath(_inst) {
 	if (_inst.defs.vida <= 0) {
-		_inst.sprite_index = _inst.deathSprite;
+		_inst.sprite_index = _inst.defs.deathSprite;
 		_inst.image_index = 0;
 	}
 }

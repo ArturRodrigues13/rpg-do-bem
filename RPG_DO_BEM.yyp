@@ -37,6 +37,7 @@
   "resources":[
     {"id":{"name":"obj_camera","path":"objects/obj_camera/obj_camera.yy",},},
     {"id":{"name":"obj_cavaleiro","path":"objects/obj_cavaleiro/obj_cavaleiro.yy",},},
+    {"id":{"name":"obj_character","path":"objects/obj_character/obj_character.yy",},},
     {"id":{"name":"obj_controleLuta","path":"objects/obj_controleLuta/obj_controleLuta.yy",},},
     {"id":{"name":"obj_inimigo","path":"objects/obj_inimigo/obj_inimigo.yy",},},
     {"id":{"name":"obj_mago","path":"objects/obj_mago/obj_mago.yy",},},

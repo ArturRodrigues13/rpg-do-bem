@@ -9,6 +9,7 @@ defs = new Defs({
 	danoCrit: 10000,
 	speed: 1,
 	tipoAtaque: DamageType.TRUTH,
+	deathSprite: spr_morto,
 	
 	acessorios: [],
 	equipamento: {

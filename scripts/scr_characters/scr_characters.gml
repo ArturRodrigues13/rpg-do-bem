@@ -10,6 +10,7 @@ function Defs(_args) constructor {
 	tipoAtaque = _args.tipoAtaque;
 	speed = _args.speed;
 	acessorios = _args.acessorios;
+	deathSprite = _args.deathSprite;
 	
 	actionCounter = 0;
 	

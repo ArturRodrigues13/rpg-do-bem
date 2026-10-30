@@ -15,6 +15,11 @@ if (!baq.isEmpty()) {
 			baq.dequeue();
 			break;
 		case "ally":
+			
+			if(battle.allies[a[1]].defs.isDown()) {
+				baq.dequeue();
+				break;
+			} 
 			battle.allyIdx = a[1];
 			if (mstack.isEmpty()) {
 				mstack.push(new ChoiceMenu(mstack));

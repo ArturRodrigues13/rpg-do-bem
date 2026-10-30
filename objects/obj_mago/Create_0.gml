@@ -9,6 +9,7 @@ defs = new Defs({
 	danoCrit: 2,
 	speed: 1.5,
 	tipoAtaque: DamageType.MAGIC,
+	deathSprite: spr_morto,
 	
 	acessorios: [],
 	equipamento: {
@@ -16,4 +17,6 @@ defs = new Defs({
 		amuleto: undefined,
 		vestimenta: undefined,
 	},
+	
+	deathSprite: spr_morto,
 });

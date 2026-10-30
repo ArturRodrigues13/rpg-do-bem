@@ -1,3 +1,3 @@
-if (defs.isDown()) {
-	if (image_index >= lastImage) image_speed = 0;
-}
+// Inherit the parent event
+event_inherited();
+
