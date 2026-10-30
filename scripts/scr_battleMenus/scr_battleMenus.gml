@@ -262,34 +262,26 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 function ItemMenu(_stack) : Menu(_stack) constructor {
 	choices = global.inventario;
 	ncols = 4;
-	nlins = ceil(array_length(choices) / ncols);
+	//nlins = ceil(array_length(choices) / ncols);
 	
 	onDraw = function() {
 		var _rw = room_width;
 		var _rh = room_height;
+
 		
-		var _xsqr = 83;
-		var _ysqr = 9;
-		var _distx = 0;
-		var _disty = 0;
-		var _size = 40;
-		
-		var _marginX = 19.5;
-		var _marginY = 4;
-		
+		// Fundo preto opaco
 		draw_set_alpha(.7);
 		draw_set_colour(c_black);
 		draw_rectangle(0, 0, _rw, _rh, false);
 		draw_set_alpha(1);
-		
-		draw_set_colour(c_orange);
-		draw_rectangle(80, 5, _rw - 80, _rh - 75, false);
 		draw_set_colour(c_white);
 		
-		var _originX = 83;
-		var _originY = 9;
-		var _offX = _marginX + _size;
-		var _offY = _marginY + _size;
+		var _originX = 108;
+		var _originY = 29;
+		var _offX = 56;
+		var _offY = 42;
+		
+		draw_sprite(spr_inventory, choiceIdx, 80, 5);
 		
 		for (var i = 0; i < 12; i++) {
 			
@@ -299,12 +291,9 @@ function ItemMenu(_stack) : Menu(_stack) constructor {
 			var _leftX = _originX + ix * _offX;
 			var _topY = _originY + iy * _offY;
 			
-			draw_set_colour((i == choiceIdx) ? c_green : c_white);
-			draw_rectangle(_leftX, _topY, _leftX + _size, _topY + _size, true);
-			
 			if (choices[i] != undefined) {
 				var itemInfo = global.itensData[$ choices[i]];
-				draw_sprite(itemInfo.spr, 0, _leftX + _size / 2, _topY + _size / 2);
+				draw_sprite(itemInfo.spr, 0, _leftX, _topY);
 			}
 		}
 		

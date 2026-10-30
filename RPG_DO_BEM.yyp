@@ -56,6 +56,7 @@
     {"id":{"name":"spr_bolaFogo","path":"sprites/spr_bolaFogo/spr_bolaFogo.yy",},},
     {"id":{"name":"spr_cavaleiro","path":"sprites/spr_cavaleiro/spr_cavaleiro.yy",},},
     {"id":{"name":"spr_inimigo","path":"sprites/spr_inimigo/spr_inimigo.yy",},},
+    {"id":{"name":"spr_inventory","path":"sprites/spr_inventory/spr_inventory.yy",},},
     {"id":{"name":"spr_mago","path":"sprites/spr_mago/spr_mago.yy",},},
     {"id":{"name":"spr_morto","path":"sprites/spr_morto/spr_morto.yy",},},
     {"id":{"name":"spr_pedra","path":"sprites/spr_pedra/spr_pedra.yy",},},
