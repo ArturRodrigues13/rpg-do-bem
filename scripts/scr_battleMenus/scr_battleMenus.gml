@@ -100,8 +100,7 @@ function ChoiceMenu(_stack) : Menu(_stack) constructor {
 			stack.push(new ItemMenu(stack));
 		} else {
 			// TODO: fazer um mecanismo p/ voltar para a sala anterior à batalha
-			global.partyAliada = [];
-			global.partyInimiga = [];
+			global.battle = undefined;
 			room_goto(rm_teste);
 		}
 	}
@@ -145,7 +144,7 @@ function ActionMenu(_stack, _args) : Menu(_stack) constructor {
 			targetType: choices[choiceIdx].targetType
 		}));
 	}
-} 
+}
 
 function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 	// Args pode ser:
@@ -159,7 +158,7 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 	isAllyTarget = (args.targetType == TargetScope.ALLY_ALL || args.targetType == TargetScope.ALLY_SINGLE);
 
 	ncols = 2;
-	choices = isAllyTarget ? global.partyAliada : global.partyInimiga;
+	choices = isAllyTarget ? battle.allies : battle.enemies;
 	choiceIdx = clamp(bmd.lastAttackIdx, 0, array_length(choices));
 	
 	// @desc Calcula a posição de destino para um target.
@@ -186,14 +185,13 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 	}
 	
 	onDraw = function() {
-		
-		var aliados = global.partyAliada;
+		var aliados = battle.allies;
 		for (var i = 0; i < array_length(aliados); i++) {
 			var al = aliados[i];
 			draw_text(al.x - 30, al.y, $"Vida:{al.defs.vida}");
 		}
 
-		var inimigos = global.partyInimiga;
+		var inimigos = battle.enemies;
 		for (var i = 0; i < array_length(inimigos); i++) {
 			var e = inimigos[i];
 			draw_text(e.x - 30, e.y, $"Vida:{e.defs.vida}");
@@ -256,38 +254,38 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 	onChoice = function() {
 		switch (args.action) {
 			case TargetAction.ACTION:
-				var _target = global.partyInimiga[choiceIdx];
+				var _target = battle.enemies[choiceIdx];
 				if (_target.defs.isDown()) {
 					// TODO: tocar sfx de "escolha invalida" :))
 					return;
 				}
 				bmd.lastAttackIdx = choiceIdx;
-				var attackingAlly = global.partyAliada[battle.allyIdx];
+				var attackingAlly = battle.allies[battle.allyIdx];
 				args.actionInfo.onUse(_target, attackingAlly);
 				
-				choiceIdx = clamp(choiceIdx, 0, array_length(global.partyInimiga));
+				choiceIdx = clamp(choiceIdx, 0, array_length(battle.enemies));
 				break;
 			case TargetAction.ITEM:
 				var _currentItem = args.itemInfo;
 				
 				if (args.targetType == TargetScope.ENEMY_SINGLE) {
-					_target = global.partyInimiga[choiceIdx];
+					_target = battle.enemies[choiceIdx];
 					if (_target.defs.isDown()) {
 						// TODO: tocar sfx de "escolha invalida" :))
 						return;
 					}
 					_currentItem.uso(_target);
 				} else if(args.targetType == TargetScope.ENEMY_ALL) {
-					_currentItem.uso(global.partyInimiga);
+					_currentItem.uso(battle.enemies);
 				} else if(args.targetType == TargetScope.ALLY_SINGLE) {
-					_target = global.partyAliada[choiceIdx];
+					_target = battle.allies[choiceIdx];
 					if (_target.defs.isDown()) {
 						// TODO: tocar sfx de "escolha invalida" :))
 						return;
 					}
 					_currentItem.uso(_target);
 				} else {
-					_currentItem.uso(global.partyAliada);
+					_currentItem.uso(battle.allies);
 				}
 				
 				global.inventario[args.itemIdx] = undefined;
