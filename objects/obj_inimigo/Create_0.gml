@@ -16,7 +16,7 @@ defs = new Defs({
 		type: ActionType.ATTACK,
 		element: Element.FIRE,
 		damageType: DamageType.MAGIC,
-		targetType: TargetScope.AllySingle,
+		targetType: TargetScope.ALLY_SINGLE,
 		onUse: function (_target, _user) {
 			Ataque(_user, _target, damageType, element);
 		}

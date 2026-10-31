@@ -24,10 +24,10 @@ global.keys = {
 };
 
 enum TargetScope {
-	AllySingle,
-	AllyAll,
-	EnemySingle,
-	EnemyAll,
+	ALLY_SINGLE,
+	ALLY_ALL,
+	ENEMY_SINGLE,
+	ENEMY_ALL,
 }
 
 enum ActionType {

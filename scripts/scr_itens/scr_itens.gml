@@ -3,7 +3,7 @@ global.itensData = {
 		nome: "Vida",
 		descricao: "cura (o amigo, forever big cloba)",
 		spr: spr_pocaoVida,
-		alvo: TargetScope.AllySingle,
+		alvo: TargetScope.ALLY_SINGLE,
 		uso: function(_alvo) {
 			_alvo.defs.vida += 20;
 		}
@@ -13,7 +13,7 @@ global.itensData = {
 		nome: "Pedra",
 		descricao: "taca pedra NO INIMIGO E EXECUTA\nELE DE FORMA BRUTAL",
 		spr: spr_pedra,
-		alvo: TargetScope.EnemySingle,
+		alvo: TargetScope.ENEMY_SINGLE,
 		uso: function(_alvo) {
 			Dano(10, _alvo, DamageType.PHYSICAL);
 		}
@@ -23,7 +23,7 @@ global.itensData = {
 		nome: "Fogo",
 		descricao: "Nuke",
 		spr: spr_bolaFogo,
-		alvo: TargetScope.EnemyAll,
+		alvo: TargetScope.ENEMY_ALL,
 		uso: function(_alvos) {
 			DanoAll(999, _alvos, DamageType.TRUTH);
 		}

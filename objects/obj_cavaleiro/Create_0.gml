@@ -16,7 +16,7 @@ defs = new Defs({
 		type: ActionType.ATTACK,
 		element: Element.EARTH,
 		damageType: DamageType.PHYSICAL,
-		targetType: TargetScope.EnemySingle,
+		targetType: TargetScope.ENEMY_SINGLE,
 		onUse: function (_target, _user) {
 			Ataque(_user, _target, damageType, element);
 		}

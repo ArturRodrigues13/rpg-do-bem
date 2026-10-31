@@ -107,8 +107,7 @@ function ChoiceMenu(_stack) : Menu(_stack) constructor {
 	}
 }
 
-function ActionMenu(_stack, _args) : Menu(_stack) constructor { 
-	
+function ActionMenu(_stack, _args) : Menu(_stack) constructor {
 	battle = global.battle;
 	
 	var allyActions = battle.allies[battle.allyIdx].defs.actions;
@@ -156,8 +155,8 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 	bmd = global.battleMenuData;
 	battle = global.battle;
 	
-	isSingleTarget = (args.targetType == TargetScope.EnemySingle || args.targetType == TargetScope.AllySingle);
-	isAllyTarget = (args.targetType == TargetScope.AllyAll || args.targetType == TargetScope.AllySingle);
+	isSingleTarget = (args.targetType == TargetScope.ENEMY_SINGLE || args.targetType == TargetScope.ALLY_SINGLE);
+	isAllyTarget = (args.targetType == TargetScope.ALLY_ALL || args.targetType == TargetScope.ALLY_SINGLE);
 
 	ncols = 2;
 	choices = isAllyTarget ? global.partyAliada : global.partyInimiga;
@@ -201,19 +200,19 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 		}
 		
 		switch (args.targetType) {
-			case TargetScope.AllySingle:
-			case TargetScope.EnemySingle:
+			case TargetScope.ALLY_SINGLE:
+			case TargetScope.ENEMY_SINGLE:
 				draw_sprite(spr_setinha, 0, arrowPos[0], arrowPos[1]);
 				break;
 				
-			case TargetScope.AllyAll:
+			case TargetScope.ALLY_ALL:
 				for (var i = 0; i < array_length(aliados); i++) {
 					var _o = aliados[i];
 					draw_sprite(spr_setinha, 0, _o.x - 20, _o.y);
 				}
 				break;
 				
-			case TargetScope.EnemyAll:
+			case TargetScope.ENEMY_ALL:
 				for (var i = 0; i < array_length(inimigos); i++) {
 					var _o = inimigos[i];
 					draw_sprite(spr_setinha, 0, _o.x - 20, _o.y);
@@ -271,16 +270,16 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 			case TargetAction.ITEM:
 				var _currentItem = args.itemInfo;
 				
-				if (args.targetType == TargetScope.EnemySingle) {
+				if (args.targetType == TargetScope.ENEMY_SINGLE) {
 					_target = global.partyInimiga[choiceIdx];
 					if (_target.defs.isDown()) {
 						// TODO: tocar sfx de "escolha invalida" :))
 						return;
 					}
 					_currentItem.uso(_target);
-				} else if(args.targetType == TargetScope.EnemyAll) {
+				} else if(args.targetType == TargetScope.ENEMY_ALL) {
 					_currentItem.uso(global.partyInimiga);
-				} else if(args.targetType == TargetScope.AllySingle) {
+				} else if(args.targetType == TargetScope.ALLY_SINGLE) {
 					_target = global.partyAliada[choiceIdx];
 					if (_target.defs.isDown()) {
 						// TODO: tocar sfx de "escolha invalida" :))

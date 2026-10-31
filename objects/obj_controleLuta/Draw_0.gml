@@ -1,5 +1,3 @@
-//draw_text(0, 0, $"Action counter: {battle.actionCounter}");
-
 var baq = battle.actionQueue;
 
 battle.drawStepBattleProgressBar();
@@ -13,8 +11,8 @@ if (!baq.isEmpty()) {
 		case "enemy":
 			break;
 		case "ally":
-			
-			draw_sprite(spr_suaVezMano, 0, battle.allies[a[1]].x, battle.allies[a[1]].y + 16);
+			var ally = battle.allies[a[1]];
+			draw_sprite(spr_suaVezMano, 0, ally.x, ally.y + 16);
 			
 			if (!mstack.isEmpty()) {
 				mstack.peek().onDraw();
