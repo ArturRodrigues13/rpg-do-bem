@@ -107,7 +107,7 @@ function Battle(_args) constructor {
 		for (var i = 0; i < array_length(enemies); i++) {
 			var ed = enemies[i].defs;
 
-			if(ed.isDown()) continue;
+			if (ed.isDown()) continue;
 			var thr = ed.getActionThreshold();
 
 			ed.actionCounter += timeStep;
@@ -120,7 +120,7 @@ function Battle(_args) constructor {
 		for (var i = 0; i < array_length(allies); i++) {
 			var ad = allies[i].defs;
 
-			if(ad.isDown()) continue;
+			if (ad.isDown()) continue;
 			var thr = ad.getActionThreshold();
 
 			ad.actionCounter += timeStep;
@@ -161,6 +161,18 @@ function Battle(_args) constructor {
 	enemies = instObjGrid(
 		array_map(global.enemiesInfo, function(_x) { return _x.obj; }),
 		[200, 25], [120, 60], 2);
+
+	/// @desc Faz um inimigo específico realizar uma ação aleatória em seu banco de ações.
+	enemyRandomAction = function(_enemy) {
+		if (array_length(allies) == 0) return;
+
+		var actions = _enemy.defs.actions;
+		if (array_length(actions) == 0) return;
+
+		var targetIdx = irandom(array_length(allies) - 1);
+		var actionIdx = irandom(array_length(actions) - 1);
+		actions[actionIdx].onUse(allies[targetIdx], _enemy);
+	}
 }
 
 function checkStatus(_arrayAliados, _arrayInimigos) {
@@ -198,9 +210,4 @@ function checkDeath(_inst) {
 		_inst.sprite_index = _inst.defs.deathSprite;
 		_inst.image_index = 0;
 	}
-}
-
-function dumbAttack(_allies, _enemy, _action) {
-	var choice = irandom(array_length(_allies) - 1);
-	_action.onUse(_allies[choice], _enemy);
 }

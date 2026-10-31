@@ -3,7 +3,7 @@ battle.stepBattleTime();
 var baq = battle.actionQueue;
 if (!baq.isEmpty()) {
 	var a = baq.peek();
-	
+
 	switch (a[0]) {
 		case "moment":
 			checkStatus(battle.allies, battle.enemies);
@@ -11,15 +11,15 @@ if (!baq.isEmpty()) {
 			break;
 		case "enemy":
 			show_debug_message("INIMIGO ATACA NOVAMENTE");
-			var enemy = battle.enemies[a[1]];
-			dumbAttack(battle.allies, enemy, enemy.defs.actions[0]);
+			var enemyIdx = a[1];
+			battle.enemyRandomAction(battle.enemies[enemyIdx]);
 			baq.dequeue();
 			break;
 		case "ally":
 			if (battle.allies[a[1]].defs.isDown()) {
 				baq.dequeue();
 				break;
-			} 
+			}
 			battle.allyIdx = a[1];
 			if (mstack.isEmpty()) {
 				mstack.push(new ChoiceMenu(mstack));
