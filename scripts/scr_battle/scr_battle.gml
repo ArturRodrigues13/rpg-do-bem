@@ -86,12 +86,13 @@ function Battle(_args) constructor {
 		// Por causa disso, vamos fazer o seguinte:
 		// 1. Acumular todas as ações pendentes em uma lista;
 		// 2. Embaralhar os elementos;
-		// 3. Ordenar (estável) pelo valor do counter;
-		// TODO: fazer isso kkkkkkkkk
+		// 3. Ordenar (estável) pelo valor do counter, crescente;
+		// 4. Adicionar da esquerda para a direita na fila;
+		var acc = [];
 
 		actionCounter += timeStep;
 		if (actionCounter >= 1) {
-			actionQueue.put({ source: "moment", counter: actionCounter });
+			array_push(acc, { source: "moment", counter: actionCounter });
 			actionCounter -= 1;
 		}
 
@@ -104,7 +105,7 @@ function Battle(_args) constructor {
 			d.actionCounter += timeStep;
 			if (d.actionCounter >= thr) {
 				d.actionCounter -= thr;
-				actionQueue.put({ source: "enemy", idx: i, counter: d.actionCounter });
+				array_push(acc, { source: "enemy", idx: i, counter: d.actionCounter });
 			}
 		}
 
@@ -117,8 +118,21 @@ function Battle(_args) constructor {
 			d.actionCounter += timeStep;
 			if (d.actionCounter >= thr) {
 				d.actionCounter -= thr;
-				actionQueue.put({ source: "ally", idx: i, counter: d.actionCounter });
+				array_push(acc, { source: "ally", idx: i, counter: d.actionCounter });
 			}
+		}
+
+		// Embaralhar, ordenar e colocar na fila
+		array_shuffle_ext(acc);
+		arraySortStableExt(acc, function(_a, _b) {
+			var ac = _a.counter;
+			var bc = _b.counter;
+			if (ac < bc) return -1;
+			if (ac > bc) return 1;
+			return 0;
+		});
+		for (var i = 0; i < array_length(acc); i++) {
+			actionQueue.put(acc[i]);
 		}
 	}
 

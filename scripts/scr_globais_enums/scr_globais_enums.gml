@@ -76,3 +76,26 @@ global.keys = {
 // TODO: salvar e carregar configurações de keybindings
 
 #endregion
+
+// TODO: onde bota isso kkkkkkkkkkk
+function arraySortStableExt(_array, _cmp=undefined) {
+	var cmp = (_cmp != undefined) ? _cmp : function(_a, _b) {
+		if (_a < _b) return -1;
+		if (_a > _b) return 1;
+		return 0;
+	};
+
+	var len = array_length(_array);
+	for (var i = 0; i < len; i++) {
+		var swapped = false;
+		for (var j = 0; j < len - i - 1; j++) {
+			if (cmp(_array[j], _array[j+1])) {
+				var tmp = _array[j+1];
+				_array[j+1] = _array[j];
+				_array[j] = tmp;
+				swapped = true;
+			}
+		}
+		if (swapped) break;
+	}
+}
