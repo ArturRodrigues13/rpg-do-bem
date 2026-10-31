@@ -10,25 +10,29 @@ defs = new Defs({
 	chanceCrit: .3,
 	danoCrit: 2,
 	speed: .5,
-	actions: [{
-		name: "basic fire",
-		desc: "ATAQUE PADRÃO NIBA",
-		type: ActionType.ATTACK,
-		element: Element.FIRE,
-		damageType: DamageType.MAGIC,
-		targetType: TargetScope.ALLY_SINGLE,
-		onUse: function (_target, _user) {
-			Ataque(_user, _target, damageType, element);
+	actions: [
+		{
+			name: "basic fire",
+			desc: "ATAQUE PADRÃO NIBA",
+			type: ActionType.ATTACK,
+			element: Element.FIRE,
+			damageType: DamageType.MAGIC,
+			targetType: TargetScope.ALLY_SINGLE,
+			onUse: function (_target, _user) {
+				Ataque(_user, _target, damageType, element);
+			}
 		}
-	}],
+	],
 	deathSprite: spr_morto,
-	
 	acessorios: [],
 });
 
-infoLuta = [];
-
+// slop do mal só pra jogar o mesmo inimigo multiplas vezes aq
+var battleEnemies = [];
 for (var i = 0; i < 6; i++) {
-	// slop do mal só pra jogar o mesmo inimigo multiplas vezes aq
-	array_push(infoLuta, { obj: obj_inimigo });
+	array_push(battleEnemies, obj_inimigo);
 }
+
+battleData = {
+	enemies: battleEnemies,
+};

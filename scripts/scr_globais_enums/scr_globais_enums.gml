@@ -42,7 +42,6 @@ enum Type {
 // Combate
 global.inventario = array_create(12, undefined);
 global.invFirstEmptySpace = 0;
-global.enemiesInfo = [];
 
 global.allyData = {
 	knight0: {

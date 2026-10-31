@@ -10,9 +10,8 @@ x += _dir[0];
 y += _dir[1];
 
 if (_gk.confirm.isPressed() && place_meeting(x, y, obj_inimigo)) {
-	var inimigo = instance_nearest(x, y, obj_inimigo);
-	global.enemiesInfo = inimigo.infoLuta;
-	room_goto(rm_testeLuta);
+	var enemy = instance_nearest(x, y, obj_inimigo);
+	initBattle(enemy.battleData);
 }
 
 // TESTE TESTE TIRAR DEPOIS

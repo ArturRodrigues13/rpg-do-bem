@@ -1,3 +1,6 @@
+/// @desc Dados de inicialização da batalha.
+global.battleData = undefined;
+
 function Dano(_value, _alvo, _typeD) {
 	if (_typeD == DamageType.PHYSICAL) {
 		_value = max(0, _value - _alvo.defs.defesa);
@@ -20,7 +23,7 @@ function Ataque(_attacker, _target, _typeD, _element) {
 	var mult = (random(1) <= atDefs.chanceCrit) ? atDefs.danoCrit : 1;
 	var dano = 0;
 
-	if(_typeD == DamageType.PHYSICAL) {
+	if (_typeD == DamageType.PHYSICAL) {
 		dano = atDefs.ataque * mult;
 	} else if (_typeD == DamageType.MAGIC) {
 		dano = atDefs.ataquemagico * mult;
@@ -32,8 +35,11 @@ function Ataque(_attacker, _target, _typeD, _element) {
 }
 
 /// @desc Inicializa uma batalha, preparando os objetos e indo para a cena de batalha.
-function initBattle() {
-	// TODO
+/// @param {Struct} _data Dados da batalha
+/// @param {Array} _data.enemies Lista de inimigos que estarão presentes na batalha
+function initBattle(_data) {
+	global.battleData = _data;
+	room_goto(rm_testeLuta);
 }
 
 function Battle(_args) constructor {
@@ -163,9 +169,7 @@ function Battle(_args) constructor {
 	allies = instObjGrid(
 		array_map(args.allyNames, function(_x) { return global.allyData[$ _x].obj; }),
 		[40, 50], [80, 50], 2);
-	enemies = instObjGrid(
-		array_map(global.enemiesInfo, function(_x) { return _x.obj; }),
-		[200, 25], [120, 60], 2);
+	enemies = instObjGrid(args.enemies, [200, 25], [120, 60], 2);
 
 	/// @desc Faz um inimigo específico realizar uma ação aleatória em seu banco de ações.
 	enemyRandomAction = function(_enemy) {
