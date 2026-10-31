@@ -1,5 +1,7 @@
 function Defs(_args) constructor {
 	nome = _args.nome;
+	element = _args.element;
+	type = _args.type;
 	vida = _args.vida;
 	ataque = _args.ataque;
 	ataquemagico = _args.ataquemagico;
@@ -7,10 +9,12 @@ function Defs(_args) constructor {
 	defesamagica = _args.defesamagica;
 	chanceCrit = _args.chanceCrit;
 	danoCrit = _args.danoCrit;
-	tipoAtaque = _args.tipoAtaque;
+	actions = _args.actions;
 	speed = _args.speed;
+	actions = _args.actions;
 	acessorios = _args.acessorios;
 	deathSprite = _args.deathSprite;
+	
 	
 	actionCounter = 0;
 	

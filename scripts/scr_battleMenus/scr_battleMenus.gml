@@ -84,16 +84,19 @@ function Menu(_stack) constructor {
 }
 
 function ChoiceMenu(_stack) : Menu(_stack) constructor {
-	choices = ["ATACAR", "ITEM", "FUGIR"];
+	choices = ["ATAQUE", "FEITIÇO", "ITEM", "FUGIR"];
 	allowBack = false;
 	
 	onChoice = function() {
 		if (choiceIdx == 0) {
-			stack.push(new TargetMenu(stack, {
-				action: TargetAction.ATTACK,
-				targetType: TargetScope.EnemySingle,
+			stack.push(new ActionMenu(stack, {
+				type: ActionType.ATTACK
 			}));
 		} else if (choiceIdx == 1) {
+			stack.push(new ActionMenu(stack, {
+				type: ActionType.SPELL
+			}));
+		} else if (choiceIdx == 2) {
 			stack.push(new ItemMenu(stack));
 		} else {
 			// TODO: fazer um mecanismo p/ voltar para a sala anterior à batalha
@@ -104,9 +107,50 @@ function ChoiceMenu(_stack) : Menu(_stack) constructor {
 	}
 }
 
+function ActionMenu(_stack, _args) : Menu(_stack) constructor { 
+	
+	battle = global.battle;
+	
+	var allyActions = battle.allies[battle.allyIdx].defs.actions;
+	
+	choices = [];
+	for (var i = 0; i < array_length(allyActions); i++) {
+	    var ac = allyActions[i];
+	    if (ac.type == _args.type) array_push(choices, ac);
+	}
+	
+	onDraw = function() {
+		var _x = room_width;
+		var _y = room_height;
+		
+		draw_set_colour(c_green);
+		draw_rectangle(0, _y - 50, _x, _y, false);
+		draw_set_colour(c_white);
+	
+		for (var i = 0; i < array_length(choices); i++) {
+					
+			draw_text(40, _y - 70 + 20 * i, choices[i].name);
+		
+			if (choiceIdx == i) {
+				draw_sprite(spr_setinha, 0, 30, _y - 60 + 20 * i);
+				
+				draw_text(120, _y - 70, choices[i].desc);
+			}
+		}
+	}
+	
+	onChoice = function() {
+		stack.push(new TargetMenu(stack, {
+			action: TargetAction.ACTION,
+			actionInfo: choices[choiceIdx],
+			targetType: choices[choiceIdx].targetType
+		}));
+	}
+} 
+
 function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 	// Args pode ser:
-	// - { action: TargetAction.ATTACK }
+	// - { action: TargetAction.ACTION, actionInfo: <info da action> }
 	// - { action: TargetAction.ITEM, itemInfo: <info do item>, itemIdx: int }
 	args = _args;
 	bmd = global.battleMenuData;
@@ -115,7 +159,7 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 	isSingleTarget = (args.targetType == TargetScope.EnemySingle || args.targetType == TargetScope.AllySingle);
 	isAllyTarget = (args.targetType == TargetScope.AllyAll || args.targetType == TargetScope.AllySingle);
 
-	ncols = isAllyTarget ? 1 : 2;
+	ncols = 2;
 	choices = isAllyTarget ? global.partyAliada : global.partyInimiga;
 	choiceIdx = clamp(bmd.lastAttackIdx, 0, array_length(choices));
 	
@@ -212,15 +256,16 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 
 	onChoice = function() {
 		switch (args.action) {
-			case TargetAction.ATTACK:
+			case TargetAction.ACTION:
 				var _target = global.partyInimiga[choiceIdx];
 				if (_target.defs.isDown()) {
 					// TODO: tocar sfx de "escolha invalida" :))
 					return;
 				}
 				bmd.lastAttackIdx = choiceIdx;
-				var _attackingAlly = global.partyAliada[battle.allyIdx];
-				Ataque(_attackingAlly, global.partyInimiga[choiceIdx], _attackingAlly.defs.tipoAtaque);
+				var attackingAlly = global.partyAliada[battle.allyIdx];
+				args.actionInfo.onUse(_target, attackingAlly);
+				
 				choiceIdx = clamp(choiceIdx, 0, array_length(global.partyInimiga));
 				break;
 			case TargetAction.ITEM:

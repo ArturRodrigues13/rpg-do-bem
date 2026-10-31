@@ -1,5 +1,7 @@
 defs = new Defs({
 	nome: "caolho",
+	element: Element.FIRE,
+	type: Type.VAMPIRE,
 	vida: 5,
 	ataque: 1,
 	ataquemagico: 6,
@@ -8,7 +10,17 @@ defs = new Defs({
 	chanceCrit: .3,
 	danoCrit: 2,
 	speed: .5,
-	tipoAtaque: DamageType.MAGIC,
+	actions: [{
+		name: "basic fire",
+		desc: "ATAQUE PADRÃO NIBA",
+		type: ActionType.ATTACK,
+		element: Element.FIRE,
+		damageType: DamageType.MAGIC,
+		targetType: TargetScope.AllySingle,
+		onUse: function (_target, _user) {
+			Ataque(_user, _target, damageType, element);
+		}
+	}],
 	deathSprite: spr_morto,
 	
 	acessorios: [],

@@ -30,8 +30,14 @@ enum TargetScope {
 	EnemyAll,
 }
 
-enum TargetAction {
+enum ActionType {
+	
 	ATTACK,
+	SPELL
+}
+
+enum TargetAction {
+	ACTION,
 	ITEM,
 }
 
@@ -39,4 +45,17 @@ enum DamageType {
 	PHYSICAL,
 	MAGIC,
 	TRUTH
+}
+
+enum Element {
+	
+	FIRE,
+	WATER,
+	WIND,
+	EARTH
+}
+
+enum Type {
+	
+	VAMPIRE
 }

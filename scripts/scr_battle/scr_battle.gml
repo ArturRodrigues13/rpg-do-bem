@@ -15,7 +15,7 @@ function DanoAll(_value, _alvos, _typeD) {
 	}
 }
 
-function Ataque(_attacker, _target, _typeD) {
+function Ataque(_attacker, _target, _typeD, _element) {
 	var atDefs = _attacker.defs;
 	var mult = (random(1) <= atDefs.chanceCrit) ? atDefs.danoCrit : 1;
 	var dano = 0;
@@ -80,7 +80,7 @@ function Battle(_args) constructor {
 		for (var i = 0; i < array_length(allies); i++) {
 			
 			var ally = allies[i];
-			if(ally.isDown()) continue;
+			if(ally.defs.isDown()) continue;
 			drawCharacterStepBar(ally.defs,ally.x,ally.y);
 		}
 		
@@ -89,7 +89,7 @@ function Battle(_args) constructor {
 		for (var i = 0; i < array_length(enemies); i++) {
 			
 			var enemy = enemies[i];
-			if(enemy.isDown()) continue;
+			if(enemy.defs.isDown()) continue;
 			drawCharacterStepBar(enemy.defs,enemy.x,enemy.y);
 		}
 	}
@@ -143,12 +143,12 @@ function Battle(_args) constructor {
 		for (var i = 0; i < array_length(_arr); i++) {
 			var _a = global.allyData[$ _arr[i]];
 			var _inst = instance_create_layer(_x, _y, "Instances", _a.obj);
-			_y += 70;
+			_x += 80;
 			
 			if(i == 1) {
 				
-				_x += 80;
-				_y = 50;
+				_y += 50;
+				_x = 40;
 			} 
 			
 			array_push(_ret, _inst);
@@ -216,9 +216,9 @@ function checkDeath(_inst) {
 	}
 }
 
-function dumbAttack(_allys, _enemy) {
+function dumbAttack(_allies, _enemy, _action) {
 	
-	var choice = irandom(array_length(_allys) - 1)
+	var choice = irandom(array_length(_allies) - 1)
 	
-	Ataque(_enemy, _allys[choice], _enemy.defs.tipoAtaque);
+	_action.onUse(_allies[choice], _enemy);
 }
