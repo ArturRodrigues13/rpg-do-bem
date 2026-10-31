@@ -14,21 +14,20 @@ function Defs(_args) constructor {
 	actions = _args.actions;
 	acessorios = _args.acessorios;
 	deathSprite = _args.deathSprite;
-	
-	
 	actionCounter = 0;
-	
+
 	status = {
 		veneno: false,
 		queimadura: false,
 		congelado: false,
 		forte: false
 	};
-	
+
 	isDown = function() {
 		return vida <= 0;
 	}
-	
+
+	/// @desc Calcula o quanto do contador de ação é necessário para poder fazer uma ação.
 	getActionThreshold = function() {
 		var ret = 1 / speed;
 		ret = round(ret * 10) / 10; // arredondando p/ uma casa decimal
@@ -37,20 +36,19 @@ function Defs(_args) constructor {
 }
 
 function drawCharacterStepBar(_defs, _x, _y) {
-	
 	var bar_width = 32;
 	var bar_height = 5;
 	var bar_x = _x - 16;
 	var bar_y = _y + 20;
-	
+
 	var progress = _defs.actionCounter / _defs.getActionThreshold();
 	var current_bar_width = bar_width * progress;
-	
+
 	draw_set_color(c_gray);
 	draw_rectangle(bar_x, bar_y, bar_x + bar_width, bar_y + bar_height, false);
-	
+
 	draw_set_color(c_blue);
 	draw_rectangle(bar_x, bar_y, bar_x + current_bar_width, bar_y + bar_height, false);
-	
+
 	draw_set_color(c_white);
 }

@@ -31,19 +31,6 @@ function Ataque(_attacker, _target, _typeD, _element) {
 	Dano(dano, _target, _typeD);
 }
 
-global.allyData = {
-	knight0: {
-		obj: obj_cavaleiro,
-	},
-	mage0: {
-		obj: obj_mago,
-	},
-
-	sup: {
-		obj: obj_sup,
-	},
-};
-
 /// @desc Inicializa uma batalha, preparando os objetos e indo para a cena de batalha.
 function initBattle() {
 	// TODO
@@ -52,17 +39,13 @@ function initBattle() {
 function Battle(_args) constructor {
 	args = _args;
 	allyIdx = 0;
-
 	timeStep = 0.1;
 	actionCounter = 0.0;
-
 	actionQueue = new Queue();
 
-	// TODO: dá pra refatorar initEnemies e initAllies, eles tem código comum (e acho que seria bom por aqui já definir as dimensões do array)
-
+	/// @desc Desenha barras de progresso de ações.
 	drawStepBattleProgressBar = function() {
 		// BARRA DO PROGRESSO GERAL:
-
 		var bar_width = 100;
 		var bar_height = 15;
 		var bar_x = 10;
@@ -92,41 +75,49 @@ function Battle(_args) constructor {
 		}
 	}
 
+	/// @desc Avança o tempo da batalha e analisa o que precisa ser feito.
 	stepBattleTime = function() {
 		if (!actionQueue.isEmpty()) {
 			// tem coisas acontecendo, não avançar o tempo
 			return;
 		}
 
+		// Às vezes duas coisas podem chegar na contagem ao mesmo tempo. Mas, por causa da ordem do código aqui, se não tivermos cuidado, há uma hierarquia exata para quem vai conseguir agir primeiro.
+		// Por causa disso, vamos fazer o seguinte:
+		// 1. Acumular todas as ações pendentes em uma lista;
+		// 2. Embaralhar os elementos;
+		// 3. Ordenar (estável) pelo valor do counter;
+		// TODO: fazer isso kkkkkkkkk
+
 		actionCounter += timeStep;
 		if (actionCounter >= 1) {
-			actionQueue.put(["moment"]);
+			actionQueue.put({ source: "moment", counter: actionCounter });
 			actionCounter -= 1;
 		}
 
 		for (var i = 0; i < array_length(enemies); i++) {
-			var ed = enemies[i].defs;
+			var d = enemies[i].defs;
 
-			if (ed.isDown()) continue;
-			var thr = ed.getActionThreshold();
+			if (d.isDown()) continue;
+			var thr = d.getActionThreshold();
 
-			ed.actionCounter += timeStep;
-			if (ed.actionCounter >= thr) {
-				ed.actionCounter -= thr;
-				actionQueue.put(["enemy", i]);
+			d.actionCounter += timeStep;
+			if (d.actionCounter >= thr) {
+				d.actionCounter -= thr;
+				actionQueue.put({ source: "enemy", idx: i, counter: d.actionCounter });
 			}
 		}
 
 		for (var i = 0; i < array_length(allies); i++) {
-			var ad = allies[i].defs;
+			var d = allies[i].defs;
 
-			if (ad.isDown()) continue;
-			var thr = ad.getActionThreshold();
+			if (d.isDown()) continue;
+			var thr = d.getActionThreshold();
 
-			ad.actionCounter += timeStep;
-			if (ad.actionCounter >= thr) {
-				ad.actionCounter -= thr;
-				actionQueue.put(["ally", i]);
+			d.actionCounter += timeStep;
+			if (d.actionCounter >= thr) {
+				d.actionCounter -= thr;
+				actionQueue.put({ source: "ally", idx: i, counter: d.actionCounter });
 			}
 		}
 	}

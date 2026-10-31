@@ -44,6 +44,18 @@ global.inventario = array_create(12, undefined);
 global.invFirstEmptySpace = 0;
 global.enemiesInfo = [];
 
+global.allyData = {
+	knight0: {
+		obj: obj_cavaleiro,
+	},
+	mage0: {
+		obj: obj_mago,
+	},
+	sup: {
+		obj: obj_sup,
+	},
+};
+
 #region Keybindings
 
 function KeyHandler(_keys) constructor {
