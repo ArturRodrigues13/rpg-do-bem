@@ -108,13 +108,14 @@ function ChoiceMenu(_stack) : Menu(_stack) constructor {
 
 function ActionMenu(_stack, _args) : Menu(_stack) constructor {
 	battle = global.battle;
+	args = _args;
 
 	var allyActions = battle.allies[battle.allyIdx].defs.actions;
 
 	choices = [];
 	for (var i = 0; i < array_length(allyActions); i++) {
 	    var ac = allyActions[i];
-	    if (ac.type == _args.type) array_push(choices, ac);
+	    if (ac.type == args.type) array_push(choices, ac);
 	}
 
 	onDraw = function() {
@@ -139,23 +140,23 @@ function ActionMenu(_stack, _args) : Menu(_stack) constructor {
 
 	onChoice = function() {
 		stack.push(new TargetMenu(stack, {
-			action: TargetAction.ACTION,
+			actionType: args.type,
 			actionInfo: choices[choiceIdx],
-			targetType: choices[choiceIdx].targetType
+			targetScope: choices[choiceIdx].targetScope
 		}));
 	}
 }
 
 function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 	// Args pode ser:
-	// - { action: TargetAction.ACTION, actionInfo: <info da action> }
-	// - { action: TargetAction.ITEM, itemInfo: <info do item>, itemIdx: int }
+	// - { actionType: ActionType.ACTION, targetScope: <escopo do alvo>, actionInfo: <info da action> }
+	// - { actionType: ActionType.ITEM, targetScope: <escopo do alvo>, itemInfo: <info do item>, itemIdx: int }
 	args = _args;
 	bmd = global.battleMenuData;
 	battle = global.battle;
 
-	isSingleTarget = (args.targetType == TargetScope.ENEMY_SINGLE || args.targetType == TargetScope.ALLY_SINGLE);
-	isAllyTarget = (args.targetType == TargetScope.ALLY_ALL || args.targetType == TargetScope.ALLY_SINGLE);
+	isSingleTarget = (args.targetScope == TargetScope.ENEMY_SINGLE || args.targetScope == TargetScope.ALLY_SINGLE);
+	isAllyTarget = (args.targetScope == TargetScope.ALLY_ALL || args.targetScope == TargetScope.ALLY_SINGLE);
 
 	ncols = 2;
 	choices = isAllyTarget ? battle.allies : battle.enemies;
@@ -197,7 +198,7 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 			draw_text(e.x - 30, e.y, $"Vida:{e.defs.vida}");
 		}
 
-		switch (args.targetType) {
+		switch (args.targetScope) {
 			case TargetScope.ALLY_SINGLE:
 			case TargetScope.ENEMY_SINGLE:
 				draw_sprite(spr_setinha, 0, arrowPos[0], arrowPos[1]);
@@ -252,46 +253,59 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 	}
 
 	onChoice = function() {
-		switch (args.action) {
-			case TargetAction.ACTION:
-				var _target = battle.enemies[choiceIdx];
-				if (_target.defs.isDown()) {
-					// TODO: tocar sfx de "escolha invalida" :))
-					return;
-				}
+		
+		var target = undefined;
+		
+		if(isSingleTarget) {
+			if(isAllyTarget) {
+				target = battle.allies[choiceIdx];
+			} else {
+				target = battle.enemies[choiceIdx];
+			}
+			
+			
+			if (target.defs.isDown()) {
+				// TODO: tocar sfx de "escolha invalida" :))
+				return;
+			}
+		}
+		
+		var attackingAlly = battle.allies[battle.allyIdx];
+		
+		switch (args.actionType) {
+			
+			case ActionType.ATTACK:
+				
 				bmd.lastAttackIdx = choiceIdx;
-				var attackingAlly = battle.allies[battle.allyIdx];
-				args.actionInfo.onUse(_target, attackingAlly);
+				args.actionInfo.onUse(target, attackingAlly);
 
 				choiceIdx = clamp(choiceIdx, 0, array_length(battle.enemies));
 				break;
-			case TargetAction.ITEM:
-				var _currentItem = args.itemInfo;
-
-				if (args.targetType == TargetScope.ENEMY_SINGLE) {
-					_target = battle.enemies[choiceIdx];
-					if (_target.defs.isDown()) {
-						// TODO: tocar sfx de "escolha invalida" :))
-						return;
-					}
-					_currentItem.uso(_target);
-				} else if(args.targetType == TargetScope.ENEMY_ALL) {
-					_currentItem.uso(battle.enemies);
-				} else if(args.targetType == TargetScope.ALLY_SINGLE) {
-					_target = battle.allies[choiceIdx];
-					if (_target.defs.isDown()) {
-						// TODO: tocar sfx de "escolha invalida" :))
-						return;
-					}
-					_currentItem.uso(_target);
-				} else {
-					_currentItem.uso(battle.allies);
+			
+			case ActionType.SPELL:
+				
+				if (attackingAlly.defs.energy < args.actionInfo.cost) {
+					// TODO: tocar sfx de "escolha invalida" :))
+					return;
 				}
+				
+				bmd.lastAttackIdx = choiceIdx;
+				args.actionInfo.onUse(target, attackingAlly);
 
-				global.inventario[args.itemIdx] = undefined;
+				choiceIdx = clamp(choiceIdx, 0, array_length(battle.enemies));
 				break;
+			
+			case ActionType.ITEM:
+				
+				var _currentItem = args.itemInfo;
+				
+				_currentItem.onUse(target);
+
+				global.inventory[args.itemIdx] = undefined;
+				break;
+			
 			default:
-				show_error($"UNKNOWN TARGET ACTION {args.action}", false);
+				show_error($"UNKNOWN TARGET ACTION {args.actionType}", false);
 		}
 
 		// desenfileirar a ação do player atual
@@ -302,7 +316,7 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 }
 
 function ItemMenu(_stack) : Menu(_stack) constructor {
-	choices = global.inventario;
+	choices = global.inventory;
 	ncols = 4;
 
 	onDraw = function() {
@@ -343,8 +357,8 @@ function ItemMenu(_stack) : Menu(_stack) constructor {
 			draw_rectangle(10, _rh - 64, _rw - 10, _rh - 5, false);
 			draw_set_colour(c_white);
 
-			draw_text(15, _rh - 60, itemInfo.nome);
-			draw_text(15, _rh - 45, itemInfo.descricao);
+			draw_text(15, _rh - 60, itemInfo.name);
+			draw_text(15, _rh - 45, itemInfo.desc);
 		}
 	}
 
@@ -365,8 +379,8 @@ function ItemMenu(_stack) : Menu(_stack) constructor {
 	onChoice = function() {
 		var itemInfo = global.itensData[$ choices[choiceIdx]];
 		stack.push(new TargetMenu(stack, {
-			action: TargetAction.ITEM,
-			targetType: itemInfo.alvo,
+			actionType: ActionType.ITEM,
+			targetScope: itemInfo.targetScope,
 			itemInfo: itemInfo,
 			itemIdx: choiceIdx,
 		}));

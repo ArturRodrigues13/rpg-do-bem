@@ -1,8 +1,8 @@
 defs = new Defs({
-	nome: "mago",
+	name: "mago",
 	element: Element.WATER,
-	type: Type.VAMPIRE,
 	vida: 5,
+	energy: 100,
 	ataque: 1,
 	ataquemagico: 10,
 	defesa: 0,
@@ -16,7 +16,7 @@ defs = new Defs({
 		type: ActionType.ATTACK,
 		element: Element.WATER,
 		damageType: DamageType.MAGIC,
-		targetType: TargetScope.ENEMY_SINGLE,
+		targetScope: TargetScope.ENEMY_SINGLE,
 		onUse: function (_target, _user) {
 			Ataque(_user, _target, damageType, element);
 		}

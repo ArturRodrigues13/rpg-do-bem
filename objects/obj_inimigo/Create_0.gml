@@ -1,8 +1,8 @@
 defs = new Defs({
-	nome: "caolho",
+	name: "caolho",
 	element: Element.FIRE,
-	type: Type.VAMPIRE,
 	vida: 5,
+	energy: 1,
 	ataque: 1,
 	ataquemagico: 6,
 	defesa: 0,
@@ -17,7 +17,7 @@ defs = new Defs({
 			type: ActionType.ATTACK,
 			element: Element.FIRE,
 			damageType: DamageType.MAGIC,
-			targetType: TargetScope.ALLY_SINGLE,
+			targetScope: TargetScope.ALLY_SINGLE,
 			onUse: function (_target, _user) {
 				Ataque(_user, _target, damageType, element);
 			}

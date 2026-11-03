@@ -1,8 +1,8 @@
 function Defs(_args) constructor {
-	nome = _args.nome;
+	name = _args.name;
 	element = _args.element;
-	type = _args.type;
 	vida = _args.vida;
+	energy = _args.energy;
 	ataque = _args.ataque;
 	ataquemagico = _args.ataquemagico;
 	defesa = _args.defesa;

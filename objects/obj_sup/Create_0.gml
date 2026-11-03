@@ -1,8 +1,8 @@
 defs = new Defs({
-	nome: "slop",
+	name: "slop",
 	element: Element.WIND,
-	type: Type.VAMPIRE,
 	vida: 20,
+	energy: 1,
 	ataque: 1,
 	ataquemagico: 3,
 	defesa: 2,
@@ -16,7 +16,7 @@ defs = new Defs({
 		type: ActionType.ATTACK,
 		element: Element.WIND,
 		damageType: DamageType.MAGIC,
-		targetType: TargetScope.ENEMY_SINGLE,
+		targetScope: TargetScope.ENEMY_SINGLE,
 		onUse: function (_target, _user) {
 			Ataque(_user, _target, damageType, element);
 		}

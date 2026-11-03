@@ -12,12 +12,8 @@ enum TargetScope {
 
 enum ActionType {
 	ATTACK,
-	SPELL
-}
-
-enum TargetAction {
-	ACTION,
-	ITEM,
+	SPELL,
+	ITEM
 }
 
 enum DamageType {
@@ -33,14 +29,10 @@ enum Element {
 	EARTH
 }
 
-enum Type {
-	VAMPIRE
-}
-
 #endregion
 
 // Combate
-global.inventario = array_create(12, undefined);
+global.inventory = array_create(12, undefined);
 global.invFirstEmptySpace = 0;
 
 global.allyData = {

@@ -14,7 +14,7 @@ function save(_file){
 
 function saveAll(_fd) {
 	
-	var _save = json_stringify({inv: global.inventario, binga:"eugosto"});
+	var _save = json_stringify({inv: global.inventory, binga:"eugosto"});
 	
 	file_text_write_string(_fd, _save);
 }
@@ -43,7 +43,7 @@ function loadAll(_fd) {
 	
 	_load = json_parse(_load);
 	
-	global.inventario = _load.inv;
+	global.inventory = _load.inv;
 	
 	show_debug_message(_load.binga);
 }

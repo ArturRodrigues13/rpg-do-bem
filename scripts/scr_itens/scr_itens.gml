@@ -1,31 +1,31 @@
 global.itensData = {
 	pocaodeVida: {
-		nome: "Vida",
-		descricao: "cura (o amigo, forever big cloba)",
+		name: "Vida",
+		desc: "cura (o amigo, forever big cloba)",
 		spr: spr_pocaoVida,
-		alvo: TargetScope.ALLY_SINGLE,
-		uso: function(_alvo) {
-			_alvo.defs.vida += 20;
+		targetScope: TargetScope.ALLY_SINGLE,
+		onUse: function(_target) {
+			_target.defs.vida += 20;
 		}
 	},
 	
 	pedra: {
-		nome: "Pedra",
-		descricao: "taca pedra NO INIMIGO E EXECUTA\nELE DE FORMA BRUTAL",
+		name: "Pedra",
+		desc: "taca pedra NO INIMIGO E EXECUTA\nELE DE FORMA BRUTAL",
 		spr: spr_pedra,
-		alvo: TargetScope.ENEMY_SINGLE,
-		uso: function(_alvo) {
-			Dano(10, _alvo, DamageType.PHYSICAL);
+		targetScope: TargetScope.ENEMY_SINGLE,
+		onUse: function(_target) {
+			Dano(10, _target, DamageType.PHYSICAL);
 		}
 	},
 	
 	boladeFogo: {
-		nome: "Fogo",
-		descricao: "Nuke",
+		name: "Fogo",
+		desc: "Nuke",
 		spr: spr_bolaFogo,
-		alvo: TargetScope.ENEMY_ALL,
-		uso: function(_alvos) {
-			DanoAll(999, _alvos, DamageType.TRUTH);
+		targetScope: TargetScope.ENEMY_ALL,
+		onUse: function(_target) {
+			DanoAll(999, global.battle.enemies, DamageType.TRUTH);
 		}
 	}
 }
@@ -38,13 +38,13 @@ function addItem(_itemID) {
 		return;
 	}
 	
-	global.inventario[global.invFirstEmptySpace] = _itemID;
+	global.inventory[global.invFirstEmptySpace] = _itemID;
 	show_debug_message("pegou :)");
 }
 
 function checkInvFirstEmptySpace() {
-	for (var i = 0; i < array_length(global.inventario); i++) {
-		if (global.inventario[i] == undefined) {
+	for (var i = 0; i < array_length(global.inventory); i++) {
+		if (global.inventory[i] == undefined) {
 			global.invFirstEmptySpace = i;
 			return;
 		}
