@@ -51,6 +51,7 @@
     {"id":{"name":"scr_characters","path":"scripts/scr_characters/scr_characters.yy",},},
     {"id":{"name":"scr_globais_enums","path":"scripts/scr_globais_enums/scr_globais_enums.yy",},},
     {"id":{"name":"scr_itens","path":"scripts/scr_itens/scr_itens.yy",},},
+    {"id":{"name":"scr_menus","path":"scripts/scr_menus/scr_menus.yy",},},
     {"id":{"name":"scr_queue","path":"scripts/scr_queue/scr_queue.yy",},},
     {"id":{"name":"scr_save","path":"scripts/scr_save/scr_save.yy",},},
     {"id":{"name":"scr_vec","path":"scripts/scr_vec/scr_vec.yy",},},
