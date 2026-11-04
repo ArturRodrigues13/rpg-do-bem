@@ -169,7 +169,7 @@ function Battle(_args) constructor {
 	allies = instObjGrid(
 		array_map(args.allyNames, function(_x) { return global.allyData[$ _x].obj; }),
 		[40, 50], [80, 50], 2);
-	enemies = instObjGrid(args.enemies, [200, 25], [120, 60], 2);
+	enemies = instObjGrid(args.enemies, [200, 25], [120, 40], 2);
 
 	/// @desc Faz um inimigo específico realizar uma ação aleatória em seu banco de ações.
 	enemyRandomAction = function(_enemy) {

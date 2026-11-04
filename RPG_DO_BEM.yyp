@@ -35,6 +35,7 @@
   },
   "name":"RPG_DO_BEM",
   "resources":[
+    {"id":{"name":"Font1","path":"fonts/Font1/Font1.yy",},},
     {"id":{"name":"obj_camera","path":"objects/obj_camera/obj_camera.yy",},},
     {"id":{"name":"obj_cavaleiro","path":"objects/obj_cavaleiro/obj_cavaleiro.yy",},},
     {"id":{"name":"obj_character","path":"objects/obj_character/obj_character.yy",},},
