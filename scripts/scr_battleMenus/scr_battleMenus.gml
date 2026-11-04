@@ -28,18 +28,13 @@ function ChoiceMenu(_stack) : Menu(_stack) constructor {
 	
 	onDraw = function() {
 		
-		var hSize = room_width;
-		var vSize = 75;
+		draw_sprite(spr_choiceMenu,0, 0, room_height - 75);
 		var txtX = 30;
-		var txtY = room_height - 60;
-		
+		var txtY = room_height - 65;
 
-		draw_set_colour(c_purple);
-		draw_rectangle(0, room_height - vSize, hSize, room_height, false);
-		draw_set_colour(c_white);
 
 		for (var i = 0; i < array_length(choices); i++) {
-			var offsetX = (i == 4) ? 132 : (hSize - 110) * (i mod 2);
+			var offsetX = (i == 4) ? 132 : (room_width - 110) * (i mod 2);
 			var offsetY = (i == 4) ? 40 : 30 * (i div 2);
 			
 			draw_text(txtX + offsetX, txtY + offsetY, choices[i]);
@@ -67,7 +62,10 @@ function ChoiceMenu(_stack) : Menu(_stack) constructor {
 function ActionMenu(_stack, _args) : Menu(_stack) constructor {
 	battle = global.battle;
 	args = _args;
-
+	stack = _stack;
+	firstOpAvailable = 0;
+	lastOpAvailable = firstOpAvailable + 2;
+	
 	var allyActions = battle.allies[battle.allyIdx].defs.actions;
 
 	choices = [];
@@ -76,29 +74,55 @@ function ActionMenu(_stack, _args) : Menu(_stack) constructor {
 	    if (ac.type == args.type) array_push(choices, ac);
 	}
 	
-	
+	arraySize = array_length(choices);
 
 	onDraw = function() {
-		var _x = room_width;
-		var _y = room_height;
+		
+		draw_sprite(spr_actionMenu, 0, 0, room_height - 75);
+		
+		var txtNameX = 25;
+		var txtY = room_height - 70;
+		var txtDescX = 160;
+		var offsetY = 20;
+		
+		if(arraySize == 0) return;
 
-		draw_set_colour(c_green);
-		draw_rectangle(0, _y - 50, _x, _y, false);
-		draw_set_colour(c_white);
+		for (var i = 0; i < 3; i++) {
+			
+			if(i >= arraySize) continue;
+			
+			draw_text(txtNameX, txtY + offsetY * i, choices[firstOpAvailable + i].name);
 
-		for (var i = 0; i < array_length(choices); i++) {
-
-			draw_text(40, _y - 70 + 20 * i, choices[i].name);
-
-			if (choiceIdx == i) {
-				draw_sprite(spr_setinha, 0, 30, _y - 60 + 20 * i);
-
-				draw_text(120, _y - 70, choices[i].desc);
+			if (choiceIdx == firstOpAvailable + i) {
+				draw_sprite(spr_setinha, 0, txtNameX - 10, txtY + offsetY * i + 10);
 			}
+		}
+		
+		draw_text_ext(txtDescX, txtY, choices[choiceIdx].desc, 16, 216);
+	}
+	
+	handleInput = function() {
+		var _gk = global.keys;
+
+		if (_gk.up.isPressed()) choiceIdx--;
+		if (_gk.down.isPressed()) choiceIdx++;
+		choiceIdx = clamp(choiceIdx, 0, array_length(choices) - 1);
+
+		if (_gk.confirm.isPressed()) onChoice();
+		if (_gk.back.isPressed() && allowBack) stack.pop();
+			
+		if(choiceIdx > lastOpAvailable) {
+			firstOpAvailable++;
+			lastOpAvailable++;
+		} else if (choiceIdx < firstOpAvailable) {
+			firstOpAvailable--;
+			lastOpAvailable--;
 		}
 	}
 
 	onChoice = function() {
+		
+		if(array_length(choices) == 0) return;
 		
 		stack.push(new TargetMenu(stack, {
 			actionType: args.type,
