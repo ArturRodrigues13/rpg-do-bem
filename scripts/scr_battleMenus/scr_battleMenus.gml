@@ -81,24 +81,35 @@ function ActionMenu(_stack, _args) : Menu(_stack) constructor {
 		draw_sprite(spr_actionMenu, 0, 0, room_height - 75);
 		
 		var txtNameX = 25;
-		var txtY = room_height - 70;
+		var txtNameY = room_height - 70;
+		var txtDescY = room_height - 75;
 		var txtDescX = 160;
-		var offsetY = 20;
+		var offsetTextY = 20;
+		var iconsOriginX = 160
+		var iconsOriginY = room_height - 18;
+		var offsetIconsX = 20
 		
 		if(arraySize == 0) return;
 
 		for (var i = 0; i < 3; i++) {
 			
 			if(i >= arraySize) continue;
+				
+			draw_text(txtNameX, txtNameY + offsetTextY * i, choices[firstOpAvailable + i].name);
 			
-			draw_text(txtNameX, txtY + offsetY * i, choices[firstOpAvailable + i].name);
-
 			if (choiceIdx == firstOpAvailable + i) {
-				draw_sprite(spr_setinha, 0, txtNameX - 10, txtY + offsetY * i + 10);
+				draw_sprite(spr_setinha, 0, txtNameX - 10, txtNameY + offsetTextY * i + 10);
 			}
 		}
 		
-		draw_text_ext(txtDescX, txtY, choices[choiceIdx].desc, 16, 216);
+		var dIcon = getDamageIcon(choices[choiceIdx].damageType);
+		var eIcon = getElementIcon(choices[choiceIdx].element);
+		
+		draw_sprite(dIcon, 0, iconsOriginX, iconsOriginY);
+		
+		draw_sprite(eIcon, 0, iconsOriginX + offsetIconsX, iconsOriginY);
+		
+		draw_text_ext(txtDescX, txtDescY, choices[choiceIdx].desc, 16, 216);
 	}
 	
 	handleInput = function() {

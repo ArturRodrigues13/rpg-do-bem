@@ -28,8 +28,8 @@ defs = new Defs({
 			name: "no basic",
 			desc: "eu cago na rua 1",
 			type: ActionType.ATTACK,
-			element: Element.WATER,
-			damageType: DamageType.MAGIC,
+			element: Element.WIND,
+			damageType: DamageType.PHYSICAL,
 			targetScope: TargetScope.ENEMY_SINGLE,
 			onUse: function (_target, _user) {
 				Ataque(_user, _target, damageType, element);
@@ -40,8 +40,8 @@ defs = new Defs({
 			name: "super basic",
 			desc: "eu cago na rua 2",
 			type: ActionType.ATTACK,
-			element: Element.WATER,
-			damageType: DamageType.MAGIC,
+			element: Element.EARTH,
+			damageType: DamageType.TRUTH,
 			targetScope: TargetScope.ENEMY_SINGLE,
 			onUse: function (_target, _user) {
 				Ataque(_user, _target, damageType, element);
