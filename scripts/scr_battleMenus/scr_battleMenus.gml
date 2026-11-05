@@ -3,7 +3,7 @@ global.battleMenuData = {
 };
 
 function ChoiceMenu(_stack) : Menu(_stack) constructor {
-	choices = ["ATAQUE", "FEITIÇO", "ITEM", "FUGIR"];
+	choices = ["ATAQUE", "FEITIÇO", "ITEM", "CHECK", "FUGIR"];
 	allowBack = false;
 
 	onChoice = function() {
@@ -17,18 +17,55 @@ function ChoiceMenu(_stack) : Menu(_stack) constructor {
 			}));
 		} else if (choiceIdx == 2) {
 			stack.push(new ItemMenu(stack));
+		} else if (choiceIdx == 3) {
+			show_debug_message("checa inimigos: niba!")
 		} else {
 			// TODO: fazer um mecanismo p/ voltar para a sala anterior à batalha
 			global.battle = undefined;
 			room_goto(rm_teste);
 		}
 	}
+	
+	onDraw = function() {
+		
+		draw_sprite(spr_choiceMenu,0, 0, room_height - 75);
+		var txtX = 30;
+		var txtY = room_height - 65;
+
+
+		for (var i = 0; i < array_length(choices); i++) {
+			var offsetX = (i == 4) ? 132 : (room_width - 110) * (i mod 2);
+			var offsetY = (i == 4) ? 40 : 30 * (i div 2);
+			
+			draw_text(txtX + offsetX, txtY + offsetY, choices[i]);
+
+			if (choiceIdx == i) {
+				draw_sprite(spr_setinha, 0, txtX + offsetX - 10, txtY + offsetY + 10);
+			}
+		}
+	}
+	
+	handleInput = function() {
+		var _gk = global.keys;
+
+		if (_gk.up.isPressed()) choiceIdx -= 2;
+		if (_gk.down.isPressed()) choiceIdx += 2; 
+		if (_gk.right.isPressed()) choiceIdx = choiceIdx != 4 ? choiceIdx+1 : choiceIdx-1;
+		if (_gk.left.isPressed()) choiceIdx = choiceIdx != 4 ? choiceIdx-1 : choiceIdx-2;
+		choiceIdx = clamp(choiceIdx, 0, array_length(choices) - 1);
+
+		if (_gk.confirm.isPressed()) onChoice();
+		if (_gk.back.isPressed() && allowBack) stack.pop();
+	}
 }
 
 function ActionMenu(_stack, _args) : Menu(_stack) constructor {
 	battle = global.battle;
 	args = _args;
-
+	stack = _stack;
+	firstOpAvailable = 0;
+	lastOpAvailable = firstOpAvailable + 2;
+	
 	var allyActions = battle.allies[battle.allyIdx].defs.actions;
 
 	choices = [];
@@ -36,28 +73,68 @@ function ActionMenu(_stack, _args) : Menu(_stack) constructor {
 	    var ac = allyActions[i];
 	    if (ac.type == args.type) array_push(choices, ac);
 	}
+	
+	arraySize = array_length(choices);
 
 	onDraw = function() {
-		var _x = room_width;
-		var _y = room_height;
+		
+		draw_sprite(spr_actionMenu, 0, 0, room_height - 75);
+		
+		var txtNameX = 25;
+		var txtNameY = room_height - 70;
+		var txtDescY = room_height - 75;
+		var txtDescX = 160;
+		var offsetTextY = 20;
+		var iconsOriginX = 160
+		var iconsOriginY = room_height - 18;
+		var offsetIconsX = 20
+		
+		if(arraySize == 0) return;
 
-		draw_set_colour(c_green);
-		draw_rectangle(0, _y - 50, _x, _y, false);
-		draw_set_colour(c_white);
-
-		for (var i = 0; i < array_length(choices); i++) {
-
-			draw_text(40, _y - 70 + 20 * i, choices[i].name);
-
-			if (choiceIdx == i) {
-				draw_sprite(spr_setinha, 0, 30, _y - 60 + 20 * i);
-
-				draw_text(120, _y - 70, choices[i].desc);
+		for (var i = 0; i < 3; i++) {
+			
+			if(i >= arraySize) continue;
+				
+			draw_text(txtNameX, txtNameY + offsetTextY * i, choices[firstOpAvailable + i].name);
+			
+			if (choiceIdx == firstOpAvailable + i) {
+				draw_sprite(spr_setinha, 0, txtNameX - 10, txtNameY + offsetTextY * i + 10);
 			}
+		}
+		
+		var dIcon = getDamageIcon(choices[choiceIdx].damageType);
+		var eIcon = getElementIcon(choices[choiceIdx].element);
+		
+		draw_sprite(dIcon, 0, iconsOriginX, iconsOriginY);
+		
+		draw_sprite(eIcon, 0, iconsOriginX + offsetIconsX, iconsOriginY);
+		
+		draw_text_ext(txtDescX, txtDescY, choices[choiceIdx].desc, 16, 216);
+	}
+	
+	handleInput = function() {
+		var _gk = global.keys;
+
+		if (_gk.up.isPressed()) choiceIdx--;
+		if (_gk.down.isPressed()) choiceIdx++;
+		choiceIdx = clamp(choiceIdx, 0, array_length(choices) - 1);
+
+		if (_gk.confirm.isPressed()) onChoice();
+		if (_gk.back.isPressed() && allowBack) stack.pop();
+			
+		if(choiceIdx > lastOpAvailable) {
+			firstOpAvailable++;
+			lastOpAvailable++;
+		} else if (choiceIdx < firstOpAvailable) {
+			firstOpAvailable--;
+			lastOpAvailable--;
 		}
 	}
 
 	onChoice = function() {
+		
+		if(array_length(choices) == 0) return;
+		
 		stack.push(new TargetMenu(stack, {
 			actionType: args.type,
 			actionInfo: choices[choiceIdx],

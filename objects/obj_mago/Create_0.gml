@@ -10,17 +10,56 @@ defs = new Defs({
 	chanceCrit: .1,
 	danoCrit: 2,
 	speed: 1.5,
-	actions: [{
-		name: "basic fire",
-		desc: "ATAQUE PADRÃO NIBA",
-		type: ActionType.ATTACK,
-		element: Element.WATER,
-		damageType: DamageType.MAGIC,
-		targetScope: TargetScope.ENEMY_SINGLE,
-		onUse: function (_target, _user) {
-			Ataque(_user, _target, damageType, element);
-		}
-	}],
+	actions: 
+	[
+		{
+			name: "basic water",
+			desc: "Acerta um inimigo com uma lapada de agua do bem, buft, ficou fodido!",
+			type: ActionType.ATTACK,
+			element: Element.WATER,
+			damageType: DamageType.MAGIC,
+			targetScope: TargetScope.ENEMY_SINGLE,
+			onUse: function (_target, _user) {
+				Ataque(_user, _target, damageType, element);
+			}
+		},
+		
+		{
+			name: "no basic",
+			desc: "eu cago na rua 1",
+			type: ActionType.ATTACK,
+			element: Element.WIND,
+			damageType: DamageType.PHYSICAL,
+			targetScope: TargetScope.ENEMY_SINGLE,
+			onUse: function (_target, _user) {
+				Ataque(_user, _target, damageType, element);
+			}
+		},
+		
+		{
+			name: "super basic",
+			desc: "eu cago na rua 2",
+			type: ActionType.ATTACK,
+			element: Element.EARTH,
+			damageType: DamageType.TRUTH,
+			targetScope: TargetScope.ENEMY_SINGLE,
+			onUse: function (_target, _user) {
+				Ataque(_user, _target, damageType, element);
+			}
+		},
+		
+		{
+			name: "basic???",
+			desc: "bom dia gente, como ces ta em?",
+			type: ActionType.ATTACK,
+			element: Element.WATER,
+			damageType: DamageType.MAGIC,
+			targetScope: TargetScope.ENEMY_SINGLE,
+			onUse: function (_target, _user) {
+				Ataque(_user, _target, damageType, element);
+			}
+		},
+	],
 	deathSprite: spr_morto,
 	
 	acessorios: [],

@@ -31,6 +31,13 @@ enum Element {
 
 #endregion
 
+global.elementIcons = [
+	spr_fireIcon,
+	spr_waterIcon,
+	spr_windIcon,
+	spr_earthIcon
+];
+
 // Combate
 global.inventory = array_create(12, undefined);
 global.invFirstEmptySpace = 0;
