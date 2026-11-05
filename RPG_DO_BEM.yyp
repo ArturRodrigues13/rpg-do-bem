@@ -57,6 +57,7 @@
     {"id":{"name":"scr_vec","path":"scripts/scr_vec/scr_vec.yy",},},
     {"id":{"name":"spr_bolaFogo","path":"sprites/spr_bolaFogo/spr_bolaFogo.yy",},},
     {"id":{"name":"spr_cavaleiro","path":"sprites/spr_cavaleiro/spr_cavaleiro.yy",},},
+    {"id":{"name":"spr_font_default","path":"sprites/spr_font_default/spr_font_default.yy",},},
     {"id":{"name":"spr_inimigo","path":"sprites/spr_inimigo/spr_inimigo.yy",},},
     {"id":{"name":"spr_inventory","path":"sprites/spr_inventory/spr_inventory.yy",},},
     {"id":{"name":"spr_mago","path":"sprites/spr_mago/spr_mago.yy",},},
