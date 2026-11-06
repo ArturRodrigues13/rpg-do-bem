@@ -2,7 +2,7 @@ defs = new Defs({
 	name: "mago",
 	element: Element.WATER,
 	vida: 5,
-	energy: 100,
+	energy: 5,
 	ataque: 1,
 	ataquemagico: 10,
 	defesa: 0,

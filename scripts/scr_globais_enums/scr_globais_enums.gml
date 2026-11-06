@@ -21,6 +21,7 @@ enum DamageType {
 	PHYSICAL,
 	MAGIC,
 	TRUTH,
+	NOONE
 }
 
 enum Element {
@@ -38,12 +39,7 @@ enum Element {
 
 #endregion
 
-global.elementIcons = [
-	spr_fireIcon,
-	spr_waterIcon,
-	spr_windIcon,
-	spr_earthIcon
-];
+
 
 // Combate
 global.inventory = array_create(12, undefined);

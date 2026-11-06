@@ -65,9 +65,9 @@ function ActionMenu(_stack, _args) : Menu(_stack) constructor {
 	stack = _stack;
 	firstOpAvailable = 0;
 	lastOpAvailable = firstOpAvailable + 2;
-	attackingAlly = battle.allies[battle.allyIdx];
+	attackingAllyDefs = battle.allies[battle.allyIdx].defs;
 	
-	var allyActions = battle.allies[battle.allyIdx].defs.actions;
+	var allyActions = attackingAllyDefs.actions;
 
 	choices = [];
 	for (var i = 0; i < array_length(allyActions); i++) {
@@ -79,38 +79,49 @@ function ActionMenu(_stack, _args) : Menu(_stack) constructor {
 
 	onDraw = function() {
 		
-		draw_sprite(spr_actionMenu, 0, 0, room_height - 75);
+		var subimg = args.type == ActionType.ATTACK ? 0 : 1
+		
+		draw_sprite(spr_actionMenu, subimg, 0, room_height - 75)
+		
+		if(arraySize == 0) return;
 		
 		var txtNameX = 25;
 		var txtNameY = room_height - 70;
 		var txtDescY = room_height - 75;
 		var txtDescX = 160;
 		var offsetTextY = 20;
-		var iconsOriginX = 160
-		var iconsOriginY = room_height - 18;
-		var offsetIconsX = 20
-		
-		if(arraySize == 0) return;
 
 		for (var i = 0; i < 3; i++) {
 			
 			if(i >= arraySize) continue;
 				
+			if(choices[firstOpAvailable + i].cost > attackingAllyDefs.energy) draw_set_colour(c_red);
 			draw_text(txtNameX, txtNameY + offsetTextY * i, choices[firstOpAvailable + i].name);
+			draw_set_colour(c_white);
 			
 			if (choiceIdx == firstOpAvailable + i) {
 				draw_sprite(spr_setinha, 0, txtNameX - 10, txtNameY + offsetTextY * i + 10);
 			}
 		}
 		
-		var dIcon = getDamageIcon(choices[choiceIdx].damageType);
-		var eIcon = getElementIcon(choices[choiceIdx].element);
+		var currentChoice = choices[choiceIdx];
+		var iconsOriginX = args.type == ActionType.ATTACK ? 172 : 163;
+		var iconsOriginY = room_height - 21;
+		var offsetIconsX = args.type == ActionType.ATTACK ? 77 : 58;
+		
+		draw_text_ext(txtDescX, txtDescY, currentChoice.desc, 16, 216);
+		
+		var dIcon = getDamageIcon(currentChoice.damageType);
+		var eIcon = getElementIcon(currentChoice.element);
+		var tIcon = getTargetIcon(currentChoice.targetScope);
 		
 		draw_sprite(dIcon, 0, iconsOriginX, iconsOriginY);
-		
 		draw_sprite(eIcon, 0, iconsOriginX + offsetIconsX, iconsOriginY);
-		
-		draw_text_ext(txtDescX, txtDescY, choices[choiceIdx].desc, 16, 216);
+		draw_sprite(tIcon, 0, iconsOriginX + offsetIconsX * 2, iconsOriginY);
+		if(args.type == ActionType.SPELL) {
+			draw_sprite(spr_energyIcon, 0, iconsOriginX + offsetIconsX * 3, iconsOriginY);
+			draw_text(iconsOriginX + offsetIconsX * 3 + 15, iconsOriginY - 3, string(currentChoice.cost));
+		}
 	}
 	
 	handleInput = function() {
@@ -136,7 +147,7 @@ function ActionMenu(_stack, _args) : Menu(_stack) constructor {
 		
 		if(array_length(choices) == 0) return;
 			
-		if(choices[choiceIdx].cost > attackingAlly.defs.energy) {
+		if(choices[choiceIdx].cost > attackingAllyDefs.energy) {
 			// TODO: tocar sfx de "escolha invalida" :))
 			return;
 		}
@@ -320,21 +331,24 @@ function ItemMenu(_stack) : Menu(_stack) constructor {
 		draw_rectangle(0, 0, _rw, _rh, false);
 		draw_set_alpha(1);
 		draw_set_colour(c_white);
+		
+		var invX = 80;
+		var invY = 15;
 
-		var _originX = 108;
-		var _originY = 29;
-		var _offX = 56;
-		var _offY = 42;
-
-		draw_sprite(spr_inventory, choiceIdx, 80, 5);
+		draw_sprite(spr_inventory, choiceIdx, invX, invY);
+		
+		var originX = invX + 28;
+		var originY = invY + 24;
+		var offX = 56;
+		var offY = 42;
 
 		for (var i = 0; i < 12; i++) {
 
 			var ix = i mod ncols;
 			var iy = i div ncols;
 
-			var _leftX = _originX + ix * _offX;
-			var _topY = _originY + iy * _offY;
+			var _leftX = originX + ix * offX;
+			var _topY = originY + iy * offY;
 
 			if (choices[i] != undefined) {
 				var itemInfo = global.itensData[$ choices[i]];
