@@ -1,37 +1,35 @@
 /// @desc Dados de inicialização da batalha.
 global.battleData = undefined;
 
-function Dano(_value, _alvo, _typeD) {
-	if (_typeD == DamageType.PHYSICAL) {
-		_value = max(0, _value - _alvo.defs.defesa);
-	} else if (_typeD == DamageType.MAGIC) {
-		_value = max(0, _value - _alvo.defs.defesamagica);
-	}
-	_alvo.defs.vida -= _value;
-
-	checkDeath(_alvo);
-}
-
-function DanoAll(_value, _alvos, _typeD) {
-	for (var i = 0; i < array_length(_alvos); i++) {
-		if (!_alvos[i].defs.isDown()) Dano(_value, _alvos[i], _typeD);
-	}
-}
-
-function Ataque(_attacker, _target, _typeD, _element) {
-	var atDefs = _attacker.defs;
-	var mult = (random(1) <= atDefs.chanceCrit) ? atDefs.danoCrit : 1;
-	var dano = 0;
-
-	if (_typeD == DamageType.PHYSICAL) {
-		dano = atDefs.ataque * mult;
-	} else if (_typeD == DamageType.MAGIC) {
-		dano = atDefs.ataquemagico * mult;
+// _attacker pode ser undefined
+function Dano(_attacker, _baseDamage, _target, _typeD, _element) {
+	
+	var mult = 0;
+	
+	if(_attacker != undefined) {
+		var atDefs = _attacker.defs;
+		mult = (random(1) <= atDefs.chanceCrit) ? atDefs.danoCrit : 1;
 	} else {
-		dano = (atDefs.ataque + atDefs.ataquemagico) * mult;
+		mult = 1;
+	}
+	
+	var dano = _baseDamage;
+
+	if (_typeD == DamageType.PHYSICAL) {
+		dano = max(0, (dano * mult) - _target.defs.defesa);
+	} else if (_typeD == DamageType.MAGIC) {
+		dano = max(0, (dano * mult) - _target.defs.defesamagica);
 	}
 
-	Dano(dano, _target, _typeD);
+	_target.defs.vida -= dano;
+
+	checkDeath(_target);
+}
+
+function DanoAll(_attacker, _baseDamage, _alvos, _typeD, element) {
+	for (var i = 0; i < array_length(_alvos); i++) {
+		if (!_alvos[i].defs.isDown()) Dano(_attacker, _baseDamage, _alvos[i], _typeD, element);
+	}
 }
 
 /// @desc Inicializa uma batalha, preparando os objetos e indo para a cena de batalha.
@@ -98,8 +96,8 @@ function Battle(_args) constructor {
 
 		actionCounter += timeStep;
 		if (actionCounter >= 1) {
-			array_push(acc, { source: "moment", counter: actionCounter });
 			actionCounter -= 1;
+			array_push(acc, { source: "moment", counter: actionCounter });
 		}
 
 		for (var i = 0; i < array_length(enemies); i++) {
@@ -133,8 +131,8 @@ function Battle(_args) constructor {
 		arraySortStableExt(acc, function(_a, _b) {
 			var ac = _a.counter;
 			var bc = _b.counter;
-			if (ac < bc) return -1;
-			if (ac > bc) return 1;
+			if (ac < bc) return 1;
+			if (ac > bc) return -1;
 			return 0;
 		});
 		for (var i = 0; i < array_length(acc); i++) {
@@ -185,33 +183,33 @@ function Battle(_args) constructor {
 }
 
 function checkStatus(_arrayAliados, _arrayInimigos) {
-	var _status = 0;
-
-	for (var i = 0; i < array_length(_arrayAliados); i ++) {
-		if (_arrayAliados[i].defs.isDown()) continue;
-
-		_status = _arrayAliados[i].defs.status;
-		if (_status.veneno) {
-			Dano(2, _arrayAliados[i], DamageType.TRUTH);
-		}
-
-		if (_status.queimadura) {
-			Dano(1, _arrayAliados[i], DamageType.TRUTH);
-		}
-	}
-
-	for (var i = 0; i < array_length(_arrayInimigos); i ++) {
-		if (_arrayInimigos[i].defs.isDown()) continue;
-
-		_status = _arrayInimigos[i].defs.status;
-		if (_status.veneno) {
-			Dano(2, _arrayInimigos[i], DamageType.TRUTH);
-		}
-
-		if (_status.queimadura) {
-			Dano(1, _arrayInimigos[i], DamageType.TRUTH);
-		}
-	}
+	//var _status = 0;
+//
+	//for (var i = 0; i < array_length(_arrayAliados); i ++) {
+		//if (_arrayAliados[i].defs.isDown()) continue;
+//
+		//_status = _arrayAliados[i].defs.status;
+		//if (_status.veneno) {
+			//Dano(2, _arrayAliados[i], DamageType.TRUTH);
+		//}
+//
+		//if (_status.queimadura) {
+			//Dano(1, _arrayAliados[i], DamageType.TRUTH);
+		//}
+	//}
+//
+	//for (var i = 0; i < array_length(_arrayInimigos); i ++) {
+		//if (_arrayInimigos[i].defs.isDown()) continue;
+//
+		//_status = _arrayInimigos[i].defs.status;
+		//if (_status.veneno) {
+			//Dano(2, _arrayInimigos[i], DamageType.TRUTH);
+		//}
+//
+		//if (_status.queimadura) {
+			//Dano(1, _arrayInimigos[i], DamageType.TRUTH);
+		//}
+	//}
 }
 
 function checkDeath(_inst) {

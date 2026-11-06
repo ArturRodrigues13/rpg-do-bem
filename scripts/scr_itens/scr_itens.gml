@@ -15,7 +15,7 @@ global.itensData = {
 		spr: spr_pedra,
 		targetScope: TargetScope.ENEMY_SINGLE,
 		onUse: function(_target) {
-			Dano(10, _target, DamageType.PHYSICAL);
+			Dano(undefined,10, _target, DamageType.PHYSICAL, Element.EARTH);
 		}
 	},
 	
@@ -25,7 +25,7 @@ global.itensData = {
 		spr: spr_bolaFogo,
 		targetScope: TargetScope.ENEMY_ALL,
 		onUse: function(_target) {
-			DanoAll(999, global.battle.enemies, DamageType.TRUTH);
+			DanoAll(undefined, 999, global.battle.enemies, DamageType.TRUTH, Element.FIRE);
 		}
 	}
 }

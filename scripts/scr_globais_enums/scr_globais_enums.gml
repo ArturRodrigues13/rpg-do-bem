@@ -8,6 +8,7 @@ enum TargetScope {
 	ALLY_ALL,
 	ENEMY_SINGLE,
 	ENEMY_ALL,
+	SELF
 }
 
 enum ActionType {
@@ -19,7 +20,7 @@ enum ActionType {
 enum DamageType {
 	PHYSICAL,
 	MAGIC,
-	TRUTH
+	TRUTH,
 }
 
 enum Element {

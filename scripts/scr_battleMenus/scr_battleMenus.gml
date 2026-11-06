@@ -3,7 +3,7 @@ global.battleMenuData = {
 };
 
 function ChoiceMenu(_stack) : Menu(_stack) constructor {
-	choices = ["ATAQUE", "FEITIÇO", "ITEM", "CHECK", "FUGIR"];
+	choices = ["ATAQUE", "HABILIDADE", "ITEM", "CHECK", "FUGIR"];
 	allowBack = false;
 
 	onChoice = function() {
