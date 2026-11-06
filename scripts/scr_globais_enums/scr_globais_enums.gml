@@ -26,7 +26,13 @@ enum Element {
 	FIRE,
 	WATER,
 	WIND,
-	EARTH
+	EARTH,
+	ELECTRICAL,
+	NATURE,
+	MACHINE,
+	HOLY,
+	UNHOLY,
+	_MAX,
 }
 
 #endregion
