@@ -24,6 +24,19 @@ defs = new Defs({
 				Dano(_user, _user.defs.ataquemagico, _target, damageType, element);
 			}
 		},
+		
+		{
+			name: "cura aliado",
+			cost: 10,
+			desc: "cura um aliado, duh",
+			type: ActionType.SPELL,
+			element: Element.WATER,
+			damageType: DamageType.MAGIC,
+			targetScope: TargetScope.ALLY_SINGLE,
+			onUse: function (_target, _user) {
+				_target.defs.vida += _user.defs.ataquemagico;
+			}
+		},
 	],
 	deathSprite: spr_morto,
 	

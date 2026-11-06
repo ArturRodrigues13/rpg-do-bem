@@ -65,6 +65,7 @@ function ActionMenu(_stack, _args) : Menu(_stack) constructor {
 	stack = _stack;
 	firstOpAvailable = 0;
 	lastOpAvailable = firstOpAvailable + 2;
+	attackingAlly = battle.allies[battle.allyIdx];
 	
 	var allyActions = battle.allies[battle.allyIdx].defs.actions;
 
@@ -134,6 +135,11 @@ function ActionMenu(_stack, _args) : Menu(_stack) constructor {
 	onChoice = function() {
 		
 		if(array_length(choices) == 0) return;
+			
+		if(choices[choiceIdx].cost > attackingAlly.defs.energy) {
+			// TODO: tocar sfx de "escolha invalida" :))
+			return;
+		}
 		
 		stack.push(new TargetMenu(stack, {
 			actionType: args.type,
@@ -271,22 +277,11 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 		switch (args.actionType) {
 			
 			case ActionType.ATTACK:
-				
-				bmd.lastAttackIdx = choiceIdx;
-				args.actionInfo.onUse(target, attackingAlly);
-
-				choiceIdx = clamp(choiceIdx, 0, array_length(battle.enemies));
-				break;
-			
 			case ActionType.SPELL:
 				
-				if (attackingAlly.defs.energy < args.actionInfo.cost) {
-					// TODO: tocar sfx de "escolha invalida" :))
-					return;
-				}
-				
 				bmd.lastAttackIdx = choiceIdx;
 				args.actionInfo.onUse(target, attackingAlly);
+				attackingAlly.defs.energy -= args.actionInfo.cost;
 
 				choiceIdx = clamp(choiceIdx, 0, array_length(battle.enemies));
 				break;

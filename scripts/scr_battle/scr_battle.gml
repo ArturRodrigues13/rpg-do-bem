@@ -14,6 +14,8 @@ function Dano(_attacker, _baseDamage, _target, _typeD, _element) {
 	}
 	
 	var dano = _baseDamage;
+	
+	dano *= global.dmgTable[_element][_target.defs.element];
 
 	if (_typeD == DamageType.PHYSICAL) {
 		dano = max(0, (dano * mult) - _target.defs.defesa);
@@ -229,7 +231,10 @@ function initDamageTable() {
 		}
 		array_push(tbl, row);
 	}
+	
+	tbl[Element.WATER][Element.FIRE] = 2;
+	
+	
 	return tbl;
 }
 dmgTable = initDamageTable();
-show_debug_message(global.dmgTable);
