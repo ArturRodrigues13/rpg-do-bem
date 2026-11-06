@@ -72,6 +72,7 @@ global.keys = {
 	right: new KeyHandler([vk_right]),
 	confirm: new KeyHandler([vk_enter, ord("Z")]),
 	back: new KeyHandler([vk_escape, ord("X")]),
+	inventory: new KeyHandler([ord("I")]),
 };
 
 // TODO: salvar e carregar configurações de keybindings

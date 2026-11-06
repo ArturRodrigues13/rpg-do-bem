@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_battleMenus",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"Menus",
+    "path":"folders/Scripts/Menus.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

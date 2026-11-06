@@ -55,14 +55,12 @@ function ChoiceMenu(_stack) : Menu(_stack) constructor {
 		choiceIdx = clamp(choiceIdx, 0, array_length(choices) - 1);
 
 		if (_gk.confirm.isPressed()) onChoice();
-		if (_gk.back.isPressed() && allowBack) stack.pop();
 	}
 }
 
 function ActionMenu(_stack, _args) : Menu(_stack) constructor {
 	battle = global.battle;
 	args = _args;
-	stack = _stack;
 	firstOpAvailable = 0;
 	lastOpAvailable = firstOpAvailable + 2;
 	attackingAllyDefs = battle.allies[battle.allyIdx].defs;
@@ -79,48 +77,57 @@ function ActionMenu(_stack, _args) : Menu(_stack) constructor {
 
 	onDraw = function() {
 		
-		var subimg = args.type == ActionType.ATTACK ? 0 : 1
-		
-		draw_sprite(spr_actionMenu, subimg, 0, room_height - 75)
-		
-		if(arraySize == 0) return;
-		
+		var isAttack = args.type == ActionType.ATTACK;
+		var subimg = isAttack ? 0 : 1;
+	
+		draw_sprite(spr_actionMenu, subimg, 0, room_height - 75);
+	
+		if (arraySize == 0) return;
+	
 		var txtNameX = 25;
 		var txtNameY = room_height - 70;
-		var txtDescY = room_height - 75;
 		var txtDescX = 160;
+		var txtDescY = room_height - 75;
 		var offsetTextY = 20;
-
+		var currentChoice = choices[choiceIdx];
+		
+		draw_text_ext(txtDescX, txtDescY, currentChoice.desc, 16, 216);
+	
 		for (var i = 0; i < 3; i++) {
-			
-			if(i >= arraySize) continue;
-				
-			if(choices[firstOpAvailable + i].cost > attackingAllyDefs.energy) draw_set_colour(c_red);
-			draw_text(txtNameX, txtNameY + offsetTextY * i, choices[firstOpAvailable + i].name);
+	
+			if (i >= arraySize) continue;
+	
+			var currentIdx = firstOpAvailable + i;
+			var currentOption = choices[currentIdx];
+	
+			draw_set_colour(currentOption.cost > attackingAllyDefs.energy ? c_red : c_white);
+			draw_text(txtNameX, txtNameY + offsetTextY * i, currentOption.name);
 			draw_set_colour(c_white);
 			
-			if (choiceIdx == firstOpAvailable + i) {
+			if (choiceIdx == currentIdx) {
 				draw_sprite(spr_setinha, 0, txtNameX - 10, txtNameY + offsetTextY * i + 10);
 			}
 		}
-		
-		var currentChoice = choices[choiceIdx];
-		var iconsOriginX = args.type == ActionType.ATTACK ? 172 : 163;
+
+		var iconsOriginX = isAttack ? 172 : 163;
 		var iconsOriginY = room_height - 21;
-		var offsetIconsX = args.type == ActionType.ATTACK ? 77 : 58;
-		
-		draw_text_ext(txtDescX, txtDescY, currentChoice.desc, 16, 216);
-		
-		var dIcon = getDamageIcon(currentChoice.damageType);
-		var eIcon = getElementIcon(currentChoice.element);
-		var tIcon = getTargetIcon(currentChoice.targetScope);
-		
-		draw_sprite(dIcon, 0, iconsOriginX, iconsOriginY);
-		draw_sprite(eIcon, 0, iconsOriginX + offsetIconsX, iconsOriginY);
-		draw_sprite(tIcon, 0, iconsOriginX + offsetIconsX * 2, iconsOriginY);
-		if(args.type == ActionType.SPELL) {
-			draw_sprite(spr_energyIcon, 0, iconsOriginX + offsetIconsX * 3, iconsOriginY);
-			draw_text(iconsOriginX + offsetIconsX * 3 + 15, iconsOriginY - 3, string(currentChoice.cost));
+		var offsetIconsX = isAttack ? 77 : 58;
+	
+		var icons = [
+			getDamageIcon(currentChoice.damageType),
+			getElementIcon(currentChoice.element),
+			getTargetIcon(currentChoice.targetScope)
+		];
+	
+		for (var i = 0; i < array_length(icons); i++) {
+			draw_sprite(icons[i], 0, iconsOriginX + offsetIconsX * i, iconsOriginY);
+		}
+	
+		if (!isAttack) {
+			var energyX = iconsOriginX + offsetIconsX * 3;
+	
+			draw_sprite(spr_energyIcon, 0, energyX, iconsOriginY);
+			draw_text(energyX + 15, iconsOriginY - 3, string(currentChoice.cost));
 		}
 	}
 	

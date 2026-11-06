@@ -29,7 +29,7 @@ defs = new Defs({
 		name: "ataque de espada",
 		cost: 5,
 		desc: "Caua falou pra usar isso",
-		type: ActionType.ATTACK,
+		type: ActionType.SPELL,
 		element: Element.EARTH,
 		damageType: DamageType.PHYSICAL,
 		targetScope: TargetScope.ENEMY_ALL,
