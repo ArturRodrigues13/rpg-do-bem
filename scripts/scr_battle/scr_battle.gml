@@ -218,3 +218,18 @@ function checkDeath(_inst) {
 		_inst.image_index = 0;
 	}
 }
+
+/// @desc `dmgTable[X][Y]` é o multiplicador de dano quando o elemento X ataca um ser de elemento Y
+function initDamageTable() {
+	var tbl = [];
+	repeat (Element._MAX) {
+		var row = [];
+		repeat (Element._MAX) {
+			array_push(row, 1);
+		}
+		array_push(tbl, row);
+	}
+	return tbl;
+}
+dmgTable = initDamageTable();
+show_debug_message(global.dmgTable);

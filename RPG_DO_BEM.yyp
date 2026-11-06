@@ -63,6 +63,7 @@
     {"id":{"name":"spr_actionMenu","path":"sprites/spr_actionMenu/spr_actionMenu.yy",},},
     {"id":{"name":"spr_bolaFogo","path":"sprites/spr_bolaFogo/spr_bolaFogo.yy",},},
     {"id":{"name":"spr_cavaleiro","path":"sprites/spr_cavaleiro/spr_cavaleiro.yy",},},
+    {"id":{"name":"spr_font_default","path":"sprites/spr_font_default/spr_font_default.yy",},},
     {"id":{"name":"spr_choiceMenu","path":"sprites/spr_choiceMenu/spr_choiceMenu.yy",},},
     {"id":{"name":"spr_earthIcon","path":"sprites/spr_earthIcon/spr_earthIcon.yy",},},
     {"id":{"name":"spr_fireIcon","path":"sprites/spr_fireIcon/spr_fireIcon.yy",},},
