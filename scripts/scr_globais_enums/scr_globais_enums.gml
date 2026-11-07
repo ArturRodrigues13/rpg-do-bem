@@ -44,6 +44,7 @@ enum Element {
 // Combate
 global.inventory = array_create(12, undefined);
 global.invFirstEmptySpace = 0;
+global.invHeldItem = undefined;
 
 global.allyData = {
 	knight0: {

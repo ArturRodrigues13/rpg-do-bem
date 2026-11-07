@@ -1,3 +1,6 @@
+// Só pra deixar ele parado
+if(!obj_controlInventory.mstack.isEmpty()) exit;
+
 var _gk = global.keys;
 
 var _dir = [
