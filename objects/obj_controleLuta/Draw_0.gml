@@ -1,6 +1,6 @@
 var baq = battle.actionQueue;
 
-battle.drawStepBattleProgressBar();
+battle.drawBattleInfo();
 
 if (!baq.isEmpty()) {
 	var a = baq.peek();

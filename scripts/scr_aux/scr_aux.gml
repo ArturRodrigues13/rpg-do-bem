@@ -9,6 +9,14 @@ function getDamageIcon(_damageType) {
 	}
 }
 
+function getStatusIconInfo(_status) {
+	if(_status == Status.BURN) {
+		return [spr_statusBurnIcon, c_orange];
+	} else {
+		return [spr_statusPoisonIcon, c_green];
+	}
+}
+
 function getTargetIcon(_targetScope) {
 	
 	if(_targetScope == TargetScope.ALLY_SINGLE) {

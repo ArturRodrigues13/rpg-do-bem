@@ -22,6 +22,8 @@ defs = new Defs({
 		targetScope: TargetScope.ENEMY_SINGLE,
 		onUse: function (_target, _user) {
 			Dano(_user, _user.defs.ataque, _target, damageType, element);
+			
+			incrementStatus(_target, Status.POISON, 3);
 		}
 	},
 		

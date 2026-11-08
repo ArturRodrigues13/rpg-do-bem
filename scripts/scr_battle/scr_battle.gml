@@ -66,19 +66,19 @@ function Battle(_args) constructor {
 		draw_set_color(c_red);
 		draw_rectangle(bar_x, bar_y, bar_x + current_bar_width, bar_y + bar_height, false);
 
-		// BARRA DOS ALIADOS
-		for (var i = 0; i < array_length(allies); i++) {
-			var ally = allies[i];
-			if (ally.defs.isDown()) continue;
-			drawCharacterStepBar(ally.defs, ally.x, ally.y);
+		// BARRA DOS PERSONAGENS
+		for (var i = 0; i < array_length(battleInstances); i++) {
+			var inst = battleInstances[i];
+			if (inst.defs.isDown()) continue;
+			drawCharacterStepBar(inst.defs, inst.x, inst.y);	
 		}
-
-		// BARRA DOS INIMIGOS
-		for (var i = 0; i < array_length(enemies); i++) {
-			var enemy = enemies[i];
-			if (enemy.defs.isDown()) continue;
-			drawCharacterStepBar(enemy.defs, enemy.x, enemy.y);
-		}
+	}
+	
+	// @desc Desenhar info da batalha, apenas pra evitar fazer battle.funçãoX várias vezes
+	drawBattleInfo = function () {
+		
+		drawStepBattleProgressBar();
+		drawStatusIcons(battleInstances);
 	}
 
 	/// @desc Avança o tempo da batalha e analisa o que precisa ser feito.
@@ -211,7 +211,7 @@ function applyStatus(_target, _status) {
 	
 	switch (_status) {
 		case Status.BURN:
-			defs.vida -= 3;
+			defs.vida -= 1;
 			// TODO: Pensar numa forma eficiente de lidar com isso de redução de ataque.
 			//if(firstApply) defs.ataque -= round(defs.ataque / 2);
 			//
@@ -220,7 +220,7 @@ function applyStatus(_target, _status) {
 		break;
 	
 		case Status.POISON:
-			defs.vida -= 99;
+			defs.vida -= 2;
 		break;
 	}
 	

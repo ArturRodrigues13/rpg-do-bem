@@ -51,3 +51,26 @@ function drawCharacterStepBar(_defs, _x, _y) {
 
 	draw_set_color(c_white);
 }
+
+// @desc Desenhar ícones de Status e quantidade de stacks pra cada personagem em batalha
+function drawStatusIcons(_battleInstances) {
+	for (var i = 0; i < array_length(_battleInstances); i++) {
+		var inst = _battleInstances[i];
+		
+		if (inst.defs.isDown()) continue;
+		
+		var originIconsX = inst.x - 16;
+		var originIconsY = inst.y - 20;
+		var offsetX = 0;
+		for(var j = 0; j < Status._MAX; j++) {
+			if(inst.defs.status[j][0] > 0) {
+				var info = getStatusIconInfo(j);
+				draw_sprite(info[0], 0, originIconsX + offsetX, originIconsY);
+				offsetX += 8;
+				draw_set_colour(info[1]);
+				draw_text(originIconsX, originIconsY - 10, inst.defs.status[j][0]);
+				draw_set_colour(c_white);
+			}
+		}
+	}
+}

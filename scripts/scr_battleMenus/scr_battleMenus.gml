@@ -278,7 +278,6 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 				target = battle.enemies[choiceIdx];
 			}
 			
-			
 			if (target.defs.isDown()) {
 				// TODO: tocar sfx de "escolha invalida" :))
 				return;
