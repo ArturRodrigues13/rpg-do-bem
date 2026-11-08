@@ -16,12 +16,11 @@ function Defs(_args) constructor {
 	deathSprite = _args.deathSprite;
 	actionCounter = 0;
 
-	status = {
-		veneno: false,
-		queimadura: false,
-		congelado: false,
-		forte: false
-	};
+	status = array_create(Status._MAX);
+
+	for (var i = 0; i < Status._MAX; i++) {
+		status[i] = [0, false];
+	}
 
 	isDown = function() {
 		return vida <= 0;

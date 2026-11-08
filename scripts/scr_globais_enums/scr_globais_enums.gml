@@ -37,6 +37,12 @@ enum Element {
 	_MAX,
 }
 
+enum Status {
+	BURN,
+	POISON,
+	_MAX
+}
+
 #endregion
 
 

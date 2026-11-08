@@ -5,7 +5,7 @@ if (!baq.isEmpty()) {
 	var a = baq.peek();
 	switch (a.source) {
 		case "moment":
-			checkStatus(battle.allies, battle.enemies);
+			checkStatus(battle.battleInstances);
 			baq.dequeue();
 			break;
 		case "enemy":

@@ -170,6 +170,8 @@ function Battle(_args) constructor {
 		array_map(args.allyNames, function(_x) { return global.allyData[$ _x].obj; }),
 		[40, 50], [80, 50], 2);
 	enemies = instObjGrid(args.enemies, [200, 25], [120, 40], 2);
+	
+	battleInstances = array_concat(allies, enemies);
 
 	/// @desc Faz um inimigo específico realizar uma ação aleatória em seu banco de ações.
 	enemyRandomAction = function(_enemy) {
@@ -184,34 +186,58 @@ function Battle(_args) constructor {
 	}
 }
 
-function checkStatus(_arrayAliados, _arrayInimigos) {
-	//var _status = 0;
-//
-	//for (var i = 0; i < array_length(_arrayAliados); i ++) {
-		//if (_arrayAliados[i].defs.isDown()) continue;
-//
-		//_status = _arrayAliados[i].defs.status;
-		//if (_status.veneno) {
-			//Dano(2, _arrayAliados[i], DamageType.TRUTH);
-		//}
-//
-		//if (_status.queimadura) {
-			//Dano(1, _arrayAliados[i], DamageType.TRUTH);
-		//}
-	//}
-//
-	//for (var i = 0; i < array_length(_arrayInimigos); i ++) {
-		//if (_arrayInimigos[i].defs.isDown()) continue;
-//
-		//_status = _arrayInimigos[i].defs.status;
-		//if (_status.veneno) {
-			//Dano(2, _arrayInimigos[i], DamageType.TRUTH);
-		//}
-//
-		//if (_status.queimadura) {
-			//Dano(1, _arrayInimigos[i], DamageType.TRUTH);
-		//}
-	//}
+// @desc Incrementar N stacks de um certo status num inimigo;
+function incrementStatus(_target, _status, _stacks) {
+	var statusArray = _target.defs.status;
+	_target.defs.status[_status][0] += _stacks;
+}
+
+// @desc Aplicar o efeito de um certo status no inimigo, reduzindo seus stacks e
+// lidando com o fato de ser ou não a primeira aplicação;
+function applyStatus(_target, _status) {
+	
+	// TODO: Isso tá meio slop, ajeitar depois
+	var defs = _target.defs
+	var firstApply = false;
+	if(defs.status[_status][1] == false) {
+		firstApply = true;
+		defs.status[_status][1] = true;
+	}
+	
+	defs.status[_status][0] -= 1;
+	if(defs.status[_status][0] == 0) {
+		defs.status[_status][1] = false;
+	}
+	
+	switch (_status) {
+		case Status.BURN:
+			defs.vida -= 3;
+			// TODO: Pensar numa forma eficiente de lidar com isso de redução de ataque.
+			//if(firstApply) defs.ataque -= round(defs.ataque / 2);
+			//
+			//if(defs.status[_status][0] == 0) defs.ataque += round(defs.ataque / 2);
+			
+		break;
+	
+		case Status.POISON:
+			defs.vida -= 99;
+		break;
+	}
+	
+	checkDeath(_target);
+}
+
+// @desc Passar por todas as instâncias em batalha e verificar se eles possuem stacks de algum status;
+function checkStatus(_fightInstances) {
+
+	for (var i = 0; i < array_length(_fightInstances); i++) {
+		var inst = _fightInstances[i];
+		for(var j = 0; j < Status._MAX; j++) {
+			if(inst.defs.status[j][0] > 0) {
+				applyStatus(inst, j);
+			}
+		}
+	}
 }
 
 function checkDeath(_inst) {
@@ -230,7 +256,7 @@ function initDamageTable() {
 			array_push(row, 1);
 		}
 		array_push(tbl, row);
-	}
+	}  
 	
 	tbl[Element.WATER][Element.FIRE] = 2;
 	

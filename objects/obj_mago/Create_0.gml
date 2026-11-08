@@ -4,7 +4,7 @@ defs = new Defs({
 	vida: 5,
 	energy: 5,
 	ataque: 1,
-	ataquemagico: 10,
+	ataquemagico: 1,
 	defesa: 0,
 	defesamagica: 5,
 	chanceCrit: .1,
@@ -22,6 +22,8 @@ defs = new Defs({
 			targetScope: TargetScope.ENEMY_SINGLE,
 			onUse: function (_target, _user) {
 				Dano(_user, _user.defs.ataquemagico, _target, damageType, element);
+				
+				incrementStatus(_target, Status.BURN, 3);
 			}
 		},
 		

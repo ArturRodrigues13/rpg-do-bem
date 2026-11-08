@@ -206,16 +206,11 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 	}
 
 	onDraw = function() {
-		var aliados = battle.allies;
-		for (var i = 0; i < array_length(aliados); i++) {
-			var al = aliados[i];
-			draw_text(al.x - 30, al.y, $"Vida:{al.defs.vida}");
-		}
-
-		var inimigos = battle.enemies;
-		for (var i = 0; i < array_length(inimigos); i++) {
-			var e = inimigos[i];
-			draw_text(e.x - 30, e.y, $"Vida:{e.defs.vida}");
+		
+		var allInsts = battle.battleInstances;
+		for (var i = 0; i < array_length(allInsts); i++) {
+			var inst = allInsts[i];
+			draw_text(inst.x - 30, inst.y, $"Vida:{inst.defs.vida}");
 		}
 
 		switch (args.targetScope) {

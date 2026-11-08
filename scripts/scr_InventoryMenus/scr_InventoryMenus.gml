@@ -130,7 +130,10 @@ function UsableInventoryMenu(_stack) : Menu(_stack) constructor {
 		choiceIdx = _y * _dimX + _x;
 
 		if (_gk.confirm.isPressed()) onChoice();
-		if (_gk.back.isPressed()) stack.pop();
+		if (_gk.back.isPressed()){
+			stack.pop();
+			global.invHeldItem = undefined;
+		} 
 	}
 
 	onChoice = function() {
