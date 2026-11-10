@@ -66,10 +66,12 @@ function drawStatusIcons(_battleInstances) {
 			if(inst.defs.status[j][0] > 0) {
 				var info = getStatusIconInfo(j);
 				draw_sprite(info[0], 0, originIconsX + offsetX, originIconsY);
-				offsetX += 8;
+				
 				draw_set_colour(info[1]);
-				draw_text(originIconsX, originIconsY - 10, inst.defs.status[j][0]);
+				draw_text(originIconsX + offsetX, originIconsY - 10, inst.defs.status[j][0]);
 				draw_set_colour(c_white);
+				
+				offsetX += 8;
 			}
 		}
 	}

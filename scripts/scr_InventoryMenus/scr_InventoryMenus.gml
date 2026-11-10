@@ -80,9 +80,9 @@ function UsableInventoryMenu(_stack) : Menu(_stack) constructor {
 		draw_sprite(spr_inventory, choiceIdx, invX, invY);
 		
 		var originX = invX + 28;
-		var originY = invY + 24;
+		var originY = invY + 26;
 		var offX = 56;
-		var offY = 42;
+		var offY = 41;
 
 		for (var i = 0; i < 12; i++) {
 

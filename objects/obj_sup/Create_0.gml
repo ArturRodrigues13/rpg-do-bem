@@ -1,5 +1,5 @@
 defs = new Defs({
-	name: "slop",
+	name: "a_slop",
 	element: Element.WIND,
 	vida: 20,
 	energy: 1,

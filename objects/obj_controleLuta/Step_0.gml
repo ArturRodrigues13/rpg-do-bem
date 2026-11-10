@@ -10,11 +10,11 @@ if (!baq.isEmpty()) {
 			break;
 		case "enemy":
 			show_debug_message("INIMIGO ATACA NOVAMENTE");
-			battle.enemyRandomAction(battle.enemies[a.idx]);
+			battle.enemyRandomAction(battle.battleInstances[a.idx]);
 			baq.dequeue();
 			break;
 		case "ally":
-			if (battle.allies[a.idx].defs.isDown()) {
+			if (battle.battleInstances[a.idx].defs.isDown()) {
 				baq.dequeue();
 				break;
 			}

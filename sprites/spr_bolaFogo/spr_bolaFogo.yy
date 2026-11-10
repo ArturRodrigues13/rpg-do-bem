@@ -2,9 +2,9 @@
   "$GMSprite":"v2",
   "%Name":"spr_bolaFogo",
   "bboxMode":0,
-  "bbox_bottom":25,
-  "bbox_left":1,
-  "bbox_right":26,
+  "bbox_bottom":27,
+  "bbox_left":0,
+  "bbox_right":27,
   "bbox_top":0,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -12,14 +12,14 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"b00bb9ad-e298-423d-a9e0-6b826e8b3f68","name":"b00bb9ad-e298-423d-a9e0-6b826e8b3f68","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"40ae541c-635e-464f-b3de-ed7391bf5ffb","name":"40ae541c-635e-464f-b3de-ed7391bf5ffb","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":28,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"ea0f3a61-d116-4cc0-b8f3-cd01cbe3ba7e","blendMode":0,"displayName":"default","isLocked":false,"name":"ea0f3a61-d116-4cc0-b8f3-cd01cbe3ba7e","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"2f0f4f9d-a224-4364-ab1f-b26beb08f99b","blendMode":0,"displayName":"default","isLocked":false,"name":"2f0f4f9d-a224-4364-ab1f-b26beb08f99b","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"spr_bolaFogo",
   "nineSlice":null,
@@ -69,8 +69,8 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"b00bb9ad-e298-423d-a9e0-6b826e8b3f68","path":"sprites/spr_bolaFogo/spr_bolaFogo.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"28d969bb-71a6-4451-aa83-7d5491ba9ec0","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"40ae541c-635e-464f-b3de-ed7391bf5ffb","path":"sprites/spr_bolaFogo/spr_bolaFogo.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"216356f5-026f-4cbb-bc8f-8716c14a200b","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

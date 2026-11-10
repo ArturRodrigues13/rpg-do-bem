@@ -102,8 +102,8 @@ function Battle(_args) constructor {
 			array_push(acc, { source: "moment", counter: actionCounter });
 		}
 
-		for (var i = 0; i < array_length(enemies); i++) {
-			var d = enemies[i].defs;
+		for (var i = 0; i < array_length(battleInstances); i++) {
+			var d = battleInstances[i].defs;
 
 			if (d.isDown()) continue;
 			var thr = d.getActionThreshold();
@@ -111,20 +111,11 @@ function Battle(_args) constructor {
 			d.actionCounter += timeStep;
 			if (d.actionCounter >= thr) {
 				d.actionCounter -= thr;
-				array_push(acc, { source: "enemy", idx: i, counter: d.actionCounter });
-			}
-		}
-
-		for (var i = 0; i < array_length(allies); i++) {
-			var d = allies[i].defs;
-
-			if (d.isDown()) continue;
-			var thr = d.getActionThreshold();
-
-			d.actionCounter += timeStep;
-			if (d.actionCounter >= thr) {
-				d.actionCounter -= thr;
-				array_push(acc, { source: "ally", idx: i, counter: d.actionCounter });
+				if(string_starts_with(d.name, "a_")) {
+					array_push(acc, { source: "ally", idx: i, counter: d.actionCounter });
+				} else {
+					array_push(acc, { source: "enemy", idx: i, counter: d.actionCounter });
+				}
 			}
 		}
 
@@ -232,6 +223,7 @@ function checkStatus(_fightInstances) {
 
 	for (var i = 0; i < array_length(_fightInstances); i++) {
 		var inst = _fightInstances[i];
+		if(inst.defs.isDown()) continue;
 		for(var j = 0; j < Status._MAX; j++) {
 			if(inst.defs.status[j][0] > 0) {
 				applyStatus(inst, j);

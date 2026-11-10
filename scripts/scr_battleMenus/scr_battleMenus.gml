@@ -220,15 +220,17 @@ function TargetMenu(_stack, _args) : Menu(_stack) constructor {
 				break;
 
 			case TargetScope.ALLY_ALL:
-				for (var i = 0; i < array_length(aliados); i++) {
-					var _o = aliados[i];
+				var allies = battle.allies;
+				for (var i = 0; i < array_length(allies); i++) {
+					var _o = allies[i];
 					draw_sprite(spr_setinha, 0, _o.x - 20, _o.y);
 				}
 				break;
 
 			case TargetScope.ENEMY_ALL:
-				for (var i = 0; i < array_length(inimigos); i++) {
-					var _o = inimigos[i];
+				var enemies = battle.enemies;
+				for (var i = 0; i < array_length(enemies); i++) {
+					var _o = enemies[i];
 					draw_sprite(spr_setinha, 0, _o.x - 20, _o.y);
 				}
 				break;

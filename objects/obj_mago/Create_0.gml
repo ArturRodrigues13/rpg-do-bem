@@ -1,5 +1,5 @@
 defs = new Defs({
-	name: "mago",
+	name: "a_mago",
 	element: Element.WATER,
 	vida: 5,
 	energy: 5,
