@@ -2,7 +2,7 @@
 global.battleData = undefined;
 
 // _attacker pode ser undefined
-function Dano(_attacker, _baseDamage, _target, _typeD, _element) {
+function Dano(_attacker, _baseDamage, _target, _typeD, _attackElement) {
 	
 	var mult = 0;
 	
@@ -15,7 +15,7 @@ function Dano(_attacker, _baseDamage, _target, _typeD, _element) {
 	
 	var dano = _baseDamage;
 	
-	dano *= global.dmgTable[_element][_target.defs.element];
+	dano *= getMultDamage(_attackElement, _target.defs.elements);
 
 	if (_typeD == DamageType.PHYSICAL) {
 		dano = max(0, (dano * mult) - _target.defs.defesa);
@@ -177,45 +177,50 @@ function Battle(_args) constructor {
 	}
 }
 
-// @desc Incrementar N stacks de um certo status num inimigo;
+// @desc Incrementar N stacks de um certo status num inimigo e lidar com o fato
+// de ser ou não o início de seu efeito no alvo;
 function incrementStatus(_target, _status, _stacks) {
-	var statusArray = _target.defs.status;
-	_target.defs.status[_status][0] += _stacks;
+	var st = _target.defs.status[_status];
+	st.stacks += _stacks;
+	
+	var starting = !st.started;
+	
+	// controlando o "started" no início
+	if (starting) st.started = true;
+		
+	switch (_status) {
+        case Status.BURN:
+            if (starting) _target.defs.ataque /= 2;
+            break;
+    }
 }
 
 // @desc Aplicar o efeito de um certo status no inimigo, reduzindo seus stacks e
-// lidando com o fato de ser ou não a primeira aplicação;
-function applyStatus(_target, _status) {
-	
-	// TODO: Isso tá meio slop, ajeitar depois
-	var defs = _target.defs
-	var firstApply = false;
-	if(defs.status[_status][1] == false) {
-		firstApply = true;
-		defs.status[_status][1] = true;
-	}
-	
-	defs.status[_status][0] -= 1;
-	if(defs.status[_status][0] == 0) {
-		defs.status[_status][1] = false;
-	}
-	
-	switch (_status) {
-		case Status.BURN:
-			defs.vida -= 1;
-			// TODO: Pensar numa forma eficiente de lidar com isso de redução de ataque.
-			//if(firstApply) defs.ataque -= round(defs.ataque / 2);
-			//
-			//if(defs.status[_status][0] == 0) defs.ataque += round(defs.ataque / 2);
-			
-		break;
-	
-		case Status.POISON:
-			defs.vida -= 2;
-		break;
-	}
-	
-	checkDeath(_target);
+// lidando com o fato de seu efeito estar se encerrando;
+function applyStatus(_inst, _status) {
+    var defs = _inst.defs;
+    var st = defs.status[_status];
+
+    if (st.stacks == 0) return;
+    st.stacks -= 1;
+
+    var ending = (st.stacks <= 0);
+
+    // controlando o "started" no fim
+    if (ending) st.started = false;
+
+    switch (_status) {
+        case Status.BURN:
+            defs.vida -= 1;
+            if (ending) defs.ataque *= 2;
+            break;
+
+        case Status.POISON:
+            defs.vida -= 2;
+            break;
+    }
+
+    checkDeath(_inst);
 }
 
 // @desc Passar por todas as instâncias em batalha e verificar se eles possuem stacks de algum status;
@@ -225,7 +230,7 @@ function checkStatus(_fightInstances) {
 		var inst = _fightInstances[i];
 		if(inst.defs.isDown()) continue;
 		for(var j = 0; j < Status._MAX; j++) {
-			if(inst.defs.status[j][0] > 0) {
+			if(inst.defs.status[j].stacks > 0) {
 				applyStatus(inst, j);
 			}
 		}
@@ -256,3 +261,14 @@ function initDamageTable() {
 	return tbl;
 }
 dmgTable = initDamageTable();
+
+function getMultDamage(_attackType, _targetTypes) {
+	
+	var mult = 1;
+	
+	for(var i = 0; i < array_length(_targetTypes); i++) {
+		mult *= global.dmgTable[_attackType][_targetTypes[i]];
+	}
+	
+	return mult;
+}

@@ -1,6 +1,6 @@
 function Defs(_args) constructor {
 	name = _args.name;
-	element = _args.element;
+	elements = _args.elements;
 	vida = _args.vida;
 	energy = _args.energy;
 	ataque = _args.ataque;
@@ -19,8 +19,10 @@ function Defs(_args) constructor {
 	status = array_create(Status._MAX);
 
 	for (var i = 0; i < Status._MAX; i++) {
-		status[i] = [0, false];
+		status[i] = {stacks: 0, started: false};
 	}
+	
+	skipAction = false;
 
 	isDown = function() {
 		return vida <= 0;
@@ -32,6 +34,8 @@ function Defs(_args) constructor {
 		ret = round(ret * 10) / 10; // arredondando p/ uma casa decimal
 		return ret;
 	}
+	
+	
 }
 
 function drawCharacterStepBar(_defs, _x, _y) {
@@ -63,12 +67,12 @@ function drawStatusIcons(_battleInstances) {
 		var originIconsY = inst.y - 20;
 		var offsetX = 0;
 		for(var j = 0; j < Status._MAX; j++) {
-			if(inst.defs.status[j][0] > 0) {
+			if(inst.defs.status[j].stacks > 0) {
 				var info = getStatusIconInfo(j);
 				draw_sprite(info[0], 0, originIconsX + offsetX, originIconsY);
 				
 				draw_set_colour(info[1]);
-				draw_text(originIconsX + offsetX, originIconsY - 10, inst.defs.status[j][0]);
+				draw_text(originIconsX + offsetX, originIconsY - 10, inst.defs.status[j].stacks);
 				draw_set_colour(c_white);
 				
 				offsetX += 8;

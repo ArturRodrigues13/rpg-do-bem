@@ -1,6 +1,6 @@
 defs = new Defs({
 	name: "a_mago",
-	element: Element.WATER,
+	elements: [Element.WATER],
 	vida: 5,
 	energy: 5,
 	ataque: 1,

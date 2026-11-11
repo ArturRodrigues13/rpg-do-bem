@@ -9,20 +9,28 @@ if (!baq.isEmpty()) {
 			baq.dequeue();
 			break;
 		case "enemy":
-			show_debug_message("INIMIGO ATACA NOVAMENTE");
-			battle.enemyRandomAction(battle.battleInstances[a.idx]);
+			var enemyD = battle.battleInstances[a.idx].defs;
+			if(enemyD.isDown() or enemyD.skipAction) {
+				enemyD.skipAction = false;
+			} else {
+				battle.enemyRandomAction(battle.battleInstances[a.idx]);
+			}
+			
 			baq.dequeue();
 			break;
 		case "ally":
-			if (battle.battleInstances[a.idx].defs.isDown()) {
+			var allyD = battle.battleInstances[a.idx].defs;
+			if (allyD.skipAction) {
+				allyD.skipAction = false;
 				baq.dequeue();
-				break;
+			} else {
+				battle.allyIdx = a.idx;
+				if (mstack.isEmpty()) {
+					mstack.push(new ChoiceMenu(mstack));
+				}
+				mstack.peek().onStep();
 			}
-			battle.allyIdx = a.idx;
-			if (mstack.isEmpty()) {
-				mstack.push(new ChoiceMenu(mstack));
-			}
-			mstack.peek().onStep();
+			
 			break;
 		default:
 			show_error("???", true);

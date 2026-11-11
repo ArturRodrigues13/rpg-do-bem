@@ -1,6 +1,6 @@
 defs = new Defs({
 	name: "a_slop",
-	element: Element.WIND,
+	elements: [Element.WIND],
 	vida: 20,
 	energy: 1,
 	ataque: 1,
