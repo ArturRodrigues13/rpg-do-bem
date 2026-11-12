@@ -91,6 +91,7 @@
     {"id":{"name":"spr_scopeEnemy","path":"sprites/spr_scopeEnemy/spr_scopeEnemy.yy",},},
     {"id":{"name":"spr_scopeEnemyAll","path":"sprites/spr_scopeEnemyAll/spr_scopeEnemyAll.yy",},},
     {"id":{"name":"spr_scopeSelf","path":"sprites/spr_scopeSelf/spr_scopeSelf.yy",},},
+    {"id":{"name":"spr_selected","path":"sprites/spr_selected/spr_selected.yy",},},
     {"id":{"name":"spr_setinha","path":"sprites/spr_setinha/spr_setinha.yy",},},
     {"id":{"name":"spr_statusBurnIcon","path":"sprites/spr_statusBurnIcon/spr_statusBurnIcon.yy",},},
     {"id":{"name":"spr_statusPoisonIcon","path":"sprites/spr_statusPoisonIcon/spr_statusPoisonIcon.yy",},},

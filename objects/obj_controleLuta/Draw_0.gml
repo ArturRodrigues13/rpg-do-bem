@@ -11,8 +11,6 @@ if (!baq.isEmpty()) {
 		case "enemy":
 			break;
 		case "ally":
-			var ally = battle.allies[a.idx];
-			draw_sprite(spr_suaVezMano, 0, ally.x, ally.y + 16);
 			if (!mstack.isEmpty()) {
 				mstack.peek().onDraw();
 			}

@@ -5,6 +5,7 @@ global.battleMenuData = {
 function ChoiceMenu(_stack) : Menu(_stack) constructor {
 	choices = ["ATAQUE", "HABILIDADE", "ITEM", "CHECK", "FUGIR"];
 	allowBack = false;
+	battle = global.battle;
 
 	onChoice = function() {
 		if (choiceIdx == 0) {
@@ -18,7 +19,7 @@ function ChoiceMenu(_stack) : Menu(_stack) constructor {
 		} else if (choiceIdx == 2) {
 			stack.push(new ItemMenu(stack));
 		} else if (choiceIdx == 3) {
-			show_debug_message("checa inimigos: niba!")
+			stack.push(new CheckMenu(stack));
 		} else {
 			// TODO: fazer um mecanismo p/ voltar para a sala anterior à batalha
 			global.battle = undefined;
@@ -28,11 +29,13 @@ function ChoiceMenu(_stack) : Menu(_stack) constructor {
 	
 	onDraw = function() {
 		
+		var ally = battle.allies[battle.allyIdx];
+		draw_sprite(spr_suaVezMano, 0, ally.x, ally.y + 16);
+		
 		draw_sprite(spr_choiceMenu,0, 0, room_height - 75);
 		var txtX = 30;
 		var txtY = room_height - 65;
-
-
+		
 		for (var i = 0; i < array_length(choices); i++) {
 			var offsetX = (i == 4) ? 132 : (room_width - 110) * (i mod 2);
 			var offsetY = (i == 4) ? 40 : 30 * (i div 2);
@@ -58,6 +61,54 @@ function ChoiceMenu(_stack) : Menu(_stack) constructor {
 	}
 }
 
+function CheckMenu(_stack) : Menu(_stack) constructor {
+	battle = global.battle;
+	choices = battle.battleInstances;
+	
+	onDraw = function() {
+		
+		var inst = choices[choiceIdx];
+		var instName = inst.defs.name;
+		
+		var isLeftSide = inst.x <= room_width / 2 ? true : false;
+		
+		var instWidth = sprite_get_width(inst.sprite_index);
+		var instHeight = sprite_get_height(inst.sprite_index);
+		
+		// 8 é a largura/altura do sprite de seleção, e o +1 é pra ter um espaçamento
+		var xScale = instWidth / 8 + 1;
+		var yScale = instHeight / 8 + 1;
+		
+		draw_sprite_ext(spr_selected, 0, inst.x, inst.y, xScale, yScale, 0, c_white, 1);
+		
+		var xRecStart = isLeftSide ? inst.x + instWidth / 2 + 10 : inst.x - instWidth / 2 - 90;
+		var yRecStart = inst.y - instHeight / 2 - 5;
+		var recWidth = 80;
+		var recHeight = 100;
+		
+		draw_set_colour(c_purple);
+		draw_rectangle(xRecStart, yRecStart, xRecStart + recWidth, yRecStart + recHeight, false);
+		draw_set_colour(c_white);
+		
+		var nameX = xRecStart + 3;
+		var nameY = yRecStart;
+		var name = string_starts_with(instName, "a_") ? string_delete(instName, 0, 2) : instName;
+		
+		draw_text(nameX, nameY, name);
+	}
+	
+	handleInput = function() {
+		
+		var _gk = global.keys;
+
+		if (_gk.up.isPressed()) choiceIdx--;
+		if (_gk.down.isPressed()) choiceIdx++;
+
+		if (_gk.confirm.isPressed()) onChoice();
+		if (_gk.back.isPressed() && allowBack) stack.pop();
+	}
+}
+
 function ActionMenu(_stack, _args) : Menu(_stack) constructor {
 	battle = global.battle;
 	args = _args;
@@ -76,6 +127,9 @@ function ActionMenu(_stack, _args) : Menu(_stack) constructor {
 	arraySize = array_length(choices);
 
 	onDraw = function() {
+		
+		var ally = battle.allies[battle.allyIdx];
+		draw_sprite(spr_suaVezMano, 0, ally.x, ally.y + 16);
 		
 		var isAttack = args.type == ActionType.ATTACK;
 		var subimg = isAttack ? 0 : 1;
