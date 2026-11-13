@@ -107,6 +107,11 @@ function CheckMenu(_stack) : Menu(_stack) constructor {
 		if (_gk.confirm.isPressed()) onChoice();
 		if (_gk.back.isPressed() && allowBack) stack.pop();
 	}
+	
+	onChoice = function () {
+		
+		
+	}
 }
 
 function ActionMenu(_stack, _args) : Menu(_stack) constructor {

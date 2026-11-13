@@ -30,6 +30,7 @@ enum Element {
 	WIND,
 	EARTH,
 	ELECTRICAL,
+	NORMAL,
 	NATURE,
 	MACHINE,
 	HOLY,

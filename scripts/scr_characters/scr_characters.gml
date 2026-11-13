@@ -3,6 +3,7 @@ function Defs(_args) constructor {
 	elements = _args.elements;
 	vida = _args.vida;
 	energy = _args.energy;
+	maxEnergy = _args.maxEnergy;
 	ataque = _args.ataque;
 	ataquemagico = _args.ataquemagico;
 	defesa = _args.defesa;

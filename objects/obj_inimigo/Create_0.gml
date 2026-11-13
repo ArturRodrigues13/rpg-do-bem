@@ -2,7 +2,8 @@ defs = new Defs({
 	name: "caolho",
 	elements: [Element.FIRE],
 	vida: 5,
-	energy: 1,
+	maxEnergy: 30,
+	energy: 0,
 	ataque: 1,
 	ataquemagico: 6,
 	defesa: 0,
@@ -21,8 +22,6 @@ defs = new Defs({
 			targetScope: TargetScope.ALLY_SINGLE,
 			onUse: function (_target, _user) {
 				Dano(_user, _user.defs.ataquemagico, _target, damageType, element);
-				
-				_target.defs.skipAction = true;
 			}
 		}
 	],

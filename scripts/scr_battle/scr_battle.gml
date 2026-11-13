@@ -110,6 +110,7 @@ function Battle(_args) constructor {
 
 			d.actionCounter += timeStep;
 			if (d.actionCounter >= thr) {
+				d.energy += round(d.maxEnergy / 10);
 				d.actionCounter -= thr;
 				if(string_starts_with(d.name, "a_")) {
 					array_push(acc, { source: "ally", idx: i, counter: d.actionCounter });
@@ -255,8 +256,58 @@ function initDamageTable() {
 		array_push(tbl, row);
 	}  
 	
-	tbl[Element.WATER][Element.FIRE] = 2;
+	// Fogo x Elemento
+	tbl[Element.FIRE][Element.FIRE] = 0;
+	tbl[Element.FIRE][Element.WATER] = .5;
+	tbl[Element.FIRE][Element.EARTH] = .5;
+	tbl[Element.FIRE][Element.NATURE] = 2;
 	
+	// Água x Elemento
+	tbl[Element.WATER][Element.FIRE] = 2;
+	tbl[Element.WATER][Element.WATER] = 0;
+	tbl[Element.WATER][Element.NATURE] = 0;
+	
+	// Vento x Elemento
+	tbl[Element.WIND][Element.FIRE] = 2;
+	tbl[Element.WIND][Element.WIND] = 0;
+	tbl[Element.WIND][Element.EARTH] = .5;
+	
+	// Terra x Elemento
+	tbl[Element.EARTH][Element.FIRE] = 2;
+	tbl[Element.EARTH][Element.WIND] = .5;
+	tbl[Element.EARTH][Element.EARTH] = 2;
+	tbl[Element.EARTH][Element.ELECTRICAL] = 2;
+	
+	// Eletríco x Elemento
+	tbl[Element.ELECTRICAL][Element.WATER] = 2;
+	tbl[Element.EARTH][Element.ELECTRICAL] = .5;
+	tbl[Element.EARTH][Element.MACHINE] = 2;
+	
+	// Normal x Elemento
+	tbl[Element.NORMAL][Element.HOLY] = 0;
+	tbl[Element.NORMAL][Element.UNHOLY] = 0;
+	
+	// Natureza x Elemento
+	tbl[Element.NATURE][Element.FIRE] = .5;
+	tbl[Element.NATURE][Element.WATER] = 2;
+	tbl[Element.NATURE][Element.EARTH] = 2;
+	tbl[Element.NATURE][Element.MACHINE] = 2;
+	tbl[Element.NATURE][Element.HOLY] = .5;
+	tbl[Element.NATURE][Element.UNHOLY] = .5;
+	
+	// Máquina x Elemento
+	tbl[Element.MACHINE][Element.EARTH] = 2;
+	tbl[Element.MACHINE][Element.NATURE] = 2;
+	tbl[Element.MACHINE][Element.HOLY] = .5;
+	tbl[Element.MACHINE][Element.UNHOLY] = .5;
+	
+	// Sagrado x Elemento
+	tbl[Element.HOLY][Element.NORMAL] = 2;
+	tbl[Element.HOLY][Element.UNHOLY] = 2;
+	
+	// Profano x Elemento
+	tbl[Element.UNHOLY][Element.NORMAL] = 2;
+	tbl[Element.UNHOLY][Element.HOLY] = 2;
 	
 	return tbl;
 }
